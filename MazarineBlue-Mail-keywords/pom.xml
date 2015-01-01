@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mazarineblue</groupId>
+        <artifactId>MazarineBlue</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>MazarineBlue-Mail-keywords</artifactId>
+    <packaging>jar</packaging>
+
+    <name>MazarineBlue - Mail-keywords module</name>
+    <url>http://www.MazarineBlue.org/</url>
+    <description>
+        The Mail-keywords module contains the library allowing for mail manipulation. This module is a front for the Mail module that does the actual work.
+    </description>
+    <licenses>
+        <license>
+            <name>GNO Affero GPL v3.0</name>
+            <url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id></id>
+            <name>Mandy Tak</name>
+            <email>mandy@MazarineBlue.org</email>
+            <url></url>
+            <organization>Specialisterren</organization>
+            <organizationUrl>http://www.specialisterren.nl/</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <id></id>
+            <name>Alex de Kruijff</name>
+            <email>alex@MazarineBlue.org</email>
+            <url>http://www.kruijff.org/</url>
+            <organization>Specialisterren</organization>
+            <organizationUrl>http://www.specialisterren.nl/</organizationUrl>
+            <roles>
+                <role>Product Owner</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/MazarineBlue/MazarineBlue</connection>
+        <developerConnection>scm:git:ssh://github.com/MazarineBlue/MazarineBlue</developerConnection>
+        <url>https://github.com/MazarineBlue/</url>
+    </scm>
+    <issueManagement>
+        <system>GitHub Issues!</system>
+        <url>http://github.com/Mazarineblue/MazarineBlue/issues</url>
+    </issueManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <artifactId>MazarineBlue-Mail</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>MazarineBlue-KeywordDriven</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <artifactId>MazarineBlue-KeywordDriven</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

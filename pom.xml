@@ -59,6 +59,8 @@
         <module>MazarineBlue-KeywordDriven-Links</module>
         <module>MazarineBlue-KeywordDriven-Logs</module>
         <module>MazarineBlue-KeywordDriven-SheetFactories</module>
+        <module>MazarineBlue-Mail</module>
+        <module>MazarineBlue-Mail-keywords</module>
         <module>MazarineBlue-Parser</module>
         <module>MazarineBlue-Pictures</module>
         <module>MazarineBlue-Runner-Standalone</module>
