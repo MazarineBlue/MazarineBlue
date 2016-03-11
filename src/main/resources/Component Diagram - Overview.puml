@@ -2,4 +2,7 @@
 [MazarineBlue-Parser] --> [junit]
 [MazarineBlue-Parser] --> [junit-hierarchicalcontextrunner]
 [MazarineBlue-Pictures] --> [junit]
+[MazarineBlue-EventBus] ---> [junit]
+[MazarineBlue-EventBus] --> [junit-hierarchicalcontextrunner]
+[MazarineBlue-EventBus] --> [MazarineBlue-Utilities]
 @enduml

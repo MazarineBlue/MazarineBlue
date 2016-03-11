@@ -1,0 +1,35 @@
+@startuml
+annotation org.mazarineblue.eventbus.EventHandler
+interface org.mazarineblue.eventbus.Event {
+    +boolean isConsumed()
+}
+interface org.mazarineblue.eventbus.EventService {
+    +void publish(E event)
+    +boolean subscribe(Class eventType, Filter<E> filter, Subscriber<E> subscriber)
+    +boolean unsubscribe(Class eventType, Filter<E> filter, Subscriber<E> subscriber)
+}
+interface org.mazarineblue.eventbus.Filter {
+    +boolean apply(E event)
+}
+interface org.mazarineblue.eventbus.Subscriber {
+    +eventHandler(E event)
+}
+abstract class org.mazarineblue.eventbus.AbstractEvent
+abstract org.mazarineblue.eventbus.ReflectionSubscriber {
+    -ID id
+}
+class org.mazarineblue.eventbus.Entry {
+    -Class eventType
+}
+class org.mazarineblue.eventbus.SimpleEventService {
+    -Class eventType
+}
+
+org.mazarineblue.eventbus.Event <|-- org.mazarineblue.eventbus.AbstractEvent
+org.mazarineblue.eventbus.EventService <|-- org.mazarineblue.eventbus.SimpleEventService
+org.mazarineblue.eventbus.SimpleEventService o-> "*" org.mazarineblue.eventbus.Entry
+org.mazarineblue.eventbus.Entry o-> "1" org.mazarineblue.eventbus.Filter
+org.mazarineblue.eventbus.Entry o--> "1" org.mazarineblue.eventbus.Subscriber
+org.mazarineblue.eventbus.Subscriber <|-- org.mazarineblue.eventbus.ReflectionSubscriber
+org.mazarineblue.eventbus.ReflectionSubscriber .left.> org.mazarineblue.eventbus.EventHandler
+@enduml
