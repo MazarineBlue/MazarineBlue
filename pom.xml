@@ -45,6 +45,8 @@
 
     <modules>
         <module>MazarineBlue-Parser</module>
+        <module>MazarineBlue-Pictures</module>
+        <module>MazarineBlue-Utilities</module>
     </modules>
 
     <scm>
