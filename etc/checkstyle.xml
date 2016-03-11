@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+
+<!--
+  Checkstyle configuration that checks the Turbine coding conventions:
+  http://turbine.apache.org/common/code-standards.html
+-->
+
+<module name="Checker">
+    <!-- Header -->
+    <module name="RegexpHeader">
+        <property name="fileExtensions" value="java"/>
+        <property name="headerFile" value="${checkstyle.header.file}"/>
+    </module>
+
+    <!-- Javadoc -->
+    <module name="JavadocPackage">
+        <property name="allowLegacy" value="false"/>
+    </module>
+
+    <!-- Misc -->
+    <module name="NewlineAtEndOfFile"/>
+    <module name="Translation"/>
+
+    <!-- Regexp -->
+    <!-- Size violations -->
+    <module name="FileLength"/>
+
+    <!-- Whitespace -->
+    <module name="FileTabCharacter"/>
+    <!-- Till here -->
+
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
+    <module name="RegexpSingleline">
+        <!-- \s matches whitespace character, $ matches end of line. -->
+        <property name="format" value="\s+$"/>
+        <property name="message" value="Line has trailing spaces."/>
+    </module>
+
+    <module name="TreeWalker">
+        <property name="cacheFile" value="${checkstyle.cache.file}"/>
+        <property name="tabWidth" value="4"/>
+
+        <!-- Check annotations -->
+        <module name="MissingOverride">
+            <property name="javaFiveCompatibility" value="true"/>
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="PackageAnnotation"/>
+        <!--
+        <module name="AnnotationLocation">
+            <property name="allowSamelineMultipleAnnotations" value="false"/>
+            <property name="allowSamelineSingleAnnotations" value="false"/>
+            <property name="allowSamelineAnnotations" value="false"/>
+        </module>
+        -->
+
+        <!-- Block checks -->
+        <module name="EmptyBlock"/>
+        <module name="LeftCurly">
+            <property name="option" value="eol"/>
+            <property name="maxLineLength" value="120"/>
+        </module>
+        <module name="RightCurly">
+            <property name="option" value="same"/>
+            <property name="shouldStartLine" value="true"/>
+        </module>
+        <module name="AvoidNestedBlocks">
+            <property name="allowInSwitchCase" value="true"/>
+        </module>
+
+        <!-- Class Design -->
+        <module name="VisibilityModifier"/>
+        <module name="FinalClass"/>
+        <module name="InterfaceIsType"/>
+        <module name="HideUtilityClassConstructor"/>
+        <module name="DesignForExtension"/>
+        <module name="MutableException"/>
+        <module name="ThrowsCount">
+            <property name="max" value="3"/>
+        </module>
+        <module name="OneTopLevelClass"/>
+
+        <!-- Coding -->
+        <module name="ArrayTrailingComma"/>
+        <module name="CovariantEquals"/>
+        <module name="EmptyStatement"/>
+        <module name="EqualsAvoidNull"/>
+        <module name="EqualsHashCode"/>
+        <module name="HiddenField"/>
+        <module name="IllegalInstantiation"/>
+        <module name="InnerAssignment"/>
+        <module name="MagicNumber"/>
+        <module name="MissingSwitchDefault"/>
+        <module name="ModifiedControlVariable"/>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <module name="StringLiteralEquality"/>
+        <module name="NestedForDepth">
+            <property name="max" value="2"/>
+        </module>
+        <module name="NestedIfDepth">
+            <property name="max" value="2"/>
+        </module>
+        <module name="NestedTryDepth">
+            <property name="max" value="1"/>
+        </module>
+        <module name="NoClone"/>
+        <module name="NoFinalizer"/>
+        <module name="SuperClone"/>
+        <module name="SuperFinalize"/>
+        <module name="IllegalCatch"/>
+        <module name="IllegalThrows"/>
+        <module name="PackageDeclaration"/>
+        <module name="IllegalType"/>
+        <module name="DeclarationOrder"/>
+        <module name="ParameterAssignment"/>
+        <module name="ExplicitInitialization"/>
+        <module name="DefaultComesLast"/>
+        <module name="MissingCtor"/>
+        <module name="FallThrough"/>
+        <module name="MultipleStringLiterals"/>
+        <module name="UnnecessaryParentheses"/>
+        <module name="OneStatementPerLine"/>
+
+        <!-- Imports -->
+        <module name="AvoidStarImport"/>
+        <module name="AvoidStaticImport"/>
+        <module name="IllegalImport"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports"/>
+        <module name="ImportOrder"/>
+
+        <!-- Javadoc -->
+        <module name="JavadocType">
+            <property name="scope" value="package"/>
+        </module>
+        <module name="JavadocMethod">
+            <property name="scope" value="package"/>
+        </module>
+        <module name="JavadocVariable">
+            <property name="scope" value="package"/>
+        </module>
+        <!-- <module name="SummaryJavadocCheck"/> -->
+        <!-- <module name="AtclauseOrder">
+            <property name="tagOrder" value="@author, @version, @param,
+                @return, @throws, @exception, @see, @since, @serial,
+                @serialField, @serialData, @deprecated"/>
+            <property name="target" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF,
+                METHOD_DEF, CTOR_DEF, VARIABLE_DEF"/>
+        </module> -->
+        <!-- <module name="JavadocParagraph"/> -->
+        <!-- <module name="SingleLineJavadoc"/> -->
+
+        <!-- Metrics -->
+        <module name="BooleanExpressionComplexity"/>
+        <module name="ClassDataAbstractionCoupling"/>
+        <module name="ClassFanOutComplexity"/>
+        <module name="CyclomaticComplexity"/>
+        <module name="NPathComplexity"/>
+        <module name="JavaNCSS"/>
+
+        <!-- Misc -->
+        <module name="TodoComment"/>
+        <module name="UncommentedMain"/>
+        <module name="UpperEll"/>
+        <module name="ArrayTypeStyle"/>
+        <module name="Indentation"/>
+        <module name="TrailingComment"/>
+        <module name="OuterTypeFilename"/>
+        <module name="AvoidEscapedUnicodeCharacters"/>
+
+        <!-- Modifiers -->
+        <module name="ModifierOrder"/>
+        <module name="RedundantModifier"/>
+
+        <!-- Naming conventions -->
+        <module name="AbstractClassName"/>
+        <module name="ClassTypeParameterName"/>
+        <module name="ConstantName"/>
+        <module name="LocalFinalVariableName"/>
+        <module name="LocalVariableName">
+            <property name="allowOneCharVarInForLoop" value="true"/>
+        </module>
+        <module name="MemberName"/>
+        <module name="MethodName"/>
+        <module name="MethodTypeParameterName"/>
+        <module name="InterfaceTypeParameterName"/>
+        <module name="PackageName"/>
+        <module name="ParameterName"/>
+        <module name="StaticVariableName"/>
+        <module name="TypeName"/>
+        <module name="AbbreviationAsWordInName"/>
+
+        <!-- Regexp -->
+        <!-- Sizeviolations -->
+        <module name="ExecutableStatementCount"/>
+        <module name="LineLength">
+            <property name="ignorePattern" value="@version"/>
+            <property name="max" value="120"/>
+        </module>
+        <module name="MethodLength"/>
+        <module name="AnonInnerLength"/>
+        <module name="ParameterNumber"/>
+        <module name="OuterTypeNumber"/>
+        <module name="MethodCount"/>
+
+        <!-- Whitespace -->
+        <module name="GenericWhitespace"/>
+        <module name="EmptyForInitializerPad"/>
+        <module name="EmptyForIteratorPad"/>
+        <module name="MethodParamPad"/>
+        <module name="NoWhitespaceAfter"/>
+        <module name="NoWhitespaceBefore"/>
+        <module name="OperatorWrap"/>
+        <module name="ParenPad"/>
+        <module name="TypecastParenPad"/>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround"/>
+        <module name="NoLineWrap"/>
+        <module name="EmptyLineSeparator"/>
+        <module name="SeparatorWrap"/>
+    </module>
+</module>

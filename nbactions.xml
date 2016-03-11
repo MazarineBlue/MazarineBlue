@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>CUSTOM-Analyse</actionName>
+        <displayName>Analyse</displayName>
+        <goals>
+            <goal>dependency:analyze</goal>
+        </goals>
+    </action>
+</actions>

@@ -1,0 +1,16 @@
+# If applied, this commit will...
+
+# Why was this change necessary?
+# How does this change address the issue?
+# What are the side effects of this change?
+
+# For more informations, please see:
+# https://github.com/MazarineBlue/MazarineBlue#commit-messages
+#
+# A succesful Git branching model
+# http://nvie.com/posts/a-successful-git-branching-model/
+#
+# About Git commit messages
+# http://chris.beams.io/posts/git-commit/
+# https://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message
+# https://wiki.openstack.org/wiki/GitCommitMessages
