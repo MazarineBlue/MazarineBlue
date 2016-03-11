@@ -1,0 +1,99 @@
+@startuml
+abstract class org.mazarineblue.pictures.Compounder {
+    -Raster left
+    -Raster right
+    +void computeScreenshot()
+    #{abstract} void compareWidth()
+    #{abstract} void compareHeight()
+    #{abstract} boolean shouldComputeContent()
+    #{abstract} boolean stopComputingContent()
+    #{abstract} void computeNone(int x, int y)
+    #{abstract} void computeRight(int x, int y)
+    #{abstract} void computeLeft(int x, int y)
+    #{abstract} void computeBoth(int x, int y)
+}
+abstract class org.mazarineblue.pictures.compounders.methods.SameDiffFilter
+class org.mazarineblue.pictures.BufferedImagePicture {
+    -BufferedImage image
+    +BufferedImagePicture(InputStream input)
+    +BufferedImagePicture(byte[] data)
+    +BufferedImagePicture(BufferedImage image)
+    byte[] getData()
+}
+class org.mazarineblue.pictures.Picture {
+    -BufferedImage image
+    +Picture(InputStream input)
+    +Picture(byte[] data)
+    +Picture(BufferedImage image)
+    +byte[] getData()
+    +BufferedImage getImage()
+    +Dimension getDimension()
+    +int getWidth()
+    +int getHeight()
+    +int size()
+    +Picture clip(Dimension dimension)
+    +Picture fetchThumbnail()
+    +{abstract} void write(OutputStream output)
+    +int hashCode()
+    +boolean equals(Object obj)
+    +EqualCompounder.Result compare(Picture right)
+    +EqualCompounder.Result compare(Picture right, PixelComperator pixelComperator)
+    +Picture diff(Picture right)
+    +Picture diff(Picture right, PixelComperator comperator)
+    +Picture same(Picture right)
+    +Picture same(Picture right, PixelComperator comperator)
+    +Picture compound(Picture right, CompoundMethod method)
+}
+class org.mazarineblue.pictures.Raster {
+    int[] arr
+    int width
+    int height
+    +Raster(int width, int height)
+    +Raster(int[] arr, int width, int height)
+    +int getWidth()
+    +int getHeight()
+    +int getRGB(int x, int y)
+    +void setRGB(int x, int y, int rgb)
+    void copyAndClip(Raster raster)
+
+}
+class org.mazarineblue.pictures.compounders.comperator.FullPixelComperator
+class org.mazarineblue.pictures.compounders.comperator.IgnoreAlphaComperator
+class org.mazarineblue.pictures.compounders.EqualCompounder {
+    Result getComperation()
+}
+class org.mazarineblue.pictures.compounders.ScreenshotsCompounder {
+    +Raster getComperation()
+}
+class org.mazarineblue.pictures.compounders.methods.DiffFilter
+class org.mazarineblue.pictures.compounders.methods.SameFilter
+interface org.mazarineblue.pictures.compounders.PixelComperator {
+    +boolean isPixelEqual(int leftPixel, int rightPixel)
+}
+interface org.mazarineblue.pictures.compounders.CompoundMethod {
+    +int compute(int leftPixel, int rightPixel);
+    +int computeLeft(int leftPixel);
+    +int computeRigth(int rightPixel);
+    +int computeNeither();
+}
+org.mazarineblue.pictures.Raster "2" <-* org.mazarineblue.pictures.Compounder
+org.mazarineblue.pictures.Picture <|- org.mazarineblue.pictures.BufferedImagePicture
+org.mazarineblue.pictures.Picture *--> "1" org.mazarineblue.pictures.Raster
+org.mazarineblue.pictures.Picture ..> org.mazarineblue.pictures.compounders.CompoundMethod
+org.mazarineblue.pictures.Picture ..> org.mazarineblue.pictures.compounders.EqualCompounder
+org.mazarineblue.pictures.Picture ..> org.mazarineblue.pictures.compounders.PixelComperator
+org.mazarineblue.pictures.Picture ..> org.mazarineblue.pictures.compounders.ScreenshotsCompounder
+org.mazarineblue.pictures.Picture ..> org.mazarineblue.pictures.compounders.comperator.FullPixelComperator
+org.mazarineblue.pictures.Picture ..> org.mazarineblue.pictures.compounders.methods.DiffFilter
+org.mazarineblue.pictures.Picture ..> org.mazarineblue.pictures.compounders.methods.SameFilter
+org.mazarineblue.pictures.Compounder <|-- org.mazarineblue.pictures.compounders.EqualCompounder
+org.mazarineblue.pictures.Compounder <|-- org.mazarineblue.pictures.compounders.ScreenshotsCompounder
+org.mazarineblue.pictures.compounders.CompoundMethod <|-- org.mazarineblue.pictures.compounders.methods.SameDiffFilter
+org.mazarineblue.pictures.compounders.EqualCompounder *--> "1" org.mazarineblue.pictures.compounders.PixelComperator
+org.mazarineblue.pictures.compounders.PixelComperator <|-- org.mazarineblue.pictures.compounders.comperator.FullPixelComperator
+org.mazarineblue.pictures.compounders.PixelComperator <|-- org.mazarineblue.pictures.compounders.comperator.IgnoreAlphaComperator
+org.mazarineblue.pictures.compounders.PixelComperator "1" <--* org.mazarineblue.pictures.compounders.methods.SameDiffFilter
+org.mazarineblue.pictures.compounders.ScreenshotsCompounder *--> "1" org.mazarineblue.pictures.compounders.CompoundMethod
+org.mazarineblue.pictures.compounders.methods.SameDiffFilter <|-- org.mazarineblue.pictures.compounders.methods.DiffFilter
+org.mazarineblue.pictures.compounders.methods.SameDiffFilter <|--org.mazarineblue.pictures.compounders.methods.SameFilter
+@enduml
