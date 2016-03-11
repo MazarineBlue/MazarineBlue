@@ -1,0 +1,117 @@
+@startuml
+interface org.mazarineblue.parser.Parser {
+    +Object parse(String expression, VariableSource source)
+}
+interface org.mazarineblue.parser.VariableSource {
+    +Object getData(String variable)
+    +boolean setData(String variable, Object value)
+}
+interface org.mazarineblue.parser.precedenceclimber.TokenFactory {
+    +Tokens fetchTokens(String expression)
+}
+interface org.mazarineblue.parser.precedenceclimber.storage.TokenParser {
+    +Tree parseExpression(int precedenceLimit)
+    +Tokens getTokens()
+}
+abstract class org.mazarineblue.parser.precedenceclimber.factory.abstract.AbstractFetchToken {
+    +Token invoke(String expression, int startAtIndex)
+    #{abstract} Token addCharAt(int index)
+    +Token createToken(String token)
+}
+abstract class org.mazarineblue.parser.precedenceclimber.AbstractTokenFactory {
+    +setStorage(Storage storage)
+}
+abstract class org.mazarineblue.parser.precedenceclimber.tree.Tree {
+    ~{abstract} Object evaluate(VariableSource source)
+    ~{abstract} Leaf getFirst()
+}
+abstract class org.mazarineblue.parser.precedenceclimber.storage.Operator {
+    -int precedence
+    -String symbol
+    -Associativity associative
+    +int precedence()
+    +int associativityPrecedence()
+    +public String symbol()
+}
+class org.mazarineblue.parser.precedenceclimber.factory.abstract.FetchTokens {
+    #Tokens invoke(String expression)
+}
+interface org.mazarineblue.parser.precedenceclimber.factory.abstract.FetchToken {
+    +Token invoke(String expression, int startAtIndex)
+}
+class org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingTokenParser {
+    ~PrecedenceClimbingTokenParser(Tokens tokens)
+    ~Tree parseExpression()
+}
+class org.mazarineblue.parser.precedenceclimber.tree.Leaf {
+    ~Token getToken()
+}
+class org.mazarineblue.parser.precedenceclimber.tokens.Tokens {
+    +void add(Token token)
+    +Token[] toArray()
+    +Token peek()
+    +Token next()
+    +void expectEnd()
+}
+class org.mazarineblue.parser.precedenceclimber.tokens.Token {
+    -int index
+    -String token
+}
+
+org.mazarineblue.parser.VariableSource <.. org.mazarineblue.parser.Parser
+org.mazarineblue.parser.VariableSourceDummy ..|> org.mazarineblue.parser.VariableSource
+
+org.mazarineblue.parser.Parser <|.. org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingParser
+org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingParser o-> "1" org.mazarineblue.parser.precedenceclimber.TokenFactory
+org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingParser o--> "1" org.mazarineblue.parser.precedenceclimber.storage.Storage
+org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingParser ..> org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingTokenParser
+
+org.mazarineblue.parser.precedenceclimber.storage.TokenParser <|.. org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingTokenParser
+org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingTokenParser --> "1" org.mazarineblue.parser.precedenceclimber.tokens.Tokens
+org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingTokenParser --> "1" org.mazarineblue.parser.precedenceclimber.storage.Storage
+
+org.mazarineblue.parser.precedenceclimber.tokens.Tokens --> "1" org.mazarineblue.parser.precedenceclimber.tokens.EndToken
+org.mazarineblue.parser.precedenceclimber.tokens.Tokens o--> "*" org.mazarineblue.parser.precedenceclimber.tokens.Token
+org.mazarineblue.parser.precedenceclimber.tokens.Token <|- org.mazarineblue.parser.precedenceclimber.tokens.EndToken
+
+org.mazarineblue.parser.precedenceclimber.TokenFactory <|.. org.mazarineblue.parser.precedenceclimber.AbstractTokenFactory
+org.mazarineblue.parser.precedenceclimber.AbstractTokenFactory o--> "1" org.mazarineblue.parser.precedenceclimber.storage.Storage
+
+org.mazarineblue.parser.precedenceclimber.factory.abstract.FetchTokens *--> "*" org.mazarineblue.parser.precedenceclimber.factory.abstract.FetchToken
+
+org.mazarineblue.parser.precedenceclimber.factory.abstract.FetchToken <|.. org.mazarineblue.parser.precedenceclimber.factory.abstract.AbstractFetchToken
+
+org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingTokenParser ..> org.mazarineblue.parser.precedenceclimber.tree.Leaf
+org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingTokenParser ..> org.mazarineblue.parser.precedenceclimber.tree.BinaryNode
+org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingTokenParser ..> org.mazarineblue.parser.precedenceclimber.tree.PrefixUnaryNode
+org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingTokenParser ..> org.mazarineblue.parser.precedenceclimber.tree.PostfixUnaryNode
+org.mazarineblue.parser.precedenceclimber.PrecedenceClimbingTokenParser ..> org.mazarineblue.parser.precedenceclimber.storage.ParserHelper
+
+org.mazarineblue.parser.precedenceclimber.tree.Tree <|.. org.mazarineblue.parser.precedenceclimber.tree.Leaf
+org.mazarineblue.parser.precedenceclimber.tree.Tree <|.. org.mazarineblue.parser.precedenceclimber.tree.BinaryNode
+org.mazarineblue.parser.precedenceclimber.tree.Tree <|.. org.mazarineblue.parser.precedenceclimber.tree.UnaryNode
+org.mazarineblue.parser.precedenceclimber.tree.PrefixUnaryNode --|> org.mazarineblue.parser.precedenceclimber.tree.UnaryNode
+org.mazarineblue.parser.precedenceclimber.tree.PostfixUnaryNode --|> org.mazarineblue.parser.precedenceclimber.tree.UnaryNode
+
+org.mazarineblue.parser.precedenceclimber.tree.Leaf o--> "1" org.mazarineblue.parser.precedenceclimber.tokens.Token
+org.mazarineblue.parser.precedenceclimber.tree.BinaryNode o--> "1" org.mazarineblue.parser.precedenceclimber.storage.BinaryOperator
+org.mazarineblue.parser.precedenceclimber.tree.BinaryNode o--> "2" org.mazarineblue.parser.precedenceclimber.tree.Tree
+org.mazarineblue.parser.precedenceclimber.tree.UnaryNode o--> "1" org.mazarineblue.parser.precedenceclimber.storage.UnaryOperator
+org.mazarineblue.parser.precedenceclimber.tree.UnaryNode o--> "1" org.mazarineblue.parser.precedenceclimber.tree.Tree
+
+org.mazarineblue.parser.precedenceclimber.storage.Storage --> "*" org.mazarineblue.parser.precedenceclimber.storage.SpecialCharacter
+org.mazarineblue.parser.precedenceclimber.storage.Storage --> "*" org.mazarineblue.parser.precedenceclimber.storage.BinaryOperator
+org.mazarineblue.parser.precedenceclimber.storage.Storage --> "*" org.mazarineblue.parser.precedenceclimber.storage.PostfixUnaryOperator
+org.mazarineblue.parser.precedenceclimber.storage.Storage --> "*" org.mazarineblue.parser.precedenceclimber.storage.PrefixUnaryOperator
+org.mazarineblue.parser.precedenceclimber.storage.Storage --> "1" org.mazarineblue.parser.precedenceclimber.storage.VariableValidator
+
+org.mazarineblue.parser.precedenceclimber.storage.SpecialCharacter ..|> org.mazarineblue.parser.precedenceclimber.storage.SearchHelper
+org.mazarineblue.parser.precedenceclimber.storage.SpecialCharacter .down.|> org.mazarineblue.parser.precedenceclimber.storage.ParserHelper
+org.mazarineblue.parser.precedenceclimber.storage.SpecialCharacter -up-> "1" org.mazarineblue.parser.precedenceclimber.storage.TokenParser
+org.mazarineblue.parser.precedenceclimber.storage.SpecialCharacter --> "1" org.mazarineblue.parser.precedenceclimber.factory.abstract.AbstractFetchToken
+
+org.mazarineblue.parser.precedenceclimber.storage.BinaryOperator --|> org.mazarineblue.parser.precedenceclimber.storage.Operator
+org.mazarineblue.parser.precedenceclimber.storage.UnaryOperator --|> org.mazarineblue.parser.precedenceclimber.storage.Operator
+org.mazarineblue.parser.precedenceclimber.storage.PostfixUnaryOperator --|> org.mazarineblue.parser.precedenceclimber.storage.UnaryOperator
+org.mazarineblue.parser.precedenceclimber.storage.PrefixUnaryOperator --|> org.mazarineblue.parser.precedenceclimber.storage.UnaryOperator
+@enduml

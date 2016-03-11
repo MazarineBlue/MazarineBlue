@@ -1,0 +1,4 @@
+@startuml
+[MazarineBlue-Parser] --> [junit]
+[MazarineBlue-Parser] --> [junit-hierarchicalcontextrunner]
+@enduml
