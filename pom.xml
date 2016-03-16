@@ -44,6 +44,7 @@
     </developers>
 
     <modules>
+        <module>MazarineBlue-Engine</module>
         <module>MazarineBlue-EventBus</module>
         <module>MazarineBlue-Parser</module>
         <module>MazarineBlue-Pictures</module>

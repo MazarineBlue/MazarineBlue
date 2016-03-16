@@ -1,0 +1,73 @@
+@startuml
+annotation org.mazarineblue.eventbus.EventHandler
+interface org.mazarineblue.eventbus.Event {
+    +boolean isConsumed()
+}
+interface org.mazarineblue.eventbus.EventService {
+    +void publish(E event)
+    +boolean subscribe(Class eventType, Filter<E> filter, Subscriber<E> subscriber)
+    +boolean unsubscribe(Class eventType, Filter<E> filter, Subscriber<E> subscriber)
+}
+interface org.mazarineblue.eventbus.Filter {
+    +boolean apply(E event)
+}
+interface org.mazarineblue.eventbus.Subscriber {
+    +eventHandler(E event)
+}
+abstract class org.mazarineblue.eventbus.AbstractEvent
+abstract org.mazarineblue.eventbus.ReflectionSubscriber {
+    -ID id
+}
+class org.mazarineblue.eventbus.Entry {
+    -Class eventType
+}
+class org.mazarineblue.eventbus.SimpleEventService {
+    -Class eventType
+}
+
+org.mazarineblue.eventbus.Event <|-up- org.mazarineblue.eventbus.AbstractEvent
+org.mazarineblue.eventbus.EventService <|-- org.mazarineblue.eventbus.SimpleEventService
+org.mazarineblue.eventbus.SimpleEventService o-right-> "*" org.mazarineblue.eventbus.Entry
+org.mazarineblue.eventbus.Entry o--> "1" org.mazarineblue.eventbus.Filter
+org.mazarineblue.eventbus.Entry o-right-> "1" org.mazarineblue.eventbus.Subscriber
+org.mazarineblue.eventbus.Subscriber <|.. org.mazarineblue.eventbus.ReflectionSubscriber
+org.mazarineblue.eventbus.ReflectionSubscriber .left.> org.mazarineblue.eventbus.EventHandler
+
+interface org.mazarineblue.eventdriven.Chain {
+    +int countLinks()
+    +void addLink(Link link)
+    +void addLink(Link link, Link after)
+    +void removeLink(Link link)
+}
+interface org.mazarineblue.eventdriven.Feed {
+    +boolean hasNext()
+    +Event next()
+    +reset()
+}
+interface org.mazarineblue.eventdriven.Interpreter {
+    +execute(Feed feed)
+}
+interface org.mazarineblue.eventdriven.Invoker {
+    +int countLinks()
+    +void addLink(Link link)
+    +void addLink(Link link, Link after)
+    +void removeLink(Link link)
+    +void publish(Event event)
+}
+abstract class org.mazarineblue.eventdriven.Action {
+    ~setInvoker(Invoker invoker)
+    #Invoker invoker()
+}
+abstract org.mazarineblue.eventdriven.Link
+
+org.mazarineblue.eventdriven.Chain <|.. org.mazarineblue.eventdriven.ChainImpl
+org.mazarineblue.eventdriven.Chain <|.right. org.mazarineblue.eventdriven.Interpreter
+org.mazarineblue.eventdriven.Interpreter <|.. org.mazarineblue.eventdriven.InterpreterImpl
+org.mazarineblue.eventdriven.InterpreterImpl -left-> "1" org.mazarineblue.eventdriven.ChainImpl
+org.mazarineblue.eventdriven.InterpreterImpl ..> org.mazarineblue.eventdriven.Feed
+org.mazarineblue.eventdriven.ChainImpl ..|> org.mazarineblue.eventdriven.Invoker
+org.mazarineblue.eventdriven.ChainImpl -left-> "*" org.mazarineblue.eventdriven.Link
+org.mazarineblue.eventdriven.Feed ..> org.mazarineblue.eventdriven.Action
+org.mazarineblue.eventdriven.Action -right-> "1" org.mazarineblue.eventdriven.Invoker
+org.mazarineblue.eventbus.AbstractEvent <|-up- org.mazarineblue.eventdriven.Action
+@enduml
