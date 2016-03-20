@@ -40,29 +40,28 @@
 
     <dependencies>
         <dependency>
-            <artifactId>MazarineBlue-EventBus</artifactId>
             <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-EventBus</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <artifactId>MazarineBlue-EventBus</artifactId>
             <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-EventBus</artifactId>
             <version>${project.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <artifactId>MazarineBlue-Utilities</artifactId>
             <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Utilities</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <artifactId>MazarineBlue-Utilities</artifactId>
             <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Utilities</artifactId>
             <version>${project.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
-
