@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2012-2014 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
- * Copyright (c) 2014-2015 Specialisterren
+ * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -16,20 +15,28 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.utililities;
+package org.mazarineblue.keyworddriven.events;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.mazarineblue.keyworddriven.Library;
+import org.mazarineblue.keyworddriven.LibraryRegistry;
 
 /**
- * Specifies a class or field is immutable.
+ * An {@code AddLibraryEvent} is used to register an {@link Library} with an
+ * {@link LibraryRegistry}.
  *
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
- * @see Instruction
+ * @see LibraryRegistry
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.FIELD})
-public @interface Immutable {
+public class AddLibraryEvent
+        extends LibraryEvent {
+
+    /**
+     * Constructs an {@code AddLibraryEvent} with an specified {@code Library}
+     * to add to a {@link LibraryRegistry}.
+     *
+     * @param library the library to add to a {@code LibraryRegistry}.
+     */
+    public AddLibraryEvent(Library library) {
+        super(library);
+    }
 }
