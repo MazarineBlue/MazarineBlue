@@ -1,0 +1,80 @@
+@startuml
+annotation org.mazarineblue.eventbus.EventHandler
+abstract class org.mazarineblue.eventbus.AbstractEvent
+class org.mazarineblue.eventbus.Entry {
+    Class eventType
+}
+class org.mazarineblue.eventbus.SimpleEventService {
+    Class eventType
+}
+interface org.mazarineblue.eventbus.Event {
+    boolean isConsumed()
+}
+interface org.mazarineblue.eventbus.EventService {
+    +void publish(E event)
+    +boolean subscribe(Class eventType, Filter<E> filter, Subscriber<E> subscriber)
+    +boolean unsubscribe(Class eventType, Filter<E> filter, Subscriber<E> subscriber)
+}
+interface org.mazarineblue.eventbus.Filter {
+    +boolean apply(E event)
+}
+interface org.mazarineblue.eventbus.ReflectionSubscriber
+interface org.mazarineblue.eventbus.Subscriber {
+    +eventHandler(E event)
+}
+org.mazarineblue.eventbus.EventService <|.. org.mazarineblue.eventbus.SimpleEventService
+org.mazarineblue.eventbus.SimpleEventService o--> "*" org.mazarineblue.eventbus.Entry
+org.mazarineblue.eventbus.Entry o--> "1" org.mazarineblue.eventbus.Filter
+org.mazarineblue.eventbus.Entry o--> "1" org.mazarineblue.eventbus.Subscriber
+org.mazarineblue.eventbus.Subscriber <|-- org.mazarineblue.eventbus.ReflectionSubscriber
+org.mazarineblue.eventbus.ReflectionSubscriber ..> org.mazarineblue.eventbus.EventHandler
+org.mazarineblue.eventbus.Event <|.. org.mazarineblue.eventbus.AbstractEvent
+
+interface org.mazarineblue.eventdriven.Interpretor {
+    +execute()
+}
+interface org.mazarineblue.eventdriven.InterpretorFactory {
+    +Interpretor create(Feed feed)
+}
+class org.mazarineblue.eventdriven.ChainManager {
+    ~int countLinks()
+    ~void addLink(Link link)
+    ~void addLink(Link link, Link after)
+    ~Link removeLink();
+    ~Link removeLink(Link link)
+    ~void publish(Event)
+}
+abstract org.mazarineblue.eventdriven.Link {
+    +void publish(Event)
+}
+interface org.mazarineblue.eventdriven.Feed {
+    +boolean hasNext()
+    +Event next()
+}
+
+org.mazarineblue.eventdriven.Interpretor <|.. org.mazarineblue.eventdriven.Processor
+org.mazarineblue.eventdriven.InterpretorFactory <|.. org.mazarineblue.eventdriven.ProcessorFactory
+org.mazarineblue.eventdriven.ProcessorFactory .left.> org.mazarineblue.eventdriven.Processor
+org.mazarineblue.eventdriven.ProcessorFactory --> "1" org.mazarineblue.eventdriven.ChainManager
+org.mazarineblue.eventdriven.Processor --> "1" org.mazarineblue.eventdriven.ChainManager
+org.mazarineblue.eventdriven.Processor --> "1" org.mazarineblue.eventdriven.Feed
+org.mazarineblue.eventdriven.ChainManager --> "*" org.mazarineblue.eventdriven.Link
+org.mazarineblue.eventbus.ReflectionSubscriber <|.. org.mazarineblue.eventdriven.Link
+org.mazarineblue.eventdriven.Feed ..> org.mazarineblue.eventbus.Event
+
+class org.mazarineblue.keyworddriven.eventbus.EventBusLink {
+}
+class org.mazarineblue.keyworddriven.eventbus.SubscriberEvent {
+    Class eventType
+}
+
+org.mazarineblue.eventdriven.Link <|-- org.mazarineblue.keyworddriven.eventbus.EventBusLink
+org.mazarineblue.keyworddriven.eventbus.EventBusLink --> org.mazarineblue.eventbus.EventService
+
+org.mazarineblue.eventbus.AbstractEvent <|.. org.mazarineblue.keyworddriven.eventbus.SubscriberEvent
+org.mazarineblue.keyworddriven.eventbus.SubscriberEvent <|-- org.mazarineblue.keyworddriven.eventbus.AddSubscriberEvent
+org.mazarineblue.keyworddriven.eventbus.SubscriberEvent <|-- org.mazarineblue.keyworddriven.eventbus.RemoveSubscriberEvent
+org.mazarineblue.keyworddriven.eventbus.SubscriberEvent --> org.mazarineblue.eventbus.Subscriber
+org.mazarineblue.keyworddriven.eventbus.SubscriberEvent --> org.mazarineblue.eventbus.Filter
+
+@enduml

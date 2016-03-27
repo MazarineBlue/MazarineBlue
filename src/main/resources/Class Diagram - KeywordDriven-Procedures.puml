@@ -1,0 +1,63 @@
+@startuml
+interface org.mazarineblue.eventdriven.Feed {
+    +boolean hasNext()
+    +ContextEvent next()
+}
+interface org.mazarineblue.eventdriven.Interpretor {
+    +execute()
+}
+interface org.mazarineblue.eventdriven.InterpretorFactory {
+    +Interpretor create(Feed feed)
+}
+abstract class org.mazarineblue.eventdriven.ContextEvent {
+    #void publish(Event)
+}
+abstract org.mazarineblue.eventdriven.Link {
+    ~void publish(Event)
+}
+class org.mazarineblue.eventdriven.ChainManager {
+    ~void publish(Event)
+}
+class org.mazarineblue.eventdriven.Processor {
+    ~void publish(Event)
+}
+
+org.mazarineblue.eventdriven.Interpretor <|. org.mazarineblue.eventdriven.Processor
+org.mazarineblue.eventdriven.InterpretorFactory <|.left. org.mazarineblue.eventdriven.ProcessorFactory
+org.mazarineblue.eventdriven.ProcessorFactory ..> org.mazarineblue.eventdriven.Processor
+org.mazarineblue.eventdriven.ProcessorFactory --> "1" org.mazarineblue.eventdriven.ChainManager
+org.mazarineblue.eventdriven.Processor --> "1" org.mazarineblue.eventdriven.ChainManager
+org.mazarineblue.eventdriven.Processor --> "1" org.mazarineblue.eventdriven.Feed
+org.mazarineblue.eventdriven.ChainManager --> "*" org.mazarineblue.eventdriven.Link
+org.mazarineblue.eventdriven.ContextEvent --> "1" org.mazarineblue.eventdriven.Interpretor
+org.mazarineblue.eventdriven.Feed ..> org.mazarineblue.eventdriven.ContextEvent  
+
+abstract org.mazarineblue.keyworddriven.Library {
+    +eventHandler(E event)
+}
+class org.mazarineblue.keyworddriven.InstructionLine {
+    -Object[] parameters
+}
+
+org.mazarineblue.eventdriven.ContextEvent <|--- org.mazarineblue.keyworddriven.LibraryEvent
+org.mazarineblue.eventdriven.ContextEvent <|--- org.mazarineblue.keyworddriven.InstructionLineEvent
+org.mazarineblue.keyworddriven.LibraryLink o--> "*" org.mazarineblue.keyworddriven.Library
+org.mazarineblue.eventdriven.Link <|-- org.mazarineblue.keyworddriven.LibraryLink
+org.mazarineblue.keyworddriven.InstructionLineEvent o---> "1" org.mazarineblue.keyworddriven.InstructionLine
+org.mazarineblue.keyworddriven.InstructionLineEvent <|--- org.mazarineblue.keyworddriven.ExecuteInstuctionLineEvent
+org.mazarineblue.keyworddriven.InstructionLineEvent <|--- org.mazarineblue.keyworddriven.ValidateInstuctionLineEvent
+
+org.mazarineblue.keyworddriven.LibraryEvent --> "1" org.mazarineblue.keyworddriven.Library
+
+class org.mazarineblue.keyworddriven.procedures.ProcedureLibrary {
+    +void procedure(String name, String... parameters)
+    +void endProcedure()
+    +void callProcedure(String name, String... arguments)
+}
+
+org.mazarineblue.eventdriven.Link <|-- org.mazarineblue.keyworddriven.procedures.ProcedureLink
+org.mazarineblue.keyworddriven.Library <|-- org.mazarineblue.keyworddriven.procedures.ProcedureLibrary
+org.mazarineblue.keyworddriven.procedures.ProcedureLink --> "1" org.mazarineblue.keyworddriven.procedures.ProcedureLibrary
+org.mazarineblue.keyworddriven.procedures.ProcedureLibrary --> "*" org.mazarineblue.keyworddriven.procedures.Procedure
+org.mazarineblue.keyworddriven.procedures.Procedure o--> "*" org.mazarineblue.keyworddriven.InstructionLine
+@enduml
