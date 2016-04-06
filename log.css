@@ -1,0 +1,79 @@
+ol {
+    list-style: none;
+    margin: 0;
+    border-left: 1px dotted darkgray;
+}
+
+.noshow {
+    display: none;
+}
+
+.line {
+    width: 100%;
+    display: flex;
+}
+
+.line > * {
+    padding: 5px;
+}
+
+.line > .lable {
+    width: 6.1em;
+    padding-right: 15px;
+    text-align: center;
+}
+
+.line > .status {
+    width: 2.1em;
+}
+
+.line > .processing-type {
+    width: 4em;
+}
+
+.line > .path {
+    width: 11em;
+}
+
+.line > .time {
+    width: 7em;
+    text-align: right;
+}
+
+.line.header > .date,
+.line.footer > .date {
+    color: white;
+}
+
+.line > .time,
+.line > .date  {
+    color: DimGray ;
+}
+
+.line > .parameters,
+.line > .value {
+    width: 13em;
+    flex: 1;
+}
+
+.line > .processing-type.executed {
+    background: GreenYellow;
+}
+
+.line > .processing-type.validated {
+    background: Violet;
+}
+
+.line > .message.lable {
+    background: BurlyWood;
+}
+
+.line > .exception.lable {
+    background: Red;
+    color: White;
+}
+
+.line.header *,
+.line.footer * {
+    background: SteelBlue;
+}

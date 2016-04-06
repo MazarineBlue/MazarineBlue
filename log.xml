@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="log.xsl"?><collection status="error" startDate="2015-07-28 10:05:29 +02" endDate="2015-07-28 10:05:38 +02">
+  <line processingType="executed" status="pass" path=".Import" even="uneven">
+    <lineIdentifier>Main:1</lineIdentifier>
+    <startDate>2015-07-28 10:05:32 +02</startDate>
+    <endDate>2015-07-28 10:05:34 +02</endDate>
+    <elapsedTime>1557</elapsedTime>
+    <namespace/>
+    <keyword>Import</keyword>
+    <parameters>(org.mazarineblue.datasources)</parameters>
+  </line>
+  <line processingType="executed" status="pass" path=".Import" even="even">
+    <lineIdentifier>Main:2</lineIdentifier>
+    <startDate>2015-07-28 10:05:34 +02</startDate>
+    <endDate>2015-07-28 10:05:37 +02</endDate>
+    <elapsedTime>3266</elapsedTime>
+    <namespace/>
+    <keyword>Import</keyword>
+    <parameters>(org.mazarineblue.test.report)</parameters>
+  </line>
+  <line processingType="executed" status="pass" path=".Import" even="uneven">
+    <lineIdentifier>Main:3</lineIdentifier>
+    <startDate>2015-07-28 10:05:37 +02</startDate>
+    <endDate>2015-07-28 10:05:38 +02</endDate>
+    <elapsedTime>403</elapsedTime>
+    <namespace/>
+    <keyword>Import</keyword>
+    <parameters>(org.mazarineblue.webdriver)</parameters>
+  </line>
+  <line processingType="executed" status="pass" path=".Import" even="even">
+    <lineIdentifier>Main:4</lineIdentifier>
+    <startDate>2015-07-28 10:05:38 +02</startDate>
+    <endDate>2015-07-28 10:05:38 +02</endDate>
+    <elapsedTime>114</elapsedTime>
+    <namespace/>
+    <keyword>Import</keyword>
+    <parameters>(org.mazarineblue.test.datadriven)</parameters>
+  </line>
+  <line processingType="executed" status="pass" path="." even="uneven">
+    <lineIdentifier>Main:5</lineIdentifier>
+    <startDate>2015-07-28 10:05:38 +02</startDate>
+    <endDate>2015-07-28 10:05:38 +02</endDate>
+    <elapsedTime>7</elapsedTime>
+    <namespace/>
+    <keyword/>
+    <parameters/>
+  </line>
+  <line processingType="executed" status="pass" path=".Data sheet" even="even">
+    <lineIdentifier>Main:7</lineIdentifier>
+    <startDate>2015-07-28 10:05:38 +02</startDate>
+    <endDate>2015-07-28 10:05:38 +02</endDate>
+    <elapsedTime>1</elapsedTime>
+    <namespace/>
+    <keyword>Data sheet</keyword>
+    <parameters>(Configuration, array, Configuration)</parameters>
+  </line>
+  <line processingType="executed" status="pass" path="." even="uneven">
+    <lineIdentifier>Main:8</lineIdentifier>
+    <startDate>2015-07-28 10:05:38 +02</startDate>
+    <endDate>2015-07-28 10:05:38 +02</endDate>
+    <elapsedTime>2</elapsedTime>
+    <namespace/>
+    <keyword/>
+    <parameters/>
+  </line>
+  <line processingType="executed" status="pass" path=".Report" even="even">
+    <lineIdentifier>Main:10</lineIdentifier>
+    <startDate>2015-07-28 10:05:38 +02</startDate>
+    <endDate>2015-07-28 10:05:38 +02</endDate>
+    <elapsedTime>79</elapsedTime>
+    <namespace/>
+    <keyword>Report</keyword>
+    <parameters>(P161, Platform 161, Firefox)</parameters>
+  </line>
+  <line processingType="executed" status="pass" path=".Select report" even="uneven">
+    <lineIdentifier>Main:11</lineIdentifier>
+    <startDate>2015-07-28 10:05:38 +02</startDate>
+    <endDate>2015-07-28 10:05:38 +02</endDate>
+    <elapsedTime>74</elapsedTime>
+    <namespace/>
+    <keyword>Select report</keyword>
+    <parameters>(P161)</parameters>
+  </line>
+  <line processingType="executed" status="pass" path="." even="even">
+    <lineIdentifier>Main:12</lineIdentifier>
+    <startDate>2015-07-28 10:05:38 +02</startDate>
+    <endDate>2015-07-28 10:05:38 +02</endDate>
+    <elapsedTime>3</elapsedTime>
+    <namespace/>
+    <keyword/>
+    <parameters/>
+  </line>
+  <line processingType="executed" status="pass" path=".Import sheet" even="uneven">
+    <lineIdentifier>Main:14</lineIdentifier>
+    <startDate>2015-07-28 10:05:38 +02</startDate>
+    <endDate>2015-07-28 10:05:38 +02</endDate>
+    <elapsedTime>255</elapsedTime>
+    <namespace/>
+    <keyword>Import sheet</keyword>
+    <parameters>(Procedures)</parameters>
+    <collection status="pass" startDate="2015-07-28 10:05:38 +02" endDate="2015-07-28 10:05:38 +02">
+      <line processingType="executed" status="pass" path=".Procedure" even="even">
+        <lineIdentifier>Procedures:0</lineIdentifier>
+        <startDate>2015-07-28 10:05:38 +02</startDate>
+        <endDate>2015-07-28 10:05:38 +02</endDate>
+        <elapsedTime>74</elapsedTime>
+        <namespace/>
+        <keyword>Procedure</keyword>
+        <parameters>(Call sheet and suite, Suite, Source)</parameters>
+      </line>
+      <line processingType="executed" status="pass" path=".Call sheet" even="uneven">
+        <lineIdentifier>Procedures:1</lineIdentifier>
+        <startDate>2015-07-28 10:05:38 +02</startDate>
+        <endDate>2015-07-28 10:05:38 +02</endDate>
+        <elapsedTime>0</elapsedTime>
+        <namespace/>
+        <keyword>Call sheet</keyword>
+        <parameters>($Suite)</parameters>
+      </line>
+      <line processingType="executed" status="pass" path=".Call suite" even="even">
+        <lineIdentifier>Procedures:2</lineIdentifier>
+        <startDate>2015-07-28 10:05:38 +02</startDate>
+        <endDate>2015-07-28 10:05:38 +02</endDate>
+        <elapsedTime>3</elapsedTime>
+        <namespace/>
+        <keyword>Call suite</keyword>
+        <parameters>($Suite, $Source)</parameters>
+      </line>
+      <line processingType="executed" status="pass" path=".End procedure" even="uneven">
+        <lineIdentifier>Procedures:3</lineIdentifier>
+        <startDate>2015-07-28 10:05:38 +02</startDate>
+        <endDate>2015-07-28 10:05:38 +02</endDate>
+        <elapsedTime>37</elapsedTime>
+        <namespace/>
+        <keyword>End procedure</keyword>
+        <parameters/>
+      </line>
+      <line processingType="executed" status="pass" path="." even="even">
+        <lineIdentifier>Procedures:4</lineIdentifier>
+        <startDate>2015-07-28 10:05:38 +02</startDate>
+        <endDate>2015-07-28 10:05:38 +02</endDate>
+        <elapsedTime>24</elapsedTime>
+        <namespace/>
+        <keyword/>
+        <parameters/>
+      </line>
+      <line processingType="executed" status="pass" path=".Procedure" even="uneven">
+        <lineIdentifier>Procedures:5</lineIdentifier>
+        <startDate>2015-07-28 10:05:38 +02</startDate>
+        <endDate>2015-07-28 10:05:38 +02</endDate>
+        <elapsedTime>0</elapsedTime>
+        <namespace/>
+        <keyword>Procedure</keyword>
+        <parameters>(Call suite, Suite, Source)</parameters>
+      </line>
+      <line processingType="executed" status="pass" path=".Select source" even="even">
+        <lineIdentifier>Procedures:6</lineIdentifier>
+        <startDate>2015-07-28 10:05:38 +02</startDate>
+        <endDate>2015-07-28 10:05:38 +02</endDate>
+        <elapsedTime>0</elapsedTime>
+        <namespace/>
+        <keyword>Select source</keyword>
+        <parameters>($Source)</parameters>
+      </line>
+      <line processingType="executed" status="pass" path=".Call data driven suite" even="uneven">
+        <lineIdentifier>Procedures:7</lineIdentifier>
+        <startDate>2015-07-28 10:05:38 +02</startDate>
+        <endDate>2015-07-28 10:05:38 +02</endDate>
+        <elapsedTime>0</elapsedTime>
+        <namespace/>
+        <keyword>Call data driven suite</keyword>
+        <parameters>($Suite)</parameters>
+      </line>
+      <line processingType="executed" status="pass" path=".End procedure" even="even">
+        <lineIdentifier>Procedures:8</lineIdentifier>
+        <startDate>2015-07-28 10:05:38 +02</startDate>
+        <endDate>2015-07-28 10:05:38 +02</endDate>
+        <elapsedTime>0</elapsedTime>
+        <namespace/>
+        <keyword>End procedure</keyword>
+        <parameters/>
+      </line>
+      <line processingType="executed" status="pass" path="." even="uneven">
+        <lineIdentifier>Procedures:9</lineIdentifier>
+        <startDate>2015-07-28 10:05:38 +02</startDate>
+        <endDate>2015-07-28 10:05:38 +02</endDate>
+        <elapsedTime>2</elapsedTime>
+        <namespace/>
+        <keyword/>
+        <parameters/>
+      </line>
+    </collection>
+  </line>
+  <line processingType="executed" status="pass" path="." even="even">
+    <lineIdentifier>Main:15</lineIdentifier>
+    <startDate>2015-07-28 10:05:38 +02</startDate>
+    <endDate>2015-07-28 10:05:38 +02</endDate>
+    <elapsedTime>2</elapsedTime>
+    <namespace/>
+    <keyword/>
+    <parameters/>
+  </line>
+  <line processingType="executed" status="error" path=".Call sheet and suite" even="uneven">
+    <lineIdentifier>Main:17</lineIdentifier>
+    <startDate>2015-07-28 10:05:38 +02</startDate>
+    <endDate>2015-07-28 10:05:38 +02</endDate>
+    <elapsedTime>66</elapsedTime>
+    <namespace/>
+    <keyword>Call sheet and suite</keyword>
+    <parameters>(Campaings, Configuration)</parameters>
+    <exception status="error" even="even">
+      <date>2015-07-28 10:05:38 +02</date>
+      <value>Instruction not found, for keyword: .Call sheet and suite</value>
+      <stacktrace><![CDATA[org.mazarineblue.eventbus.exceptions.SubscriberTargetException: Instruction not found, for keyword: .Call sheet and suite
+	at org.mazarineblue.eventbus.ReflectionSubscriber.eventHandler(ReflectionSubscriber.java:76)
+	at org.mazarineblue.keyworddriven.chainmanager.Chain.eventHandler(Chain.java:76)
+	at org.mazarineblue.keyworddriven.chainmanager.Chain.eventHandler(Chain.java:80)
+	at org.mazarineblue.keyworddriven.chainmanager.ChainManager.publish(ChainManager.java:72)
+	at org.mazarineblue.keyworddriven.Processor.executeLine(Processor.java:240)
+	at org.mazarineblue.keyworddriven.Processor.executeLines(Processor.java:206)
+	at org.mazarineblue.keyworddriven.Processor.executeNested(Processor.java:169)
+	at org.mazarineblue.keyworddriven.Processor.execute(Processor.java:151)
+	at org.mazarineblue.runner.tasks.InstructionTask.executeInstructions(InstructionTask.java:125)
+	at org.mazarineblue.runner.tasks.InstructionTask.run(InstructionTask.java:93)
+	at org.mazarineblue.runner.tasks.TestTask.run(TestTask.java:56)
+	at org.mazarineblue.runner.swing.TaskWorker.doInBackground(TaskWorker.java:65)
+	at org.mazarineblue.runner.swing.TaskWorker.doInBackground(TaskWorker.java:31)
+	at javax.swing.SwingWorker$1.call(SwingWorker.java:295)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at javax.swing.SwingWorker.run(SwingWorker.java:334)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:744)
+Caused by: java.lang.reflect.InvocationTargetException
+	at sun.reflect.GeneratedMethodAccessor5.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.mazarineblue.eventbus.ReflectionSubscriber.eventHandler(ReflectionSubscriber.java:70)
+	... 18 more
+Caused by: org.mazarineblue.keyworddriven.exceptions.InstructionException: Instruction not found, for keyword: .Call sheet and suite
+	at org.mazarineblue.keyworddriven.librarymanager.LibraryManager.globalSearch(LibraryManager.java:88)
+	at org.mazarineblue.keyworddriven.librarymanager.LibraryManager.getInstructionByPath(LibraryManager.java:82)
+	at org.mazarineblue.keyworddriven.chainmanager.LibraryDispatcherLink$1.getInstruction(LibraryDispatcherLink.java:59)
+	at org.mazarineblue.keyworddriven.util.InstructionInvoker.invoke(InstructionInvoker.java:34)
+	at org.mazarineblue.keyworddriven.chainmanager.LibraryDispatcherLink.eventHandler(LibraryDispatcherLink.java:49)
+	... 22 more
+]]></stacktrace>
+    </exception>
+  </line>
+</collection>
