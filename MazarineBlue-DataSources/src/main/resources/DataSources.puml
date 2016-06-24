@@ -1,0 +1,94 @@
+@startuml
+interface org.mazarineblue.datasources.DataSource {
+    +boolean hasNext()
+    +String next()
+    +String reset()
+    +String reset(String mark)
+    +List<String> getSourceIdentifiers()
+    +List<String> getLineIdentifiers()
+    +<T> T getData(String column, Class<T> objectType)
+    +Object getData(String column)
+    +<T> T getData(int index, Class<T> objectType)
+    +Object getData(int index)
+    +boolean setData(String column, Object value)
+    +boolean setData(int index, Object value)
+    +Set<String> getColumns()
+}
+interface org.mazarineblue.parser.VariableSource {
+    +Object getData(String variable)
+    +boolean setData(String variable, Object value)
+}
+abstract class org.mazarineblue.datasources.AbstractSource {
+    -String sourceIdentifier
+    #AbstractSource(String sourceIdentifier)
+    +List<String> getSourceIdentifiers()
+    +String getSourceIdentifier()
+    +String getLineIdentifier()
+}
+abstract class org.mazarineblue.datasources.ArraySource {
+    -boolean initialized = false
+    #ArraySource(String sourceName)
+    #ArraySource(String sourceName, boolean initialize)
+    +boolean hasNext()
+    +String next()
+    +String reset()
+    +List<String> getLineIdentifiers()
+    #void validateState()
+}
+abstract class org.mazarineblue.datasources.MatrixSource {
+    -Map<String, Integer> headers
+    #MatrixSource(String sourceIdentifier)
+    #MatrixSource(String sourceIdentifier, Map<String, Integer> headers)
+    +boolean hasHeaders()
+    +Object getData(String column)
+    +boolean setData(String column, Object value)
+    +Set<String> getColumns()
+}
+abstract class org.mazarineblue.datasources.BackedSource {
+    #void add(DataSource)
+    #void clear()
+    #DataSource pop()
+    #void push(DataSource)
+    #void remove(DataSource)
+    #void set(DataSource)
+}
+class org.mazarineblue.datasources.SourceWrapper {
+    +SourceWrapper()
+    +SourceWrapper(DataSource source)
+    +DataSource getSource()
+    +boolean isSet()
+    +void setSource(DataSource source)
+}
+class org.mazarineblue.datasources.ScopedSource {
+    +ScopedSource()
+    +ScopedSource(DataSource source)
+    +void push(DataSource source)
+    +boolean remove(DataSource source)
+    +DataSource pop()
+}
+class org.mazarineblue.datasources.SourceChain {
+    +SourceChain(DataSource... sources)
+    +void add(DataSource source)
+}
+
+
+org.mazarineblue.parser.VariableSource <|-- org.mazarineblue.datasources.DataSource
+
+org.mazarineblue.datasources.DataSource <|- org.mazarineblue.datasources.AbstractSource
+org.mazarineblue.datasources.AbstractSource <|-- org.mazarineblue.datasources.ArraySource
+org.mazarineblue.datasources.AbstractSource <|-- org.mazarineblue.datasources.MatrixSource
+
+org.mazarineblue.datasources.DataSource <|-- org.mazarineblue.datasources.BackedSource
+org.mazarineblue.datasources.BackedSource --> "*" org.mazarineblue.datasources.DataSource
+
+org.mazarineblue.datasources.BackedSource <|-- org.mazarineblue.datasources.SourceWrapper
+org.mazarineblue.datasources.BackedSource <|-- org.mazarineblue.datasources.ScopedSource
+org.mazarineblue.datasources.BackedSource <|-- org.mazarineblue.datasources.SourceChain
+
+org.mazarineblue.datasources.ArraySource <|-- org.mazarineblue.datasources.BlackboardSource
+org.mazarineblue.datasources.ArraySource <|-- org.mazarineblue.datasources.NullDataSource
+org.mazarineblue.datasources.ArraySource <|-- org.mazarineblue.datasources.ObjectArraySource
+org.mazarineblue.datasources.ArraySource <|-- org.mazarineblue.datasources.ResourceSource
+
+org.mazarineblue.datasources.MatrixSource <|-- org.mazarineblue.datasources.ObjectMatrixSource
+@enduml

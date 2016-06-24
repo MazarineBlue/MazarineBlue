@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mazarineblue</groupId>
+        <artifactId>MazarineBlue</artifactId>
+        <version>0.2-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>MazarineBlue-TestReport-keywords</artifactId>
+    <packaging>jar</packaging>
+
+    <name>MazarineBlue - TestReport-keywords module</name>
+    <description>
+        The TestReport-keywords module contains the library allowing for
+        manipulation of the test report. This module is a front for the
+        TestReport module that does the actual work.
+    </description>
+
+    <developers>
+        <developer>
+            <id></id>
+            <name>Alex de Kruijff</name>
+            <email>alex@MazarineBlue.org</email>
+            <url>http://www.kruijff.org/</url>
+            <organization>Specialisterren</organization>
+            <organizationUrl>http://www.specialisterren.nl/</organizationUrl>
+            <roles>
+                <role>Founder</role>
+                <role>Lead Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <artifactId>MazarineBlue-TestUtilities</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>MazarineBlue-KeywordDriven</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>MazarineBlue-KeywordDriven-DomLog</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>MazarineBlue-TestReport</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>MazarineBlue-Utilities</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+</project>

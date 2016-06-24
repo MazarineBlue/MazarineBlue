@@ -1,0 +1,143 @@
+@startuml
+actor Client
+Client --> Processor: execute(feed, log, documentMediator, sheetFactory, presetVariables)
+activate Processor
+
+create RunningProcessor
+Processor --> RunningProcessor: new RunningProcessor(this)
+activate RunningProcessor
+
+create ExecuteInstructionHelper
+RunningProcessor --> ExecuteInstructionHelper: new ExecuteInstructionHelper(this)
+activate ExecuteInstructionHelper
+
+create InterpreterContext
+ExecuteInstructionHelper --> InterpreterContext: new InterpreterContext()
+deactivate ExecuteInstructionHelper
+deactivate RunningProcessor
+
+Processor --> RunningProcessor: execute(feed, log, documentMediator, sheetFactory, presetVariables)
+activate RunningProcessor
+
+RunningProcessor --> ExecuteInstructionHelper: doMain(feed, log, documentMediator, sheetFactory, presetVariables)
+activate ExecuteInstructionHelper
+
+ExecuteInstructionHelper --> ManagerFacade: publish(new StartSheetEvent(null))
+activate ManagerFacade
+ManagerFacade --> Chain: publish(event)
+ref over Chain
+    Sequance diagram - Chain.publish
+end
+activate Chain
+deactivate Chain
+deactivate ManagerFacade
+
+ExecuteInstructionHelper --> InterpreterContext: set(feed, log, documentMediator, sheetFactory)
+activate InterpreterContext
+deactivate InterpreterContext
+
+ExecuteInstructionHelper --> BlackboardSource: setup(presetVariables)
+activate BlackboardSource
+deactivate BlackboardSource
+
+ExecuteInstructionHelper --> ExecuteInstructionHelper: doNested(feed, log, context)
+activate ExecuteInstructionHelper
+
+ExecuteInstructionHelper --> Log: incrementNestedInstruction(new Date())
+activate Log
+deactivate Log
+
+ExecuteInstructionHelper --> ManagerFacade: setupLibraries(context)
+activate ManagerFacade
+deactivate ManagerFacade
+
+ExecuteInstructionHelper --> ExecuteInstructionHelper: doLines(feed, log, context)
+activate ExecuteInstructionHelper
+
+loop while feed.hasNext()
+ExecuteInstructionHelper --> Feed: next() : line
+activate Feed
+deactivate Feed
+
+ExecuteInstructionHelper --> ExecuteInstructionHelper: doLine(line, log, context)
+activate ExecuteInstructionHelper
+
+ExecuteInstructionHelper --> InterpreterContext: setup(new Date(), line)
+activate InterpreterContext
+deactivate InterpreterContext
+
+ExecuteInstructionHelper --> Log: next(line, source, context, type)
+activate Log
+deactivate Log
+
+ExecuteInstructionHelper --> ExecuteInstructionHelper: createInstructionLineEvent(line, context)
+activate ExecuteInstructionHelper
+
+create ExecuteInstructionLineEvent
+ExecuteInstructionHelper --> ExecuteInstructionLineEvent: new ExecuteInstructionLineEvent(line) : event
+
+ExecuteInstructionHelper --> ExecuteInstructionLineEvent: setDataSource(source)
+activate ExecuteInstructionLineEvent
+deactivate ExecuteInstructionLineEvent
+
+ExecuteInstructionHelper --> ExecuteInstructionLineEvent: setContext(context)
+activate ExecuteInstructionLineEvent
+deactivate ExecuteInstructionLineEvent
+
+deactivate ExecuteInstructionHelper
+
+ExecuteInstructionHelper --> ManagerFacade: publish(event)
+activate ManagerFacade
+ManagerFacade --> Chain: publish(event)
+activate Chain
+deactivate Chain
+deactivate ManagerFacade
+
+ExecuteInstructionHelper --> ExecuteInstructionHelper: sleep(log)
+activate ExecuteInstructionHelper
+deactivate ExecuteInstructionHelper
+
+ExecuteInstructionHelper --> Log: done(new Date())
+activate Log
+deactivate Log
+
+ExecuteInstructionHelper --> InterpreterContext: reset()
+activate InterpreterContext
+deactivate InterpreterContext
+deactivate ExecuteInstructionHelper
+
+else if feed.hasNext()
+ExecuteInstructionHelper --> ExecuteInstructionHelper: validateNested(feed, log, context);
+activate ExecuteInstructionHelper
+deactivate ExecuteInstructionHelper
+deactivate ExecuteInstructionHelper
+end
+
+ExecuteInstructionHelper --> ManagerFacade: teardownLibraries()
+activate ManagerFacade
+deactivate ManagerFacade
+
+ExecuteInstructionHelper --> Log: decrementNestedInstruction(new Date())
+activate Log
+deactivate Log
+deactivate ExecuteInstructionHelper
+
+ExecuteInstructionHelper --> BlackboardSource: teardown()
+activate BlackboardSource
+deactivate BlackboardSource
+
+ExecuteInstructionHelper --> ManagerFacade: publish(new EndSheetEvent(null))
+activate ManagerFacade
+ManagerFacade --> Chain: publish(event)
+activate Chain
+deactivate Chain
+deactivate ManagerFacade
+deactivate ExecuteInstructionHelper
+deactivate RunningProcessor
+deactivate Processor
+
+destroy ExecuteInstructionLineEvent
+destroy InterpreterContext
+destroy ExecuteInstructionHelper
+destroy RunningProcessor
+@enduml

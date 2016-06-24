@@ -1,0 +1,65 @@
+@startuml
+interface org.mazarineblue.parser.Parser {
+    +Object parse(String expression, VariableSource source)
+}
+interface org.mazarineblue.parser.VariableSource {
+    +Object getData(String variable)
+    +boolean setData(String variable, Object value)
+}
+interface org.mazarineblue.parser.simple.CharacterProcessor {
+    +boolean canProcess(CharacterContainer c)
+    +void process(CharacterContainer c, DataMediator mediator)
+    +void finish(CharacterContainer c, DataMediator mediator)
+}
+class org.mazarineblue.parser.simple.SimpleParser {
+    +SimpleParser()
+    +void addCharacterProcessor(CharacterProcessor processor)
+    +void removeCharacterProcessor(CharacterProcessor processor)
+}
+class org.mazarineblue.parser.simple.ProcessorStack {
+    +void add(CharacterProcessor processor)
+    +void remove(CharacterProcessor processor)
+    void publish(CharacterContainer c, DataMediator mediator)
+    void finish(CharacterContainer c, DataMediator mediator)
+}
+class org.mazarineblue.parser.simple.CharacterContainer {
+    char c
+    int index
+    -boolean consumed
+}
+
+org.mazarineblue.parser.VariableSource <.. org.mazarineblue.parser.Parser
+org.mazarineblue.parser.VariableSourceDummy ..|> org.mazarineblue.parser.VariableSource
+
+
+org.mazarineblue.parser.Parser <|.. org.mazarineblue.parser.simple.SimpleParser
+org.mazarineblue.parser.simple.SimpleParser .> org.mazarineblue.parser.simple.DataMediator
+org.mazarineblue.parser.simple.CharacterContainer <. org.mazarineblue.parser.simple.SimpleParser
+org.mazarineblue.parser.simple.Storage <-- org.mazarineblue.parser.simple.DataMediator
+org.mazarineblue.parser.simple.DataMediator --> org.mazarineblue.parser.VariableSource
+org.mazarineblue.parser.simple.DataMediator --> org.mazarineblue.parser.simple.ProcessorStack
+
+org.mazarineblue.parser.simple.SimpleParser *--> org.mazarineblue.parser.simple.ProcessorStack
+org.mazarineblue.parser.simple.ProcessorStack o--> "*" org.mazarineblue.parser.simple.CharacterProcessor
+
+
+org.mazarineblue.parser.Parser <|.. org.mazarineblue.parser.variable.VariableParser
+org.mazarineblue.parser.variable.VariableParser *--> org.mazarineblue.parser.simple.SimpleParser
+
+org.mazarineblue.parser.variable.VariableParser ..> org.mazarineblue.parser.simple.ProcessorStack
+org.mazarineblue.parser.variable.VariableParser .> org.mazarineblue.parser.variable.AppendToOutputProcessor
+org.mazarineblue.parser.variable.VariableParser ..> org.mazarineblue.parser.variable.VariableSignProcessor
+org.mazarineblue.parser.variable.VariableParser ..> org.mazarineblue.parser.variable.LiteralSignProcessor
+org.mazarineblue.parser.variable.LiteralSignProcessor ..> org.mazarineblue.parser.variable.LiteralCharacterProcessor
+org.mazarineblue.parser.variable.VariableSignProcessor ..> org.mazarineblue.parser.variable.VariableTypeDeterminatorProcessor
+org.mazarineblue.parser.variable.VariableTypeDeterminatorProcessor ..> org.mazarineblue.parser.variable.SimpleVariableProcessor
+org.mazarineblue.parser.variable.VariableTypeDeterminatorProcessor ..> org.mazarineblue.parser.variable.ComplexVariableProcessor
+
+org.mazarineblue.parser.simple.CharacterProcessor <|-- org.mazarineblue.parser.variable.AppendToOutputProcessor
+org.mazarineblue.parser.simple.CharacterProcessor <|-- org.mazarineblue.parser.variable.LiteralSignProcessor
+org.mazarineblue.parser.simple.CharacterProcessor <|-- org.mazarineblue.parser.variable.VariableTypeDeterminatorProcessor
+org.mazarineblue.parser.simple.CharacterProcessor <|-- org.mazarineblue.parser.variable.LiteralCharacterProcessor
+org.mazarineblue.parser.simple.CharacterProcessor <|-- org.mazarineblue.parser.variable.VariableSignProcessor
+org.mazarineblue.parser.simple.CharacterProcessor <|-- org.mazarineblue.parser.variable.SimpleVariableProcessor
+org.mazarineblue.parser.simple.CharacterProcessor <|-- org.mazarineblue.parser.variable.ComplexVariableProcessor
+@enduml

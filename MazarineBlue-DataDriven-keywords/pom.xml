@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mazarineblue</groupId>
+        <artifactId>MazarineBlue</artifactId>
+        <version>0.2-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>MazarineBlue-DataDriven-keywords</artifactId>
+    <packaging>jar</packaging>
+
+    <name>MazarineBlue - DataDriven-keywords module</name>
+    <description>
+        The DataDriven-keyword module contains the library allowing for data
+        driven testing. This module is a front for the DataDriven module that
+        does the actual work.
+    </description>
+
+    <developers>
+        <developer>
+            <id></id>
+            <name>Alex de Kruijff</name>
+            <email>alex@MazarineBlue.org</email>
+            <url>http://www.kruijff.org/</url>
+            <organization>Specialisterren</organization>
+            <organizationUrl>http://www.specialisterren.nl/</organizationUrl>
+            <roles>
+                <role>Founder</role>
+                <role>Lead Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <artifactId>MazarineBlue-DataDriven</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>MazarineBlue-TestUtilities</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>MazarineBlue-KeywordDriven</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>MazarineBlue-KeywordDriven-DomLog</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>MazarineBlue-KeywordDriven-Links</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+        </dependency>
+    </dependencies>
+</project>

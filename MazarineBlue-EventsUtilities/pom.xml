@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mazarineblue</groupId>
+        <artifactId>MazarineBlue</artifactId>
+        <version>0.2-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>MazarineBlue-EventsUtilities</artifactId>
+    <packaging>jar</packaging>
+
+    <name>MazarineBlue - EventsUtilities module</name>
+    <description>
+        The EventsUtilities module provides functionality to the other modules.
+    </description>
+    <licenses>
+        <license>
+            <name>GNO Affero GPL v3.0</name>
+            <url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id></id>
+            <name>Alex de Kruijff</name>
+            <email>alex.de.kruijff@MazarineBlue.org</email>
+            <url>http://www.kruijff.org/</url>
+            <organization>Specialisterren</organization>
+            <organizationUrl>http://www.specialisterren.nl/</organizationUrl>
+            <roles>
+                <role>Founder</role>
+                <role>Lead Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <artifactId>MazarineBlue-EventBus</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>MazarineBlue-Utilities</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+</project>

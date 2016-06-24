@@ -1,0 +1,89 @@
+@startuml
+
+package com.specialisterren.library.report {
+    class TestObject {
+        ~name : String
+        ~status : Status
+        ~platforms : Map<String, Platform>
+
+        ~TestObject(name : String, parent : TestObject, platforms : Map<String, Platform>)
+        +getName() : String
+        +getStatus() : Status
+        +getStatus(platform : String) : Status
+        +getPlatforms() : String[]
+        +output(visitor : TestObjectVisitor) : void
+        #addTicket(ticket : Ticket) : void
+        #getTestObject(name : String) : Template
+        #addTestObject(name : String, Template obj) : void
+        ~setPassed(platform : String) : void
+        ~setFailed(platform : String) : void
+    }
+
+    class Report {
+        +Report(title : String, String[] platforms)
+        +declareTestcase(platform : String, suite : String, testcase : String) : void
+        +addTicket(ticket : Ticket) : void
+        +addTicket(ticket : Ticket, suite : String) : void
+        +addTicket(ticket : Ticket, suite : String, testcase : String) : void
+        +addTicket(ticket : Ticket, suite : String, testcase : String, step : String) : void
+        +setPassed(platform : String, suite : String, testcase : String) : void
+        +setFailed(platform : String, suite : String, testcase : String) : void
+        +setPassed(platform : String, suite : String, testcase : String, step : String) : void
+        +setFailed(platform : String, suite : String, testcase : String, step : String) : void
+        +output(visitor : TestObjectVisitor) : void
+    }
+
+    class Suite {
+        ~Suite(name : String, parent : Report, platforms : Map<String, Platform>)
+        ~getCase(name) : Testcase
+        +output(visitor : TestObjectVisitor) : void
+    }
+
+    class Testcase {
+        ~Testcase(name : String, parent : Suite, platforms : Map<String, Platform>)
+        ~getStep(step : String) : Step
+        +output(visitor : TestObjectVisitor) : void
+    }
+
+    class Step {
+        ~Step(name : String, parents : Testcase, platforms : Map<String, Platform>)
+        +output(visitor : TestObjectVisitor) : void
+    }
+
+    class PlatformFactory {
+        {static} getDefaultFactory() : PlatformFactory
+        get(platforms : String[]) : Map<String, Platform>
+        get(platform : String) : Platform
+        get(platform : String, status : Status) : Platform
+    }
+
+    class Platform {
+        ~platform : String
+        ~status : Status
+
+        ~Platform(platform : String, status : Status)
+    }
+
+    enum Status {
+        unset
+        passed
+        failed
+    }
+
+    TestObject <|-- Report
+    TestObject <|-- Suite
+    TestObject <|-- Testcase
+    TestObject <|-- Step
+
+    TestObject "*" <-- TestObject
+    Suite <.right. Report : child
+    Testcase <.down. Suite : child
+    Step <.left. Testcase : child
+
+    Report --o "1" PlatformFactory
+    PlatformFactory --> "*" Platform
+    Platform "*" <-- TestObject
+    Status "1" <-- TestObject
+}
+
+@enduml

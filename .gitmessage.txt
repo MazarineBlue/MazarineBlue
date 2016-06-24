@@ -1,0 +1,8 @@
+# If applied, this commit will...
+
+# Why was this change necessary?
+# How does this change address the issue?
+# What are the side effects of this change?
+
+# An explanation can be found here:
+# https://github.com/MazarineBlue/MazarineBlue#commit-messages

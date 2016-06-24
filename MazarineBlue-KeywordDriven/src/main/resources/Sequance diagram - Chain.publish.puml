@@ -1,0 +1,189 @@
+@startuml
+actor Client
+participant Chain
+participant Link
+participant ConvertLineParametersLink
+participant ProcedureDispatcherLink
+participant ProcedureManager
+participant LibraryDispatcherLink
+participant InstructionInvoker
+participant EventServiceLink
+participant EventService
+
+Client --> Chain
+activate Chain
+loop the chain has more links && event is not consumend
+Chain --> Link: publish(event)
+activate Link
+deactivate Link
+else If link instanceof ConvertLineParametersLink
+Chain --> ConvertLineParametersLink: publish(event)
+activate ConvertLineParametersLink
+
+ConvertLineParametersLink --> InstructionLineEvent: getLine: line
+activate InstructionLineEvent
+deactivate InstructionLineEvent
+
+ConvertLineParametersLink --> InstructionLineEvent: getDataSource: source
+activate InstructionLineEvent
+deactivate InstructionLineEvent
+
+ConvertLineParametersLink --> ConvertLineParametersLink: convertInstructionLine(line, source): convertedLine
+activate ConvertLineParametersLink
+
+ConvertLineParametersLink --> InstructionLine: getParameters(): parameters
+activate InstructionLine
+deactivate InstructionLine
+
+ConvertLineParametersLink --> ConvertLineParametersLink: convertParameters(parameters, source): convertedParameters
+activate ConvertLineParametersLink
+deactivate ConvertLineParametersLink
+
+ConvertLineParametersLink --> InstructionLine: cloneAndReplaceParameters(convertedParameters) : convertedLine
+activate InstructionLine
+deactivate InstructionLine
+deactivate ConvertLineParametersLink
+
+ConvertLineParametersLink --> ConvertLineParametersLink: log(line, event)
+activate ConvertLineParametersLink
+deactivate ConvertLineParametersLink
+
+ConvertLineParametersLink --> InstructionLineEvent: push(convertedLine)
+activate InstructionLineEvent
+deactivate InstructionLineEvent
+deactivate ConvertLineParametersLink
+
+else If link instanceof ProcedureDispatcherLink
+Chain --> ProcedureDispatcherLink: publish(event)
+activate ProcedureDispatcherLink
+ProcedureDispatcherLink --> InstructionLineEvent: getLine(): line
+activate InstructionLineEvent
+deactivate InstructionLineEvent
+
+ProcedureDispatcherLink --> InstructionLineEvent: getDataSource(): source
+activate InstructionLineEvent
+deactivate InstructionLineEvent
+
+ProcedureDispatcherLink --> InstructionLineEvent: getContext(): context
+activate InstructionLineEvent
+deactivate InstructionLineEvent
+
+ProcedureDispatcherLink --> ProcedureManager: execute(line, source, context)
+activate ProcedureManager
+ProcedureManager --> ProcedureManager: getProcedure(line): procedure
+activate ProcedureManager
+deactivate ProcedureManager
+
+ProcedureManager --> FeedBuilder: createFeed(instructions): feed
+activate FeedBuilder
+deactivate FeedBuilder
+
+ProcedureManager --> InterpreterContext: executeNested(feed, log, context)
+activate InterpreterContext
+InterpreterContext --> BlackboardSource: pushSource("ProcedureStackSource")
+activate BlackboardSource
+deactivate BlackboardSource
+
+InterpreterContext --> Procedure: copyParameters(blackboard, line)
+activate Procedure
+deactivate Procedure
+
+InterpreterContext --> RunningProcessor: executeNested(feed, log, this)
+activate RunningProcessor
+ref over RunningProcessor
+    Sequance diagram - Execute lines - doNested(feed, log, context)
+end
+deactivate RunningProcessor
+
+InterpreterContext --> BlackboardSource: popSource("ProcedureStackSource")
+activate BlackboardSource
+deactivate BlackboardSource
+deactivate InterpreterContext
+deactivate ProcedureManager
+
+ProcedureDispatcherLink --> InstructionLineEvent: setConsumed()
+activate InstructionLineEvent
+deactivate InstructionLineEvent
+deactivate ProcedureDispatcherLink
+
+
+else If link instanceof LibraryDispatcherLink
+Chain --> LibraryDispatcherLink: publish(event)
+activate LibraryDispatcherLink
+LibraryDispatcherLink --> InstructionInvoker: invoke(event)
+activate InstructionInvoker
+InstructionInvoker --> InstructionInvoker: getInstruction(event) : instruction
+activate InstructionInvoker
+InstructionInvoker --> InstructionLineEvent: event.getLine(): line
+activate InstructionLineEvent
+deactivate InstructionLineEvent
+
+InstructionInvoker --> InstructionLine: getNamespace(): namespace
+activate InstructionLine
+deactivate InstructionLine
+
+InstructionInvoker --> LibraryManager: getInstructionByPath(namespace, keyword): instruction
+activate LibraryManager
+deactivate LibraryManager
+deactivate InstructionInvoker
+
+InstructionInvoker --> InstructionInvoker: doInvoke(instruction, event)
+activate InstructionInvoker
+
+InstructionInvoker --> InstructionLineEvent: getLine() : line
+activate InstructionLineEvent
+deactivate InstructionLineEvent
+
+InstructionInvoker --> InstructionLine: getParameters() : parameters
+activate InstructionLine
+deactivate InstructionLine
+
+InstructionInvoker --> Instruction: validate(parameters)
+activate Instruction
+deactivate Instruction
+
+InstructionInvoker --> Instruction: invoke(parameters)
+activate Instruction
+deactivate Instruction
+
+InstructionInvoker --> InstructionLineEvent: setConsumed()
+activate InstructionLineEvent
+deactivate InstructionLineEvent
+deactivate InstructionInvoker
+deactivate InstructionInvoker
+deactivate LibraryDispatcherLink
+
+
+else If link instanceof EventServiceLink
+Chain --> EventServiceLink: publish(event)
+activate EventServiceLink
+
+EventServiceLink --> EventService: publish(event)
+activate EventService
+loop for all subscriptions
+EventService --> Subscriber: eventHandler(event)
+activate Subscriber
+deactivate Subscriber
+
+else If subscriber instanceof Library
+alt If event instanceof FetchLibraryEvent
+EventService --> Library:eventHandler(FetchLibraryEvent event)
+activate Library
+Library --> FetchLibraryEvent: addLibrary(this)
+activate FetchLibraryEvent
+deactivate FetchLibraryEvent
+deactivate Library
+
+else If event instanceof FetchLibrariesEvent
+EventService --> Library:eventHandler(FetchLibrariesEvent event)
+activate Library
+Library --> FetchLibrariesEvent: addLibrary(this)
+activate FetchLibrariesEvent
+deactivate FetchLibrariesEvent
+deactivate Library
+end
+end
+deactivate EventServiceLink
+end
+@enduml
+

@@ -1,0 +1,306 @@
+@startuml
+
+interface org.mazarineblue.keyworddriven.Interpreter {    
+    +LibraryManager libraries()
+    +ProcedureManager procedures()
+    +Chain chain()
+    +void publish(Event event)
+    +void execute(Feed feed, Log log, DocumentMediator documentMediator, SheetFactory sheetFactory)
+    +void execute(Feed feed, Log log, DocumentMediator documentMediator, SheetFactory sheetFactory, Map<String, Object> presetVariables)
+    +void validate(Feed feed, Log log, DocumentMediator documentMediator, SheetFactory sheetFactory)
+}
+
+org.mazarineblue.keyworddriven.Interpreter <|-- org.mazarineblue.keyworddriven.Processor
+org.mazarineblue.keyworddriven.Interpreter <|- org.mazarineblue.keyworddriven.RunningInterpreter
+
+interface org.mazarineblue.keyworddriven.RunningInterpreter {
+    +void executeNested(Feed feed, Log log, InterpreterContext context);
+    +void validateNested(Feed feed, Log log, InterpreterContext context)
+    +void setSource(DataSource externalSource)
+    +State getState()
+    +void pause()
+    +void resume()
+    +void cancle()
+    +void setSleep(long delay)
+    +Date getStartDate()
+}
+
+org.mazarineblue.keyworddriven.RunningInterpreter <|.. org.mazarineblue.keyworddriven.RunningProcessor
+
+class org.mazarineblue.keyworddriven.Processor {
+    +Processor(FeedBuilder feedBuilder)
+}
+
+org.mazarineblue.keyworddriven.Processor .> org.mazarineblue.keyworddriven.RunningProcessor
+org.mazarineblue.keyworddriven.Processor --> org.mazarineblue.keyworddriven.ManagerFacade
+
+class org.mazarineblue.keyworddriven.RunningProcessor {
+    -InstructionLine previousLine
+}
+
+org.mazarineblue.keyworddriven.RunningProcessor --> org.mazarineblue.keyworddriven.ManagerFacade
+org.mazarineblue.keyworddriven.RunningProcessor --> "previous" AAA.InstructionLine
+org.mazarineblue.keyworddriven.RunningProcessor ..> org.mazarineblue.events.keyworddriven.instructions.ExecuteInstructionLineEvent
+org.mazarineblue.keyworddriven.RunningProcessor ..> org.mazarineblue.events.keyworddriven.instructions.ValidateInstructionLineEvent
+org.mazarineblue.keyworddriven.RunningProcessor ..> InterpreterContext
+
+class org.mazarineblue.keyworddriven.ManagerFacade {
+    +ManagerFacade(FeedBuilder feedBuilder)
+    +ManagerFacade(Interpreter processor)
+    -Chain createChain(ProcedureManager procedureManager, LibraryManager libraryManager, EventService<Event> eventService)
+    +LibraryManager libraries()
+    +ProcedureManager procedures()
+    +Chain chain()
+    +void publish(Event event)
+}
+
+org.mazarineblue.keyworddriven.ManagerFacade --> org.mazarineblue.keyworddriven.librarymanager.LibraryManager
+org.mazarineblue.keyworddriven.ManagerFacade --> org.mazarineblue.keyworddriven.proceduremanager.ProcedureManager
+org.mazarineblue.keyworddriven.ManagerFacade --> org.mazarineblue.keyworddriven.links.Chain
+org.mazarineblue.keyworddriven.ManagerFacade --> org.mazarineblue.eventbus.EventService
+
+class org.mazarineblue.keyworddriven.librarymanager.LibraryManager {
+    -EventService<Event> eventService
+    -Map<String, List<Library>> namespaces
+    -Map<Method, Library> methods
+    -Map<String, Instruction> keywords
+    -Map<Pattern, Instruction> sentences
+    -InterpreterContext context
+    +LibraryManager(EventService<Event> eventService)
+    +LibraryManager(EventService<Event> eventService, InterpreterContext context)
+    +LibraryManager(LibraryManager libraryManager, EventService<Event> eventService)
+    +Collection<Library> getLibraries()
+    +final int countLibraries()
+    +Library[] getLibrariesByNamespace(String namespace)
+    +Library getLibraryByMethod(Method method)
+    +Instruction getInstructionByPath(String namespace, String keyword)
+    +Instruction getInstructionBySentence(String sentence)
+    +Instruction getInstructionBySentence(Pattern pattern)
+    +void register(Collection<Library> libraries)
+    +void register(Library... libraries)
+    +void setContext(InterpreterContext context)
+    +void unregister(Library... libraries)
+    +Library[] getLibrariesByByKeyword(String keyword)
+    +void setup(InterpreterContext context)
+    +void teardown()
+}
+
+org.mazarineblue.keyworddriven.librarymanager.LibraryManager --> org.mazarineblue.eventbus.EventService
+org.mazarineblue.keyworddriven.librarymanager.LibraryManager --> "*" org.mazarineblue.keyworddriven.librarymanager.Library
+org.mazarineblue.keyworddriven.librarymanager.LibraryManager --> "*" org.mazarineblue.keyworddriven.librarymanager.Instruction
+org.mazarineblue.keyworddriven.librarymanager.LibraryManager --> InterpreterContext
+
+abstract org.mazarineblue.keyworddriven.librarymanager.Library {
+    -String namespace
+    -InterpreterContext context
+    #Library(Library library)
+    #Library(String namespace, Library library)
+    #Library(String namespace)
+    #{abstract} void setup()
+    #{abstract} void teardown()
+    +String getNamespace()
+    +Set<String> getKeywords()
+    +Collection<Instruction> getInstructions()
+    +Instruction getInstruction(String keyword)
+    +InterpreterContext context()
+    +RunningInterpreter executor()
+    +Feed feed()
+    +Log log()
+    +BlackboardSource blackboard()
+    +DataSource getDataSource()
+    +DataSource getDataSource(String name)
+    +SheetFactory sheetFactory()
+    +DocumentMediator documentMediator()
+    +void publish(Event event)
+}
+
+org.mazarineblue.eventbus.ReflectionSubscriber <|.. org.mazarineblue.keyworddriven.librarymanager.Library
+org.mazarineblue.keyworddriven.librarymanager.Library --> "*" org.mazarineblue.keyworddriven.librarymanager.Instruction
+org.mazarineblue.keyworddriven.librarymanager.Library --> org.mazarineblue.eventbus.EventService
+org.mazarineblue.keyworddriven.librarymanager.Library --> InterpreterContext
+org.mazarineblue.keyworddriven.librarymanager.Library --> org.mazarineblue.keyworddriven.logs.LogBuilder
+
+class org.mazarineblue.keyworddriven.librarymanager.Instruction {
+    -String keyword;
+    Instruction(Library library, Keyword keyword, Method method)
+    +Library getLibrary()
+    +String getPath()
+    +String getKeyword()
+    +void validate(Object[] parameters)
+    +void invoke(Object[] parameters)
+}
+
+org.mazarineblue.keyworddriven.librarymanager.Instruction --> org.mazarineblue.keyworddriven.librarymanager.Library
+org.mazarineblue.keyworddriven.librarymanager.Instruction --> org.mazarineblue.keyworddriven.librarymanager.MethodWrapper
+
+class org.mazarineblue.keyworddriven.librarymanager.MethodWrapper {
+    -Method method
+    -Parameters parameters
+    MethodWrapper(Method method, String path)
+    +void check(Object[] parameters)
+    +Object invoke(Object obj, Object[] parameters)
+}
+
+class org.mazarineblue.keyworddriven.proceduremanager.ProcedureManager {
+    -FeedBuilder feedBuilder
+    -Deque<Map<String, Procedure>> stack
+    +ProcedureManager(FeedBuilder feedBuilder)
+    +ProcedureManager(ProcedureManager procedureManager)
+    +Map<String, Procedure> peekScope()
+    +void pushScope()
+    +void pushScope(Map<String, Procedure> scope)
+    +Map<String, Procedure> popScope()
+    +boolean contains(InstructionLine line)
+    +Procedure register(String name, Procedure procedure)
+    +void unregister(String name)
+    +void execute(InstructionLine line, DataSource source, InterpreterContext context)
+    +void execute(String name, Object[] parameters, InterpreterContext context)
+}
+
+org.mazarineblue.keyworddriven.proceduremanager.ProcedureManager --> org.mazarineblue.keyworddriven.feeds.FeedBuilder
+org.mazarineblue.keyworddriven.proceduremanager.ProcedureManager --> "*" org.mazarineblue.keyworddriven.proceduremanager.Procedure
+
+class org.mazarineblue.keyworddriven.proceduremanager.Procedure {
+    -String[] parameters;
+    -final Collection<InstructionLine> instructions;
+    +Procedure(String[] parameters, Collection<InstructionLine> instructions)
+    Collection<InstructionLine> getInstructions()
+    void copyParameters(DataSource source, Object[] values)
+}
+
+org.mazarineblue.keyworddriven.proceduremanager.Procedure --> "*" AAA.InstructionLine
+
+interface org.mazarineblue.keyworddriven.feeds.FeedBuilder {
+    +Feed createFeed(InstructionLine... instructions)
+    +Feed createFeed(Collection<InstructionLine> instructions)
+    +Feed createFeed(DataSource source)
+    +Feed createFeed()
+}
+
+interface org.mazarineblue.keyworddriven.feeds.Feed {
+    +String getIdentifier()
+    +boolean hasNext()
+    +InstructionLine next()
+}
+
+org.mazarineblue.keyworddriven.feeds.Feed <.. org.mazarineblue.keyworddriven.feeds.FeedBuilder
+
+interface org.mazarineblue.keyworddriven.logs.LogBuilder {
+    +Log createLog();
+    +Log createLog(Log... logs);
+}
+
+interface org.mazarineblue.keyworddriven.logs.Log {
+    +void info(String message)
+    +void info(Exception ex)
+    +void warning(String message)
+    +void warning(Exception ex)
+    +void error(String message)
+    +void error(Throwable ex)
+    +void next(InstructionLine line, DataSource source, InterpreterContext context, ProcessingType processingType)
+    +void done(Date endDate)
+    +void setActualParameters(Object[] actualParameters)
+    +void incrementNestedInstruction(Date startDate)
+    +void decrementNestedInstruction(Date endDate)
+}
+
+org.mazarineblue.keyworddriven.logs.Log <.. org.mazarineblue.keyworddriven.logs.LogBuilder
+
+class org.mazarineblue.keyworddriven.links.Chain {
+    -final Deque<Link> chain;
+    -Link insertAfter = null;
+    +Chain()
+    +Chain(Link... links)
+    +void publish(Event event)
+    +void insertNewLinksAfter(Link link)
+    +void insert(Link link)
+    +void insertFirst(Link link)
+    +boolean remove(Link link)
+    +int size()
+}
+
+org.mazarineblue.keyworddriven.links.Chain --> "*" org.mazarineblue.keyworddriven.links.Link
+
+interface org.mazarineblue.keyworddriven.links.Link
+
+org.mazarineblue.eventbus.ReflectionSubscriber <|-- org.mazarineblue.keyworddriven.links.Link
+
+interface org.mazarineblue.eventbus.Subscriber
+interface org.mazarineblue.eventbus.ReflectionSubscriber
+interface org.mazarineblue.eventbus.EventService
+
+org.mazarineblue.eventbus.Subscriber <|-- org.mazarineblue.eventbus.ReflectionSubscriber
+org.mazarineblue.eventbus.EventService --> org.mazarineblue.eventbus.Subscriber
+org.mazarineblue.eventbus.EventService ..> org.mazarineblue.eventbus.Event
+
+org.mazarineblue.eventbus.Event <|-- org.mazarineblue.eventbus.AbstractEvent
+org.mazarineblue.eventbus.AbstractEvent <|-- org.mazarineblue.events.keyworddriven.instructions.InstructionLineEvent
+org.mazarineblue.events.keyworddriven.instructions.ExecuteInstructionLineEvent --|> org.mazarineblue.events.keyworddriven.instructions.InstructionLineEvent
+org.mazarineblue.events.keyworddriven.instructions.ValidateInstructionLineEvent --|> org.mazarineblue.events.keyworddriven.instructions.InstructionLineEvent
+
+org.mazarineblue.events.keyworddriven.instructions.InstructionLineEvent --> AAA.InstructionLine
+org.mazarineblue.events.keyworddriven.instructions.InstructionLineEvent --> InterpreterContext
+
+interface HasContext {
+    +InterpreterContext context();
+    +RunningInterpreter executor();
+    +Feed feed();
+    +Log log();
+    +BlackboardSource blackboard();
+    +SheetFactory sheetFactory();
+    +DocumentMediator documentMediator();
+}
+
+HasContext <|.. InterpreterContext
+
+class InterpreterContext {
+    -RunningInterpreter executor
+    -Feed feed
+    -Log log
+    -BlackboardSource blackboard
+    -DocumentMediator documentMediator
+    -SheetFactory sheetFactory
+    -Date startDate
+    -List<InstructionLine> lines
+    InterpreterContext()
+    InterpreterContext(RunningInterpreter executor, BlackboardSource blackboard)
+    +Date startDate()
+    +void startDate(Date startDate)
+    +void setExecutor(RunningInterpreter executor)
+    +void setBlackboard(BlackboardSource blackboard)
+    void set(Feed feed, Log log, DocumentMediator documentMediator, SheetFactory sheetFactory)
+    +void setFeed(Feed feed)
+    +void setLog(Log log) {
+    +void setDocumentMediator(DocumentMediator documentMediator)
+    +void setSheetFactory(SheetFactory sheetFactory)
+    +void clear(InstructionLine line)
+    +void add(InstructionLine line)
+    +InstructionLine getUnprocessedLine()
+    +InstructionLine[] getLines()
+}
+
+InterpreterContext --> "*" AAA.InstructionLine
+
+interface DocumentMediator {
+    +Timestamp getDefaultTimestamp()
+    +String getDefaultFolder(Date date)
+    +String getInputLocation()
+    +InputStream getInputStream()
+    +InputStream getInputStream(Path path)
+    +void writeLogOutput(String directory, String dummyName, String input)
+    +void writeReportOutput(String folder, String reportName, String input)
+    +void writeOutput(Path path, String input)
+    +OutputStream getLogOutputStream(String folder, String dummyName)
+    +OutputStream getReportOutputStream(String folder, String reportName)
+    +OutputStream getOutputStream(Path path)
+}
+
+interface SheetFactory {
+    +String getLocation()
+    +String[] getSheetNames()
+    +Feed getSheetFeed(String sheetName)
+    +DataSource getArraySource(String sourceIdentifier, String sheetName)
+    +DataSource getMatrixSource(String sourceIdentifier, String sheetName)
+}
+
+@enduml

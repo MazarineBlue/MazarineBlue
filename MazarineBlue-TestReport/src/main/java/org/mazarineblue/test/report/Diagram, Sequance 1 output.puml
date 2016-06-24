@@ -1,0 +1,31 @@
+@startuml
+participant Client
+participant Parent
+participant TestObjectVisitor
+participant Tickets
+participant Child
+
+Client->Parent : output
+activate Parent
+
+Parent->TestObjectVisitor : openTag
+activate TestObjectVisitor
+deactivate TestObjectVisitor
+
+Parent->Parent : super.output
+activate Parent
+Parent->Tickets : output
+activate Tickets
+deactivate Tickets
+
+Parent->Child : output
+activate Child
+deactivate Child
+deactivate Parent
+
+Parent->TestObjectVisitor : closeTag
+activate TestObjectVisitor
+deactivate TestObjectVisitor
+
+deactivate Parent
+@enduml
