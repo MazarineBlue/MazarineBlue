@@ -222,7 +222,7 @@ the [BSD 2-Clause License][BSD 2-clause license].
 [travis-image]: https://travis-ci.org/MazarineBlue/MazarineBlue.svg?branch=develop
 [travis]: https://travis-ci.org/MazarineBlue/MazarineBlue
 
-[release-image]: http://img.shields.io/badge/release-0.0-blue.svg
+[release-image]: http://img.shields.io/badge/release-0.1_SNAPSHOT-blue.svg
 [release]: http://github.com/MazarineBlue/MazarineBlue/releases
 
 [license-image]: http://img.shields.io/:license-agpl3-blue.svg
