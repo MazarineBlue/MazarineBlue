@@ -1,0 +1,16 @@
+@startuml
+LibraryPlugin - [MazarineBlue-EngineExtended]
+[MazarineBlue-EngineExtended] - FeedPlugin
+[MazarineBlue-EngineExtended] --> [MazarineBlue-Engine]
+
+LibraryPlugin )-- [MazarineBlue-ControlFlow]
+LibraryPlugin )--- [MazarineBlue-FileSystem]
+LibraryPlugin )-- [MazarineBlue-Picture]
+[MazarineBlue-ControlFlow] --> [MazarineBlue-Parser]
+
+FeedPlugin )-- [MazarineBlue-ExcelFeed]
+[MazarineBlue-ExcelFeed] --> [MazarineBlue-ScopedVariableStore]
+[MazarineBlue-ScopedVariableStore] --> [MazarineBlue-VariableStore]
+[MazarineBlue-Engine] <- [MazarineBlue-VariableStore]
+[MazarineBlue-Engine] --> [MazarineBlue-EventBus]
+@enduml
