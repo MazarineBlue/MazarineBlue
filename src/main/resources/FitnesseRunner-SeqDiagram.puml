@@ -1,0 +1,122 @@
+@startuml
+== Creation ==
+FitnesseClient --> MazarineBlueFitnessePlugin: registerTestSystemFactories
+activate MazarineBlueFitnessePlugin
+MazarineBlueFitnessePlugin --> BlockingTwoWayPipeFactory: new
+activate BlockingTwoWayPipeFactory
+deactivate BlockingTwoWayPipeFactory
+MazarineBlueFitnessePlugin --> ThreadRunnerFactory : new
+activate ThreadRunnerFactory
+deactivate ThreadRunnerFactory
+MazarineBlueFitnessePlugin --> MazarineBlueSlimClient: new
+activate MazarineBlueSlimClient
+deactivate MazarineBlueSlimClient
+MazarineBlueFitnessePlugin --> MazarineBlueTestSystemFactory: new
+activate MazarineBlueTestSystemFactory
+deactivate MazarineBlueTestSystemFactory
+deactivate MazarineBlueFitnessePlugin
+
+== Initaliazation ==
+FitnesseClient --> MazarineBlueSlimClient: start
+activate MazarineBlueSlimClient
+MazarineBlueSlimClient --> BlockingTwoWayPipeFactory: createPipe
+activate BlockingTwoWayPipeFactory
+BlockingTwoWayPipeFactory --> BlockingTwoWayPipe: new
+activate BlockingTwoWayPipe
+deactivate BlockingTwoWayPipe
+deactivate BlockingTwoWayPipeFactory
+MazarineBlueSlimClient --> EventCreator: new
+activate EventCreator
+deactivate EventCreator
+MazarineBlueSlimClient --> ThreadRunnerFactory: createRunner
+activate ThreadRunnerFactory
+ThreadRunnerFactory --> ThreadRunner: new
+activate ThreadRunner
+deactivate ThreadRunner
+deactivate ThreadRunnerFactory
+MazarineBlueSlimClient --> ThreadRunner: start
+activate ThreadRunner
+deactivate ThreadRunner
+deactivate MazarineBlueSlimClient
+
+FitnesseClient --> MazarineBlueSlimClient: connect
+
+== Repitition ==
+FitnesseClient --> EventCreator: addPath
+activate EventCreator
+EventCreator --> TwoWayPipe: write(PathFitnesseEvent::new)
+activate TwoWayPipe
+deactivate TwoWayPipe
+deactivate EventCreator
+
+FitnesseClient --> EventCreator: create
+activate EventCreator
+EventCreator --> TwoWayPipe: write(CreateFitnesseEvent::new)
+activate TwoWayPipe
+deactivate TwoWayPipe
+deactivate EventCreator
+
+FitnesseClient --> EventCreator: callAndAssign
+activate EventCreator
+EventCreator --> EventCreator: call
+activate EventCreator
+EventCreator --> TwoWayPipe: write(CallFitnesseEvent::new)
+activate TwoWayPipe
+deactivate TwoWayPipe
+deactivate EventCreator
+EventCreator --> EventCreator: assign
+activate EventCreator
+EventCreator --> TwoWayPipe: write(AssignFitnesseEvent::new)
+activate TwoWayPipe
+deactivate TwoWayPipe
+deactivate EventCreator
+deactivate EventCreator
+
+FitnesseClient --> EventCreator: call
+activate EventCreator
+EventCreator --> TwoWayPipe: write(CallFitnesseEvent::new)
+activate TwoWayPipe
+deactivate TwoWayPipe
+deactivate EventCreator
+
+FitnesseClient --> EventCreator: assign
+activate EventCreator
+EventCreator --> TwoWayPipe: write(AssignFitnesseEvent::new)
+activate TwoWayPipe
+deactivate TwoWayPipe
+deactivate EventCreator
+
+== Cleanup: soft ==
+FitnesseClient --> MazarineBlueSlimClient: bye
+activate MazarineBlueSlimClient
+MazarineBlueSlimClient --> BlockingTwoWayPipe: write(ByeEvent::new)
+activate BlockingTwoWayPipe
+deactivate BlockingTwoWayPipe
+MazarineBlueSlimClient --> ThreadRunner: bye
+activate ThreadRunner
+ThreadRunner --> BlockingTwoWayPipe: write(ByeEvent::new)
+activate BlockingTwoWayPipe
+deactivate BlockingTwoWayPipe
+ThreadRunner --> ThreadRunner: join
+activate ThreadRunner
+deactivate ThreadRunner
+deactivate ThreadRunner
+deactivate MazarineBlueSlimClient
+
+== Cleanup: hard ==
+FitnesseClient --> MazarineBlueSlimClient: stop
+activate MazarineBlueSlimClient
+MazarineBlueSlimClient --> BlockingTwoWayPipe: write(KillEvent::new)
+activate BlockingTwoWayPipe
+deactivate BlockingTwoWayPipe
+MazarineBlueSlimClient --> ThreadRunner: kill
+activate ThreadRunner
+ThreadRunner --> BlockingTwoWayPipe: write(KillEvent::new)
+activate BlockingTwoWayPipe
+deactivate BlockingTwoWayPipe
+ThreadRunner --> ThreadRunner: join
+activate ThreadRunner
+deactivate ThreadRunner
+deactivate ThreadRunner
+deactivate MazarineBlueSlimClient
+@enduml

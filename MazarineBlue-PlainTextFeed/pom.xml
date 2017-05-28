@@ -11,12 +11,11 @@
         <version>0.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>MazarineBlue-Utilities</artifactId>
+    <artifactId>MazarineBlue-PlainTextFeed</artifactId>
     <packaging>jar</packaging>
 
-    <name>MazarineBlue - Utilities module</name>
+    <name>MazarineBlue - PlainTextFeed module</name>
     <description>
-        The Utilities module provides functionality to the other modules.
     </description>
 
     <developers>
@@ -25,7 +24,7 @@
             <name>Alex de Kruijff</name>
             <email>alex@MazarineBlue.org</email>
             <url>http://www.kruijff.org/</url>
-            <organization>Specialisterren</organization>
+            <organization>Specialist7erren</organization>
             <organizationUrl>http://www.specialisterren.nl/</organizationUrl>
             <roles>
                 <role>Founder</role>
@@ -37,9 +36,16 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.awaitility</groupId>
-            <artifactId>awaitility</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Engine</artifactId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-EngineExtended</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
