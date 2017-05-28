@@ -362,7 +362,8 @@ public class Picture {
 
     @Override
     public int hashCode() {
-        return 371 + Objects.hashCode(this.raster);
+        return 7 * 53
+                + Objects.hashCode(this.raster);
     }
 
     @Override

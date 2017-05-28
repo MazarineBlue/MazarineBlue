@@ -105,7 +105,10 @@ class Raster {
 
     @Override
     public int hashCode() {
-        return 1588867 + 3721 * Arrays.hashCode(this.rgbArray) + 61 * this.width + this.height;
+        return 7 * 61 * 61 * 61
+                + 61 * 61 * Arrays.hashCode(this.rgbArray)
+                + 61 * this.width
+                + this.height;
     }
 
     @Override
