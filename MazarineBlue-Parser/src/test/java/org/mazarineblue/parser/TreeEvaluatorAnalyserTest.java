@@ -45,7 +45,7 @@ public class TreeEvaluatorAnalyserTest
 
     @Before
     public void setup() {
-        analyser = new TreeEvaluatorAnalyser(t -> t);
+        analyser = new TreeEvaluatorAnalyser<>(t -> t);
     }
 
     @After

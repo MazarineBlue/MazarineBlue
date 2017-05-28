@@ -36,7 +36,7 @@ public class TestSyntaxTree
 
     @Override
     public int hashCode() {
-        return 371;
+        return 7 * 53;
     }
 
     @Override

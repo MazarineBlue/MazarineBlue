@@ -61,7 +61,9 @@ public class AbstractToken<T>
 
     @Override
     public int hashCode() {
-        return 12943 + 43 * Objects.hashCode(this.value) + this.index;
+        return 7 * 43 * 43
+                + 43 * Objects.hashCode(this.value)
+                + this.index;
     }
 
     @Override

@@ -64,7 +64,8 @@ class SpecialMarkToken<T>
 
     @Override
     public int hashCode() {
-        return 335 + Objects.hashCode(this.identifier);
+        return 5 * 67
+                + Objects.hashCode(this.identifier);
     }
 
     @Override
