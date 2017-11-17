@@ -60,6 +60,7 @@
         <module>MazarineBlue-Libraries-Fixtures</module>
         <module>MazarineBlue-Libraries-Test</module>
         <module>MazarineBlue-Main</module>
+        <module>MazarineBlue-Links</module>
         <module>MazarineBlue-Parser</module>
         <module>MazarineBlue-Pictures</module>
         <module>MazarineBlue-PlainTextFeed</module>
@@ -67,6 +68,10 @@
         <module>MazarineBlue-ThreadRunner</module>
         <module>MazarineBlue-Toolkit</module>
         <module>MazarineBlue-Utilities</module>
+        <module>MazarineBlue-Undecided</module>
+        <module>MazarineBlue-FitnessePluginLoader</module>
+        <module>MazarineBlue-MBT-GUI</module>
+        <module>MazarineBlue-MBT</module>
     </modules>
 
     <scm>
@@ -124,9 +129,44 @@
                 <version>1.5</version>
             </dependency>
             <dependency>
+                <groupId>commons-cli</groupId>
+                <artifactId>commons-cli</artifactId>
+                <version>1.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.10</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.5</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>2.6</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-validator</groupId>
+                <artifactId>commons-validator</artifactId>
+                <version>1.5.1</version>
+            </dependency>
+            <dependency>
                 <groupId>de.bechte.junit</groupId>
                 <artifactId>junit-hierarchicalcontextrunner</artifactId>
                 <version>4.12.1</version>
+            </dependency>
+            <dependency>
+                <groupId>javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>3.12.1.GA</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>javax.mail-api</artifactId>
+                <version>1.5.5</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
@@ -142,6 +182,12 @@
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
                 <version>3.17</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>xml-apis</groupId>
+                        <artifactId>xml-apis</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.apache.tika</groupId>
@@ -250,6 +296,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>2.20.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <version>2.5.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
