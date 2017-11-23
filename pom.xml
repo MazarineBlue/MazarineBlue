@@ -114,6 +114,8 @@
         <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
 
         <jacoco.percentage.instruction>0.80</jacoco.percentage.instruction>
+
+        <aspectj.version>1.8.9</aspectj.version>
     </properties>
 
     <dependencyManagement>
@@ -127,6 +129,11 @@
                 <groupId>de.bechte.junit</groupId>
                 <artifactId>junit-hierarchicalcontextrunner</artifactId>
                 <version>4.12.1</version>
+            </dependency>
+            <dependency>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-junit4</artifactId>
+                <version>2.0-BETA19</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
@@ -181,6 +188,10 @@
             <groupId>de.bechte.junit</groupId>
             <artifactId>junit-hierarchicalcontextrunner</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit4</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -326,7 +337,33 @@
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
+                    <argLine>
+                        @{argLine} -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    </argLine>
+                    <properties>
+                        <property>
+                            <name>listener</name>
+                            <value>io.qameta.allure.junit4.AllureJunit4</value>
+                        </property>
+                    </properties>
+                    <systemProperties>
+                        <property>
+                            <name>allure.results.directory</name>
+                            <value>${project.build.directory}/allure-results</value>
+                        </property>
+                        <property>
+                            <name>allure.link.issue.pattern</name>
+                            <value>https://example.org/issue/{}</value>
+                        </property>
+                    </systemProperties>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <!-- Integration tests -->
@@ -375,6 +412,16 @@
             </plugin>
         </plugins>
     </build>
+    <reporting>
+        <excludeDefaults>true</excludeDefaults>
+        <plugins>
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.9</version>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <profiles>
         <profile>
