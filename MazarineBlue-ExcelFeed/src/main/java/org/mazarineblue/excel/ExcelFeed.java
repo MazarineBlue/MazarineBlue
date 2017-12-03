@@ -62,7 +62,7 @@ public class ExcelFeed
     @Override
     public boolean hasNext() {
         while (rowIsWithinBounds(rowIndex)) {
-            if (rowIsValid(rowIndex) && !rowIsEmpty(rowIndex) && keywordIsValid(rowIndex))
+            if (rowIsValid(rowIndex) && !isEndOfFile(rowIndex) && keywordIsValid(rowIndex))
                 return true;
             ++rowIndex;
         }
@@ -72,7 +72,7 @@ public class ExcelFeed
     @Override
     public Event next() {
         while (rowIsWithinBounds(rowIndex)) {
-            if (rowIsValid(rowIndex) && !rowIsEmpty(rowIndex))
+            if (rowIsValid(rowIndex) && !isEndOfFile(rowIndex))
                 return createEvent(rowIndex++);
             ++rowIndex;
         }
@@ -88,17 +88,14 @@ public class ExcelFeed
         return sheet.getRow(rowIndex) != null;
     }
 
-    private boolean rowIsEmpty(int rowIndex) {
+    private boolean isEndOfFile(int rowIndex) {
         Row row = sheet.getRow(rowIndex);
-        for (int i = row.getFirstCellNum(); i < row.getLastCellNum(); ++i)
-            if (row.getCell(i) != null)
-                return false;
-        return true;
+        return row.getFirstCellNum() >= row.getLastCellNum();
     }
 
     private boolean keywordIsValid(int rowIndex) {
         Cell cell = getCell(rowIndex, 0);
-        return cell != null && cell.getCellType() == CELL_TYPE_STRING;
+        return cell.getCellType() == CELL_TYPE_STRING;
     }
 
     private Event createEvent(int rowIndex) {
@@ -139,10 +136,14 @@ public class ExcelFeed
     private static Object getData(Row row, int index) {
         Cell cell = row.getCell(index);
         switch (cell.getCellType()) {
-            case CELL_TYPE_BOOLEAN: return cell.getBooleanCellValue();
-            case CELL_TYPE_NUMERIC: return cell.getNumericCellValue();
-            case CELL_TYPE_STRING: return cell.getStringCellValue();
-            default: throw new UnsupportedCellTypeException(cell.getCellType());
+            case CELL_TYPE_BOOLEAN:
+                return cell.getBooleanCellValue();
+            case CELL_TYPE_NUMERIC:
+                return cell.getNumericCellValue();
+            case CELL_TYPE_STRING:
+                return cell.getStringCellValue();
+            default:
+                throw new UnsupportedCellTypeException(cell.getCellType());
         }
     }
     // </editor-fold>

@@ -17,6 +17,7 @@
  */
 package org.mazarineblue.threadrunner;
 
+import static java.lang.Thread.currentThread;
 import org.mazarineblue.eventbus.Event;
 import org.mazarineblue.eventdriven.Feed;
 import org.mazarineblue.threadrunner.events.ByeEvent;
@@ -70,18 +71,18 @@ public class TwoWayPipeFeed
             return e;
         } catch (InterruptedException ex) {
             pipe.clear();
-            Thread.currentThread().interrupt();
+            currentThread().interrupt();
             throw new InterruptedRuntimeException(ex);
         }
     }
 
     @Override
-    public void done(Event e) {
+    public void done(Event event) {
         try {
-            pipe.write(e);
+            pipe.write(event);
         } catch (InterruptedException ex) {
             pipe.clear();
-            Thread.currentThread().interrupt();
+            currentThread().interrupt();
             throw new InterruptedRuntimeException(ex);
         }
     }

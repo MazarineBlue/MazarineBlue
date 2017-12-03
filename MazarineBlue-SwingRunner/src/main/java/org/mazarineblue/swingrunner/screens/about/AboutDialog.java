@@ -18,7 +18,6 @@
  */
 package org.mazarineblue.swingrunner.screens.about;
 
-import java.awt.Frame;
 import java.util.ResourceBundle;
 
 /**
@@ -32,24 +31,22 @@ public class AboutDialog
 
     private static final long serialVersionUID = 1L;
 
-    private final transient ResourceBundle bundle = ResourceBundle.getBundle("MazarineBlue");
+    private final transient ResourceBundle bundle;
     private final transient ImageFetcher fetcher;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
     /**
      * Constructs an {@code AboutDialog} and maps it to the specified
      * {@code AboutModel), its owner and an {@code ImageFetcher}.
      *
-     * @param owner   the frame that opened this dialog.
-     * @param logger  the logger wrapper for exceptions.
-     * @param fetcher the {@code ImageFetcher} who's job it is to fetch the
-     *                MazarineBlue logo.
+     * @param builder used to initialize this class
      */
-    public AboutDialog(Frame owner, ImageFetcher fetcher) {
-        super(owner);
-        this.fetcher = fetcher;
+    public AboutDialog(AboutDialogBuilder builder) {
+        super(builder.getOwner());
+        builder.validate();
+        fetcher = builder.getFetcher();
+        bundle = builder.getResourceBundle();
         initComponents();
     }
 

@@ -17,61 +17,22 @@
  */
 package org.mazarineblue.fitnesse;
 
-import org.junit.After;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import org.junit.Before;
-import org.junit.Test;
-import org.mazarineblue.fitnesse.events.PathFitnesseEvent;
+import org.mazarineblue.libraries.fixtures.events.PathEvent;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
-public class PathFitnesseEventTest {
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
+public class PathFitnesseEventTest
+        extends TestHashCodeAndEquals<PathEvent> {
 
-    private PathFitnesseEvent a;
-
-    @Before
-    public void setup() {
-        a = new PathFitnesseEvent("path");
+    @Override
+    protected PathEvent getObject() {
+        return new PathEvent("foo");
     }
 
-    @After
-    public void teardown() {
-        a = null;
-    }
-
-    @Test
-    @SuppressWarnings("ObjectEqualsNull")
-    public void equals_Null() {
-        assertFalse(a.equals(null));
-    }
-
-    @Test
-    @SuppressWarnings("IncompatibleEquals")
-    public void equals_DifferentClass() {
-        assertFalse(a.equals(""));
-    }
-
-    @Test
-    public void hashCode_DifferentContent() {
-        PathFitnesseEvent b = new PathFitnesseEvent("htap");
-        assertNotEquals(a.hashCode(), b.hashCode());
-    }
-
-    @Test
-    public void equals_DifferentContent() {
-        PathFitnesseEvent b = new PathFitnesseEvent("htap");
-        assertNotEquals(a, b);
-    }
-
-    @Test
-    public void hashCode_IdenticalContent() {
-        PathFitnesseEvent b = new PathFitnesseEvent("path");
-        assertEquals(a.hashCode(), b.hashCode());
-    }
-
-    @Test
-    public void equals_IdenticalContent() {
-        PathFitnesseEvent b = new PathFitnesseEvent("path");
-        assertEquals(a, b);
+    @Override
+    protected PathEvent getDifferentObject() {
+        return new PathEvent("oof");
     }
 }

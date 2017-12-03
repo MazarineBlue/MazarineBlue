@@ -28,9 +28,11 @@ package org.mazarineblue.parser.analyser.semantic;
 import org.mazarineblue.parser.VariableSource;
 import org.mazarineblue.parser.exceptions.IllegalSyntaxTreeException;
 import org.mazarineblue.parser.tokens.Token;
-import org.mazarineblue.parser.tokens.Tokens;
+import static org.mazarineblue.parser.tokens.Tokens.isVariable;
 import org.mazarineblue.parser.tree.SyntaxTreeNode;
-import org.mazarineblue.parser.tree.TreeUtil;
+import static org.mazarineblue.parser.tree.TreeUtil.isBinary;
+import static org.mazarineblue.parser.tree.TreeUtil.isLeaf;
+import static org.mazarineblue.parser.tree.TreeUtil.isUnary;
 
 /**
  * A {@code TreeConcatenatingAnalyser} is a {@code SemanticAnalyser} that takes
@@ -66,11 +68,11 @@ public class TreeConcatenatingAnalyser
     public String evaluate(SyntaxTreeNode<String> tree) {
         if (tree == null)
             throw new IllegalSyntaxTreeException(tree);
-        if (TreeUtil.isLeaf(tree))
+        if (isLeaf(tree))
             return getValue(tree);
-        if (TreeUtil.isUnary(tree))
+        if (isUnary(tree))
             return getValue(tree) + evaluate(tree.getRightChild());
-        if (TreeUtil.isBinary(tree))
+        if (isBinary(tree))
             return evaluate(tree.getLeftChild()) + getValue(tree) + evaluate(tree.getRightChild());
         throw new IllegalSyntaxTreeException(tree);
     }
@@ -87,7 +89,7 @@ public class TreeConcatenatingAnalyser
             return null;
         String key = token.getValue();
         return key == null ? null
-                : !Tokens.isVariable(token) || source == null ? key
+                : !isVariable(token) || source == null ? key
                 : source.getData(key);
     }
 }

@@ -21,79 +21,72 @@ import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
+import org.mazarineblue.eventbus.Event;
 import org.mazarineblue.eventdriven.Interpreter;
 import org.mazarineblue.eventdriven.feeds.MemoryFeed;
+import org.mazarineblue.eventdriven.util.LinkSpy;
 import org.mazarineblue.fitnesse.events.NewInstanceEvent;
+import org.mazarineblue.libraries.fixtures.events.PathEvent;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
-public class FixtureLoaderLinkTest {
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
+public class FixtureLoaderLinkTest
+        extends TestHashCodeAndEquals<FixtureLoaderLink> {
 
-    private FixtureLoaderLink a;
+    private Interpreter interpreter;
+    private FixtureLoaderLink actual;
+    private LinkSpy spy;
 
     @Before
     public void setup() {
-        a = new FixtureLoaderLink();
+        actual = new FixtureLoaderLink();
+        spy = new LinkSpy();
+        interpreter = Interpreter.newInstance();
+        interpreter.addLink(actual);
+        interpreter.addLink(spy = new LinkSpy());
     }
 
     @After
     public void teardown() {
-        a = null;
+        interpreter = null;
+        actual = null;
+        spy = null;
     }
 
     @Test
-    @SuppressWarnings("ObjectEqualsNull")
-    public void equals_Null() {
-        assertFalse(a.equals(null));
-    }
-
-    @Test
-    @SuppressWarnings("IncompatibleEquals")
-    public void equals_DifferentClass() {
-        assertFalse(a.equals(""));
-    }
-
-    @Test
-    public void hashCode_DifferentPaths() {
-        FixtureLoaderLink b = new FixtureLoaderLink("foo");
-        assertNotEquals(a.hashCode(), b.hashCode());
-    }
-
-    @Test
-    public void equals_DifferentPaths() {
-        FixtureLoaderLink b = new FixtureLoaderLink("foo");
-        assertNotEquals(a, b);
+    public void path() {
+        Event event = new PathEvent("info.fitnesse.fixture");
+        interpreter.execute(new MemoryFeed(event));
+        assertEquals(new PathEvent("info.fitnesse.fixture"), spy.next());
+        assertTrue(event.isConsumed());
     }
 
     @Test
     public void hashCode_DifferentRegistrations()
             throws ReflectiveOperationException {
-        Interpreter interpreter = Interpreter.getDefaultInstance();
-        FixtureLoaderLink b = new FixtureLoaderLink();
-        interpreter.addLink(b);
         interpreter.execute(new MemoryFeed(new NewInstanceEvent("actor", "LoginDialogDriver", "bob", "secret")));
-        assertNotEquals(a.hashCode(), b.hashCode());
+        assertNotEquals(new FixtureLoaderLink().hashCode(), actual.hashCode());
     }
 
     @Test
     public void equals_DifferentRegistrations()
             throws ReflectiveOperationException {
-        Interpreter interpreter = Interpreter.getDefaultInstance();
-        FixtureLoaderLink b = new FixtureLoaderLink();
-        interpreter.addLink(b);
         interpreter.execute(new MemoryFeed(new NewInstanceEvent("actor", "LoginDialogDriver", "bob", "secret")));
-        assertNotEquals(a, b);
+        assertFalse(new FixtureLoaderLink().equals(actual));
     }
 
-    @Test
-    public void hashCode_IdenticalContent() {
-        FixtureLoaderLink b = new FixtureLoaderLink();
-        assertEquals(a.hashCode(), b.hashCode());
+    @Override
+    protected FixtureLoaderLink getObject() {
+        return new FixtureLoaderLink();
     }
 
-    @Test
-    public void equals_IdenticalContent() {
-        FixtureLoaderLink b = new FixtureLoaderLink();
-        assertEquals(a, b);
+    @Override
+    protected FixtureLoaderLink getDifferentObject() {
+        return new FixtureLoaderLink("foo");
     }
 }

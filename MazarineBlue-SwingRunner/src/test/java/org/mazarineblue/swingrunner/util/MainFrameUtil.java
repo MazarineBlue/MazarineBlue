@@ -18,19 +18,21 @@
 package org.mazarineblue.swingrunner.util;
 
 import java.io.File;
-import java.util.concurrent.Callable;
 import static javax.swing.SwingUtilities.invokeLater;
 import static org.awaitility.Awaitility.await;
 import org.hamcrest.core.IsNot;
 import org.hamcrest.core.IsNull;
-import org.mazarineblue.swing.JFileChooserUtil;
-import static org.mazarineblue.swing.SwingUtil.clickButton;
-import static org.mazarineblue.swing.SwingUtil.getComboBoxOptionAtIndex;
-import static org.mazarineblue.swing.SwingUtil.getComboBoxOptions;
-import static org.mazarineblue.swing.SwingUtil.getComboBoxSelectedItem;
-import static org.mazarineblue.swing.SwingUtil.setComboBoxOption;
 import org.mazarineblue.swingrunner.screens.main.MainFrame;
+import org.mazarineblue.utilities.swing.JFileChooserUtil;
+import static org.mazarineblue.utilities.swing.SwingUtil.clickButton;
+import static org.mazarineblue.utilities.swing.SwingUtil.getComboBoxOptionAtIndex;
+import static org.mazarineblue.utilities.swing.SwingUtil.getComboBoxOptions;
+import static org.mazarineblue.utilities.swing.SwingUtil.getComboBoxSelectedItem;
+import static org.mazarineblue.utilities.swing.SwingUtil.setComboBoxOption;
 
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 public class MainFrameUtil {
 
     private static final String SELECT_FILE_BUTTON_NAME = "selectFileButton";

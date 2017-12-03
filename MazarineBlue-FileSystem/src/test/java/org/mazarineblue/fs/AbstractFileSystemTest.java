@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import static java.lang.Math.random;
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.binarySearch;
@@ -35,11 +36,13 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public abstract class AbstractFileSystemTest {
+public abstract class AbstractFileSystemTest
+        extends TestHashCodeAndEquals<FileSystem> {
 
     private FileSystem fs;
     private File base;
@@ -48,6 +51,14 @@ public abstract class AbstractFileSystemTest {
     public void setup() {
         fs = getFileSystem();
         base = new File("./target/");
+    }
+
+    protected FileSystem getDifferentFileSystem() {
+        return new MemoryFileSystem();
+    }
+
+    protected FileSystem getIdenticalFileSystem() {
+        return getFileSystem();
     }
 
     protected abstract FileSystem getFileSystem();
@@ -269,6 +280,27 @@ public abstract class AbstractFileSystemTest {
         assertArrayEquals(expected, fs.getArray(file, String[].class));
     }
 
+    @Test(expected = IOException.class)
+    public void delete_FileNotFound()
+            throws IOException {
+        File file = createFileName(base);
+        fs.delete(file);
+    }
+    
+    @Test
+    public void delete_FileFound()
+            throws IOException {
+        File file = createFileName(base);
+        fs.mkfile(file, "oof");
+        fs.delete(file);
+    }
+    
+    @Test(expected = UnsupportedOperationException.class)
+    public void deleteAll()
+            throws IOException {
+        fs.deleteAll();
+    }
+    
     @Test(expected = NullPointerException.class)
     public void getInputStream_Null()
             throws IOException {
@@ -308,7 +340,7 @@ public abstract class AbstractFileSystemTest {
     private static byte[] createData(int size) {
         byte[] arr = new byte[size];
         for (int i = 0; i < size; ++i)
-            arr[i] = (byte) Math.random();
+            arr[i] = (byte) random();
         return arr;
     }
 
@@ -361,5 +393,20 @@ public abstract class AbstractFileSystemTest {
             setAll(src, i -> dst[i]);
             return dst;
         }
+    }
+
+    @Override
+    protected FileSystem getIdenticalObject() {
+        return getIdenticalFileSystem();
+    }
+
+    @Override
+    protected FileSystem getObject() {
+        return fs;
+    }
+
+    @Override
+    protected FileSystem getDifferentObject() {
+        return getDifferentFileSystem();
     }
 }

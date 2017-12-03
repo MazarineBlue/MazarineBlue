@@ -42,7 +42,7 @@ public class Primatives {
         map.put(double.class, Double.class);
     }
 
-    public static Primatives getDefaultInstance() {
+    public static Primatives newInstance() {
         if (singleton == null)
             singleton = new Primatives();
         return singleton;

@@ -20,6 +20,7 @@ package org.mazarineblue.fitnesse.events;
 import java.util.Objects;
 import org.mazarineblue.eventbus.Event;
 import org.mazarineblue.keyworddriven.Library;
+import org.mazarineblue.libraries.fixtures.events.FixtureEvent;
 import org.mazarineblue.utililities.ArgumentList;
 
 /**
@@ -31,6 +32,8 @@ import org.mazarineblue.utililities.ArgumentList;
  */
 public class NewInstanceEvent
         extends FixtureEvent {
+
+    private static final long serialVersionUID = 1L;
 
     private final String actor;
     private final String fixture;
@@ -49,6 +52,16 @@ public class NewInstanceEvent
         this.actor = actor;
         this.fixture = fixture;
         this.argumentList = new ArgumentList(args);
+    }
+
+    @Override
+    public String toString() {
+        return actor + ", " + fixture + ", [" + argumentList + ']';
+    }
+
+    @Override
+    public String message() {
+        return "actor=" + actor + ", fixture=" + fixture + ", arguments=[" + argumentList + ']';
     }
 
     public String getActor() {
@@ -73,7 +86,7 @@ public class NewInstanceEvent
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
+        return this == obj || obj != null && getClass() == obj.getClass()
                 && Objects.equals(this.actor, ((NewInstanceEvent) obj).actor)
                 && Objects.equals(this.fixture, ((NewInstanceEvent) obj).fixture)
                 && Objects.equals(this.argumentList, ((NewInstanceEvent) obj).argumentList);

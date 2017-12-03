@@ -17,20 +17,22 @@
  */
 package org.mazarineblue.utililities;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Arrays;
-import java.util.Collection;
+import java.io.Serializable;
+import static java.util.Arrays.copyOf;
+import static java.util.Arrays.deepEquals;
+import static java.util.Arrays.deepHashCode;
 
 /**
  * An {@code ArgumentList} is an container of an array of objects.
  *
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public class ArgumentList {
+public class ArgumentList
+        implements Serializable {
 
-    private Object[] arguments;
+    private static final long serialVersionUID = 1L;
+
+    private final Object[] arguments;
 
     /**
      * Constructs an {@code ArgumentList} using the specified arguments.
@@ -39,25 +41,18 @@ public class ArgumentList {
      *                  {@code ArgumentList}.
      */
     public ArgumentList(Object... arguments) {
-        this.arguments = Arrays.copyOf(arguments, arguments.length);
-    }
-
-    /**
-     * Constructs an {@code ArgumentList} using the specified arguments.
-     *
-     * @param arguments the argument to use to construct this
-     *                  {@code ArgumentList}.
-     */
-    public <T> ArgumentList(Collection<T> arguments) {
-        this.arguments = arguments.toArray(new Object[arguments.size()]);
+        this.arguments = copyOf(arguments, arguments.length);
     }
 
     @Override
     public String toString() {
         switch (arguments.length) {
-            case 0: return "";
-            case 1: return arguments[0].toString();
-            default: return buildString(", ");
+            case 0:
+                return "";
+            case 1:
+                return arguments[0].toString();
+            default:
+                return buildString(", ");
         }
     }
 
@@ -70,33 +65,18 @@ public class ArgumentList {
     }
 
     public Object[] getArguments() {
-        return Arrays.copyOf(arguments, arguments.length);
-    }
-
-    private void writeObject(ObjectOutputStream output)
-            throws IOException {
-        output.defaultWriteObject();
-        output.writeInt(arguments.length);
-        for (int i = 0; i < arguments.length; ++i)
-            output.writeObject(arguments[i]);
-    }
-
-    private void readObject(ObjectInputStream input)
-            throws IOException, ClassNotFoundException {
-        arguments = new Object[input.readInt()];
-        for (int i = 0; i < arguments.length; ++i)
-            arguments[i] = input.readObject();
+        return copyOf(arguments, arguments.length);
     }
 
     @Override
     public int hashCode() {
         return 7 * 43
-                + Arrays.deepHashCode(this.arguments);
+                + deepHashCode(this.arguments);
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
-                && Arrays.deepEquals(this.arguments, ((ArgumentList) obj).arguments);
+        return this == obj || obj != null && getClass() == obj.getClass()
+                && deepEquals(this.arguments, ((ArgumentList) obj).arguments);
     }
 }

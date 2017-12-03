@@ -27,16 +27,13 @@ import java.awt.image.BufferedImage;
  *
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public class ImageUtil {
-
-    private ImageUtil() {
-    }
+public final class ImageUtil {
 
     /**
      * Constructs a {@code Picture} from a {@code BufferedImage}.
      *
      * @param image the image to read.
-     * @return a {@code Picture} with the contence of the specified
+     * @return a {@code Picture} with the contends of the specified
      *         {@code BufferedImage}.
      */
     public static Picture createPicture(Image image) {
@@ -62,5 +59,8 @@ public class ImageUtil {
         Graphics2D g = dst.createGraphics();
         g.drawImage(src, 0, 0, null);
         g.dispose();
+    }
+
+    private ImageUtil() {
     }
 }

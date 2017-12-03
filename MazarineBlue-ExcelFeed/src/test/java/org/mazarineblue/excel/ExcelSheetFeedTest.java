@@ -64,69 +64,88 @@ public class ExcelSheetFeedTest {
 
     @Test
     public void hasNext_NullKeyword_ReturnFalse() {
-        workbook.skipRows(3);
         workbook.addRow(null);
         assertFalse(feed.hasNext());
     }
 
     @Test
     public void hasNext_BooleanKeyword_ReturnFalse() {
-        workbook.skipRows(3);
         workbook.addRow(true);
         assertFalse(feed.hasNext());
     }
 
     @Test
     public void hasNext_DoubleKeyword_ReturnFalse() {
-        workbook.skipRows(3);
         workbook.addRow(1d);
         assertFalse(feed.hasNext());
     }
 
     @Test
     public void hasNext_StringKeyword_ReturnTrue() {
+        workbook.addRow("keyword");
+        assertTrue(feed.hasNext());
+    }
+
+    @Test
+    public void hasNext_SheetWithJustGaps_RetunsFalse() {
+        workbook.skipRows(3);
+        assertFalse(feed.hasNext());
+    }
+
+    @Test
+    public void hasNext_SheetWithStartingGaps_RetunsTrue() {
         workbook.skipRows(3);
         workbook.addRow("keyword");
         assertTrue(feed.hasNext());
     }
 
     @Test
-    public void hasNext_SheetWithGaps_RetunsTrue() {
+    public void hasNext_SheetWithMiddleGaps_RetunsTrue() {
+        workbook.addRow("keyword");
         workbook.skipRows(3);
         workbook.addRow("keyword");
-        workbook.skipRows(2);
-        workbook.addRow("keyword");
+        feed.next();
         assertTrue(feed.hasNext());
+    }
+
+    @Test
+    public void hasNext_SheetWithEndingGaps_RetunsTrue() {
+        workbook.addRow("keyword");
+        workbook.skipRows(3);
         assertTrue(feed.hasNext());
     }
 
     @Test(expected = NoEventsLeftException.class)
     public void next_NullKeyword_ThrowsException() {
-        workbook.skipRows(3);
         workbook.addRow(null);
         feed.next();
     }
 
     @Test(expected = KeywordMustBeTextException.class)
     public void next_BooleanKeyword_ThrowsException() {
-        workbook.skipRows(3);
         workbook.addRow(true);
         feed.next();
     }
 
     @Test
     public void next_StringKeyword_ReturnExecuteInstructionLine() {
-        workbook.skipRows(3);
         workbook.addRow("keyword");
         assertEquals(new ExecuteInstructionLineEvent("keyword"), feed.next());
     }
 
+    @Test(expected = NoEventsLeftException.class)
+    public void next_SheetWithOnlyGaps_ThrowsException() {
+        workbook.skipRows(3);
+        feed.next();
+    }
+
     @Test
-    public void next_SheetWithGaps_RetunsTrue() {
+    public void next_SheetWithGaps_RetunsLines() {
         workbook.skipRows(3);
         workbook.addRow("keyword");
         workbook.skipRows(2);
         workbook.addRow("keyword");
+        workbook.skipRows(3);
         assertEquals(new ExecuteInstructionLineEvent("keyword"), feed.next());
         assertEquals(new ExecuteInstructionLineEvent("keyword"), feed.next());
     }

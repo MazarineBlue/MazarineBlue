@@ -41,6 +41,17 @@ public class UnknownIssueException
     }
 
     /**
+     * Constructs an {@code UnknownIssueException} with a message, but without a
+     * cause.
+     *
+     * @param message the detail message (which is saved for later retrieval
+     *                by the {@link #getMessage()} method).
+     */
+    public UnknownIssueException(String message) {
+        super(message);
+    }
+
+    /**
      * Constructs an {@code UnknownIssueException} with a default message and a cause.
      *
      * @param cause the cause (which is saved for later retrieval by the
@@ -50,17 +61,6 @@ public class UnknownIssueException
      */
     public UnknownIssueException(Throwable cause) {
         super("Please report this unknown issue.", cause);
-    }
-
-    /**
-     * Constructs an {@code UnknownIssueException} with a message, but without a
-     * cause.
-     *
-     * @param message the detail message (which is saved for later retrieval
-     *                by the {@link #getMessage()} method).
-     */
-    public UnknownIssueException(String message) {
-        super(message);
     }
 
     /**

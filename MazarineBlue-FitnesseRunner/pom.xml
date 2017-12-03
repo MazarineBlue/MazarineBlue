@@ -14,7 +14,7 @@
     <artifactId>MazarineBlue-FitnesseRunner</artifactId>
     <packaging>jar</packaging>
 
-    <name>MazarineBlue - FitNesseRunner module</name>
+    <name>MazarineBlue - FitnesseRunner module</name>
     <description>
     </description>
 
@@ -37,19 +37,17 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>MazarineBlue-Engine</artifactId>
-            <version>${project.version}</version>
-            <classifier>tests</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>MazarineBlue-EngineExtended</artifactId>
+            <artifactId>MazarineBlue-Libraries-Fixtures</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>MazarineBlue-EventBus</artifactId>
+            <artifactId>MazarineBlue-ThreadRunner</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Engine-Core-EventDriven</artifactId>
             <version>${project.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
@@ -58,18 +56,8 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>MazarineBlue-ThreadRunner</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>MazarineBlue-ThreadRunner</artifactId>
-            <version>${project.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>MazarineBlue-Utilities</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

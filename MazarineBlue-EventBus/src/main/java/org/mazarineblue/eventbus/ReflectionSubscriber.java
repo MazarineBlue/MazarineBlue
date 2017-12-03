@@ -60,6 +60,12 @@ public abstract class ReflectionSubscriber<E extends Event>
         new EventHandlerCallerImpl(this).publish(event, E::isConsumed);
     }
 
+    /**
+     * This method is called when there was no eventHandler to process the
+     * specified {@code Event}.
+     *
+     * @param event the {@code Event}, for which there was no eventHandler.
+     */
     @SuppressWarnings("NoopMethodInAbstractClass")
     protected void uncatchedEventHandler(E event) {
         // We only process events we have @EventHandlers for.

@@ -32,4 +32,6 @@ import org.mazarineblue.eventbus.events.AbstractEvent;
  */
 public class DoneEvent
         extends AbstractEvent {
+
+    private static final long serialVersionUID = 1L;
 }

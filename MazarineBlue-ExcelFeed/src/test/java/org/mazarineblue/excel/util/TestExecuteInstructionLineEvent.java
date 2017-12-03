@@ -22,12 +22,13 @@ import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
+@SuppressWarnings("serial")
 public class TestExecuteInstructionLineEvent
         extends ExecuteInstructionLineEvent {
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public TestExecuteInstructionLineEvent(ExecuteInstructionLineEvent e, RuntimeException ex) {
-        super(e.getPath());
+    public TestExecuteInstructionLineEvent(ExecuteInstructionLineEvent event, RuntimeException ex) {
+        super(event.getPath());
         setException(ex);
     }
 }

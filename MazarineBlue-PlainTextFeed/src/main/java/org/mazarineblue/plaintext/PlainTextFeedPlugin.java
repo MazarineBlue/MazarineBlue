@@ -17,7 +17,6 @@
  */
 package org.mazarineblue.plaintext;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import org.mazarineblue.eventdriven.Feed;
@@ -38,7 +37,7 @@ public class PlainTextFeedPlugin
 
     @Override
     public boolean canProcess(String mimeType) {
-        return mimeType.equals("text/plain");
+        return "text/plain".equals(mimeType);
     }
 
     @Override
@@ -47,8 +46,7 @@ public class PlainTextFeedPlugin
     }
 
     @Override
-    public Feed createFeed(InputStream input, String sheet)
-            throws IOException {
+    public Feed createFeed(InputStream input, String sheet) {
         return new PlainTextFeed(new InputStreamReader(input));
     }
 }

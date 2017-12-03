@@ -53,7 +53,7 @@ class ThreadServiceRunner
             join();
         } catch (InterruptedException ex) {
             pipe.clear();
-            Thread.currentThread().interrupt();
+            currentThread().interrupt();
             throw new InterruptedRuntimeException(ex);
         }
     }
@@ -66,7 +66,7 @@ class ThreadServiceRunner
             join(timeout);
         } catch (InterruptedException ex) {
             pipe.clear();
-            Thread.currentThread().interrupt();
+            currentThread().interrupt();
             throw new InterruptedRuntimeException(ex);
         }
     }

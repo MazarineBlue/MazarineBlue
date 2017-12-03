@@ -19,16 +19,15 @@ package org.mazarineblue.utililities;
 
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public class TupelTest {
+public class TupelTest
+        extends TestHashCodeAndEquals<Tupel<Integer>> {
 
     private Tupel<Integer> tupel;
 
@@ -62,45 +61,13 @@ public class TupelTest {
         tupel.get(1);
     }
 
-    @Test
-    @SuppressWarnings("ObjectEqualsNull")
-    public void equals_TupleNull_AreNotEqual() {
-        assertFalse(tupel.equals(null));
+    @Override
+    protected Tupel<Integer> getObject() {
+        return new Tupel<>(2, 1);
     }
 
-    @Test
-    @SuppressWarnings("IncompatibleEquals")
-    public void equals_TupelNonTupel_AreNotEqual() {
-        assertFalse(tupel.equals(1));
-    }
-
-    @Test
-    public void equals_TupelDifferentTypeTupel_AreNotEqual() {
-        Tupel<Boolean> t = new Tupel<>(false);
-        assertFalse(tupel.equals(t));
-    }
-
-    @Test
-    public void equals_TupelDifferentSizeTupel_AreNotEqual() {
-        Tupel<Integer> t = new Tupel<>(1, 1);
-        assertFalse(tupel.equals(t));
-    }
-
-    @Test
-    public void equals_TupelEquivalentTupel_AreEqual() {
-        Tupel<Integer> t = new Tupel<>(1);
-        assertTrue(tupel.equals(t));
-    }
-
-    @Test
-    public void hashCode_TupelNonEquivalentTupel_AreNotEqual() {
-        Tupel<Boolean> t = new Tupel<>(false);
-        assertNotEquals(tupel.hashCode(), t.hashCode());
-    }
-
-    @Test
-    public void hashCode_TupelEquivalentTupel_AreEqual() {
-        Tupel<Integer> t = new Tupel<>(1);
-        assertEquals(tupel.hashCode(), t.hashCode());
+    @Override
+    protected Tupel<Integer> getDifferentObject() {
+        return new Tupel<>(2);
     }
 }

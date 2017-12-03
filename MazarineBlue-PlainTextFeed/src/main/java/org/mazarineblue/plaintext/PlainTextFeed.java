@@ -18,7 +18,7 @@
 package org.mazarineblue.plaintext;
 
 import java.io.Reader;
-import java.util.Arrays;
+import static java.util.Arrays.copyOfRange;
 import java.util.Iterator;
 import org.mazarineblue.eventbus.Event;
 import org.mazarineblue.eventdriven.Feed;
@@ -64,7 +64,7 @@ public class PlainTextFeed
     @Override
     public Event next() {
         String[] column = it.next();
-        return createEvent(column[0], (Object[]) Arrays.copyOfRange(column, 1, column.length));
+        return createEvent(column[0], (Object[]) copyOfRange(column, 1, column.length));
     }
 
     @Override

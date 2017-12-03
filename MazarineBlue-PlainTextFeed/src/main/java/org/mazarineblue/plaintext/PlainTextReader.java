@@ -20,7 +20,7 @@ package org.mazarineblue.plaintext;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Arrays;
+import static java.util.Arrays.copyOfRange;
 import org.mazarineblue.utililities.exceptions.UnknownIssueException;
 
 /**
@@ -80,7 +80,7 @@ class PlainTextReader {
 
     private String[] splitColumns(String line, String regex) {
         String[] split = line.split(regex);
-        return split.length == 0 ? split : Arrays.copyOfRange(split, 1, split.length);
+        return split.length == 0 ? split : copyOfRange(split, 1, split.length);
     }
 
     private String[] trimColumns(String[] columns) {

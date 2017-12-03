@@ -23,14 +23,14 @@ import org.mazarineblue.eventbus.Event;
 import org.mazarineblue.eventbus.link.EventBusLink;
 import org.mazarineblue.eventdriven.Interpreter;
 import org.mazarineblue.eventdriven.feeds.MemoryFeed;
-import org.mazarineblue.fitnesse.engineplugin.exceptions.FixtureNotFoundException;
-import org.mazarineblue.fitnesse.engineplugin.exceptions.FixtureNotPublicException;
-import org.mazarineblue.fitnesse.engineplugin.exceptions.NoSuchConstructorException;
 import org.mazarineblue.fitnesse.events.NewInstanceEvent;
-import org.mazarineblue.fitnesse.events.PathEvent;
 import org.mazarineblue.keyworddriven.LibraryRegistry;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
 import org.mazarineblue.keyworddriven.events.ValidateInstructionLineEvent;
+import org.mazarineblue.libraries.fixtures.events.PathEvent;
+import org.mazarineblue.libraries.fixtures.exceptions.FixtureNotFoundException;
+import org.mazarineblue.libraries.fixtures.exceptions.FixtureNotPublicException;
+import org.mazarineblue.libraries.fixtures.exceptions.NoSuchConstructorException;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -68,7 +68,7 @@ public class ClassLoaderLinkTest {
     @Test
     public void test()
             throws Exception {
-        Interpreter interpreter = Interpreter.getDefaultInstance();
+        Interpreter interpreter = Interpreter.newInstance();
         interpreter.addLink(new FixtureLoaderLink());
         interpreter.addLink(new EventBusLink(null, null, new LibraryRegistry()));
         Event[] arr = new Event[]{

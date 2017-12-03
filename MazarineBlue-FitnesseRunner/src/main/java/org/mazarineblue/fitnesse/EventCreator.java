@@ -18,12 +18,13 @@
 package org.mazarineblue.fitnesse;
 
 import fitnesse.slim.instructions.InstructionExecutor;
+import static java.lang.Thread.currentThread;
 import org.mazarineblue.eventbus.Event;
 import org.mazarineblue.fitnesse.events.AssignFitnesseEvent;
 import org.mazarineblue.fitnesse.events.CallFitnesseEvent;
 import org.mazarineblue.fitnesse.events.CreateFitnesseEvent;
-import org.mazarineblue.fitnesse.events.FitnesseEvent;
-import org.mazarineblue.fitnesse.events.PathFitnesseEvent;
+import org.mazarineblue.libraries.fixtures.events.FixtureEvent;
+import org.mazarineblue.libraries.fixtures.events.PathEvent;
 import org.mazarineblue.utililities.TwoWayPipe;
 
 /**
@@ -50,8 +51,8 @@ class EventCreator
 
     @Override
     public void addPath(String path) {
-        writeEvent(new PathFitnesseEvent(path));
-        readEvent(PathFitnesseEvent.class);
+        writeEvent(new PathEvent(path));
+        readEvent(PathEvent.class);
     }
 
     @Override
@@ -80,25 +81,25 @@ class EventCreator
         readEvent(AssignFitnesseEvent.class);
     }
 
-    private void writeEvent(FitnesseEvent event) {
+    private void writeEvent(FixtureEvent event) {
         try {
             pipe.write(event);
         } catch (InterruptedException ex) {
             pipe.clear();
-            Thread.currentThread().interrupt();
+            currentThread().interrupt();
         }
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends FitnesseEvent> T readEvent(Class<T> type) {
+    private <T extends FixtureEvent> T readEvent(Class<T> type) {
         try {
-            FitnesseEvent e = pipe.read(type);
+            FixtureEvent e = pipe.read(type);
             if (e.hasException())
                 throw e.getException();
             return (T) e;
         } catch (InterruptedException ex) {
             pipe.clear();
-            Thread.currentThread().interrupt();
+            currentThread().interrupt();
             return null;
         }
     }

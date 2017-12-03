@@ -21,15 +21,13 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.mazarineblue.eventdriven.Feed;
 import org.mazarineblue.excel.ExcelFeed;
 
-/**
- * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
- */
 public class WorkbookBuilder {
 
     private static final String MAIN_SHEET = "main";
@@ -142,7 +140,7 @@ public class WorkbookBuilder {
         }
 
         void clearCell(int rowIndex, int cellIndex) {
-            getCell(rowIndex, cellIndex).setCellType(Cell.CELL_TYPE_BLANK);
+            getCell(rowIndex, cellIndex).setCellType(CELL_TYPE_BLANK);
         }
 
         private Cell getCell(int rowIndex, int cellIndex) {

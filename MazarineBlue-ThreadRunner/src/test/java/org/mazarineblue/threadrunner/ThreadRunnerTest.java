@@ -18,6 +18,7 @@
 package org.mazarineblue.threadrunner;
 
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
+import static java.lang.Thread.sleep;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -46,8 +47,8 @@ import org.mazarineblue.utililities.util.TestThread;
 @RunWith(HierarchicalContextRunner.class)
 public class ThreadRunnerTest {
 
-    private static final int TIMEOUT = 2000;
-    private static final int DOZE = 50;
+    private static final int TIMEOUT = 1000;
+    private static final int DOZE = 100;
 
     private final int capacity = 4;
     private TwoWayPipe<Event> pipe;
@@ -159,11 +160,12 @@ public class ThreadRunnerTest {
         @Before
         public void setup()
                 throws InterruptedException {
-            FeedExecutorFactory factory = FeedExecutorFactory.getDefaultInstance(
+            FeedExecutorFactory factory = FeedExecutorFactory.newInstance(
                     new FeedExecutorBuilder().setFileSystem(new MemoryFileSystem()));
             runner = new ThreadServiceRunner(pipe.redirect(), factory, DOZE);
             pipe.write(new TestEvent());
             runner.start();
+            waitUntilReadQueueIsSizeOfAtLeast(1);
         }
 
         @Test(timeout = TIMEOUT)
@@ -190,7 +192,7 @@ public class ThreadRunnerTest {
         private void waitUntilReadQueueIsSizeOfAtLeast(int amount)
                 throws InterruptedException {
             while (pipe.readQueueSize() < amount)
-                Thread.sleep(DOZE);
+                sleep(DOZE);
         }
 
         @SuppressWarnings("unchecked")

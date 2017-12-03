@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.mazarineblue.pictures.compounders.PixelComperator;
-import org.mazarineblue.pictures.compounders.comperator.IgnoreAlphaComperator;
+import org.mazarineblue.pictures.compounders.comperators.IgnoreAlphaComperator;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>

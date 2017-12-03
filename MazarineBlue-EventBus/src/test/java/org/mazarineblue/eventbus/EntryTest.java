@@ -63,11 +63,6 @@ public class EntryTest {
     }
 
     @Test
-    public void equals_SameObject_ReturnsTrue() {
-        assertTrue(expected.equals(expected));
-    }
-
-    @Test
     @SuppressWarnings("ObjectEqualsNull")
     public void equals_Null_ReturnsFalse() {
         assertFalse(expected.equals(null));
@@ -98,8 +93,13 @@ public class EntryTest {
     }
 
     @Test
-    public void equals_xNullFilter_ReturnFalse() {
+    public void equals_NonNullFilter_ReturnFalse() {
         Entry<Event> actual = new Entry<>(TestEvent.class, new BlockingFilter<>(), subscriber);
         assertFalse(expected.equals(actual));
+    }
+
+    @Test
+    public void equals_SameObject_ReturnsTrue() {
+        assertTrue(expected.equals(expected));
     }
 }

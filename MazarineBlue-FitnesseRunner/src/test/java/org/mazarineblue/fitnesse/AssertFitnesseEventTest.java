@@ -17,73 +17,39 @@
  */
 package org.mazarineblue.fitnesse;
 
-import org.junit.After;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import org.junit.Before;
 import org.junit.Test;
 import org.mazarineblue.fitnesse.events.AssignFitnesseEvent;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
-public class AssertFitnesseEventTest {
-
-    private AssignFitnesseEvent a;
-
-    @Before
-    public void setup() {
-        a = new AssignFitnesseEvent("symbol", "foo");
-    }
-
-    @After
-    public void teardown() {
-        a = null;
-    }
-
-    @Test
-    @SuppressWarnings("ObjectEqualsNull")
-    public void equals_Null() {
-        assertFalse(a.equals(null));
-    }
-
-    @Test
-    @SuppressWarnings("IncompatibleEquals")
-    public void equals_DifferentClass() {
-        assertFalse(a.equals(""));
-    }
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
+public class AssertFitnesseEventTest
+        extends TestHashCodeAndEquals<AssignFitnesseEvent> {
 
     @Test
     public void hashCode_DifferentSymbol() {
+        AssignFitnesseEvent a = new AssignFitnesseEvent("symbol", "foo");
         AssignFitnesseEvent b = new AssignFitnesseEvent("lobmys", "foo");
         assertNotEquals(a.hashCode(), b.hashCode());
     }
 
     @Test
     public void equals_DifferentSymbol() {
+        AssignFitnesseEvent a = new AssignFitnesseEvent("symbol", "foo");
         AssignFitnesseEvent b = new AssignFitnesseEvent("lobmys", "foo");
-        assertNotEquals(a, b);
+        assertFalse(a.equals(b));
     }
 
-    @Test
-    public void hashCode_DifferentValue() {
-        AssignFitnesseEvent b = new AssignFitnesseEvent("symbol", "oof");
-        assertNotEquals(a.hashCode(), b.hashCode());
+    @Override
+    protected AssignFitnesseEvent getObject() {
+        return new AssignFitnesseEvent("symbol", "foo");
     }
 
-    @Test
-    public void equals_DifferentValue() {
-        AssignFitnesseEvent b = new AssignFitnesseEvent("symbol", "oof");
-        assertNotEquals(a, b);
-    }
-
-    @Test
-    public void hashCode_IdenticalContent() {
-        AssignFitnesseEvent b = new AssignFitnesseEvent("symbol", "foo");
-        assertEquals(a.hashCode(), b.hashCode());
-    }
-
-    @Test
-    public void equals_IdenticalContent() {
-        AssignFitnesseEvent b = new AssignFitnesseEvent("symbol", "foo");
-        assertEquals(a, b);
+    @Override
+    protected AssignFitnesseEvent getDifferentObject() {
+        return new AssignFitnesseEvent("symbol", "oof");
     }
 }

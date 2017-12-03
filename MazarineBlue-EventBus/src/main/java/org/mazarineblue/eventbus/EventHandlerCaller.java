@@ -27,7 +27,7 @@ package org.mazarineblue.eventbus;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import static java.lang.reflect.Modifier.isPublic;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -35,7 +35,7 @@ import org.mazarineblue.eventbus.exceptions.EventHandlerRequiresOneParameterExce
 import org.mazarineblue.utililities.exceptions.NeverThrownException;
 
 /**
- * An {code @EventHandlerCaller} determines which
+ * An {code iCaller} determines which
  * {@link EventHandler EventHandlers} can process an {@code Event} and calls
  * it. The abstract method unpublished is called when there are no applicable
  * {@code EventHandlers} available.
@@ -146,7 +146,7 @@ public abstract class EventHandlerCaller<E extends Event> {
     }
 
     private boolean classIsDeclaredPublic(Class<?> type) {
-        return Modifier.isPublic(type.getModifiers());
+        return isPublic(type.getModifiers());
     }
     // </editor-fold>
 

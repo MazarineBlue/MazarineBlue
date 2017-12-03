@@ -28,10 +28,10 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mazarineblue.eventbus.Event.matchesNoneAutoConsumable;
 import org.mazarineblue.eventdriven.util.FeedExecutorListenerSpy;
 import org.mazarineblue.executors.FeedExecutorFactory;
 import org.mazarineblue.executors.util.FeedExecutorOutputSpy;
-import org.mazarineblue.executors.util.SupportAllFilesFeedPlugin;
 import org.mazarineblue.executors.util.TestFeedExecutorFactory;
 import org.mazarineblue.fs.FileSystem;
 import org.mazarineblue.fs.MemoryFileSystem;
@@ -39,15 +39,18 @@ import org.mazarineblue.links.ConsumeEventsLink;
 import org.mazarineblue.plugins.PluginLoader;
 import org.mazarineblue.plugins.exceptions.FileNotFoundException;
 import org.mazarineblue.plugins.exceptions.FileNotSupportedException;
+import org.mazarineblue.plugins.util.MemoryFeedPlugin;
 import org.mazarineblue.swingrunner.config.Config;
+import static org.mazarineblue.swingrunner.config.Config.maxRecentFiles;
+import static org.mazarineblue.swingrunner.config.Config.recentFilesLocation;
 import org.mazarineblue.swingrunner.screens.main.MainFrame;
 import org.mazarineblue.swingrunner.screens.main.MainFrameBuilder;
 import org.mazarineblue.swingrunner.util.MainFrameUtil;
 import org.mazarineblue.swingrunner.util.TestFileSelector;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 @RunWith(HierarchicalContextRunner.class)
 public class MainFrameTest {
 
@@ -65,7 +68,7 @@ public class MainFrameTest {
     private MainFrameUtil frame;
 
     private static File[] createInitializedFileArray(String prefix, String postfix) {
-        File[] files = new File[Config.maxRecentFiles()];
+        File[] files = new File[maxRecentFiles()];
         for (int i = 0; i < files.length; ++i)
             files[i] = new File(prefix + i + postfix);
         return files;
@@ -86,7 +89,7 @@ public class MainFrameTest {
         config.setReadOnly();
         selector = new TestFileSelector(freshFile);
         output = new FeedExecutorOutputSpy(2);
-        feedExecutorFactory = TestFeedExecutorFactory.getDefaultInstance(fs, output);
+        feedExecutorFactory = TestFeedExecutorFactory.newInstance(fs, output);
 
         builder = new MainFrameBuilder();
         builder.setFileSystem(fs);
@@ -160,7 +163,7 @@ public class MainFrameTest {
         public void recentFiles_AllDeadFiles_FieldsAreEmpty()
                 throws Exception {
             File[] recentFiles = createInitializedFileArray("file", ".xml");
-            fs.mkfile(Config.recentFilesLocation(), (Object[]) recentFiles);
+            fs.mkfile(recentFilesLocation(), (Object[]) recentFiles);
             frame = new MainFrameUtil(new MainFrame(builder));
             assertNull(frame.getSelectedFile());
             assertNull(frame.getSelectedSheet());
@@ -170,7 +173,7 @@ public class MainFrameTest {
         public void recentFiles_NoDeadFiles_FieldsAreModified()
                 throws Exception {
             File[] recentFiles = createInitializedFileArray("file", ".txt");
-            fs.mkfile(Config.recentFilesLocation(), (Object[]) recentFiles);
+            fs.mkfile(recentFilesLocation(), (Object[]) recentFiles);
             fs.mkfile(recentFiles[0], "| Keyword | Argument |");
             frame = new MainFrameUtil(new MainFrame(builder));
             assertEquals(recentFiles[0], frame.getSelectedFile());
@@ -184,12 +187,12 @@ public class MainFrameTest {
         @Before
         public void setup()
                 throws Exception {
+            PluginLoader.getInstance().injectPlugin(new MemoryFeedPlugin().addSheet("First", "Second"));
             recentFiles = createInitializedFileArray("file", ".txt");
-            fs.mkfile(Config.recentFilesLocation(), (Object[]) recentFiles);
+            fs.mkfile(recentFilesLocation(), (Object[]) recentFiles);
             fs.mkfile(recentFiles[0], "| Keyword | Argument |");
             fs.mkfile(recentFiles[1], "| Keyword | Argument |");
             frame = new MainFrameUtil(new MainFrame(builder));
-            PluginLoader.getInstance().injectPlugin(new SupportAllFilesFeedPlugin().setSheets("First", "Second"));
         }
 
         @Test
@@ -214,10 +217,10 @@ public class MainFrameTest {
     public void executeButton_Switch_FeedWasExecuted()
             throws Exception {
         recentFiles = createInitializedFileArray("file", ".txt");
-        fs.mkfile(Config.recentFilesLocation(), (Object[]) recentFiles);
+        fs.mkfile(recentFilesLocation(), (Object[]) recentFiles);
         fs.mkfile(recentFiles[0], "| Keyword | Argument |");
 
-        FeedExecutorListenerSpy spy = new FeedExecutorListenerSpy();
+        FeedExecutorListenerSpy spy = new FeedExecutorListenerSpy(matchesNoneAutoConsumable());
         feedExecutorFactory.setFeedExecutorListener(() -> spy);
         feedExecutorFactory.addLink(() -> new ConsumeEventsLink());
 

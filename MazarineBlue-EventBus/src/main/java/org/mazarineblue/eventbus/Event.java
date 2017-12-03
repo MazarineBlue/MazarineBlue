@@ -24,13 +24,103 @@
  */
 package org.mazarineblue.eventbus;
 
+import java.lang.Thread.State;
+import java.util.ArrayList;
+import static java.util.Arrays.stream;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Predicate;
+import org.mazarineblue.utililities.ObjectsUtil;
+import org.mazarineblue.utililities.SerializableClonable;
+
 /**
  * An event is an message that something has happened or a request for
  * something to happen.
  *
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public interface Event {
+public interface Event
+        extends SerializableClonable {
+
+    /**
+     * Constructs an condition that evaluates to {@code true}, when an event
+     * is auto consumable.
+     *
+     * @return {@code true} when the event is not auto consumable.
+     */
+    public static Predicate<Event> matchesAutoConsumable() {
+        return Event::isAutoConsumable;
+    }
+
+    /**
+     * Constructs an condition that evaluates to {@code true}, when an event
+     * is not auto consumable.
+     *
+     * @return {@code true} when the event is not auto consumable.
+     */
+    public static Predicate<Event> matchesNoneAutoConsumable() {
+        return e -> !e.isAutoConsumable();
+    }
+
+    /**
+     * Constructs a condition that is {@code true} when the {@code Event} is
+     * one of the specified types.
+     *
+     * @param types the specified types to check for.
+     * @return {@code true}} when the {@code Event} is one of the specified
+     *         types.
+     */
+    public static Predicate<Event> matches(Class<?>... types) {
+        return e -> stream(types)
+                .anyMatch(t -> t.isAssignableFrom(e.getClass()));
+    }
+
+    /**
+     * Constructs a condition that is {@code true} when the {@code Event} is
+     * none of the specified types.
+     *
+     * @param types the specified types to check for.
+     * @return {@code true}} when the {@code Event} is one of the specified
+     *         types.
+     */
+    public static Predicate<Event> matchesNone(Class<?>... types) {
+        return e -> stream(types)
+                .noneMatch(t -> t.isAssignableFrom(e.getClass()));
+    }
+
+    /**
+     * Makes a deep copy of the specified collection.
+     * <p>
+     * Cloning is done though the use of serialization.
+     *
+     * @param <T> the type of serializable object.
+     * @param src the collection to clone.
+     * @return a deep copy of the specified object.
+     *
+     * @see ObjectsUtil.clone
+     */
+    public static <T extends Event> Collection<T> clone(Collection<T> src) {
+        return src.stream()
+                .map(e -> clone(e))
+                .collect(ArrayList::new, List::add, List::addAll);
+    }
+    
+    /**
+     * Makes a deep copy of the specified event.
+     * <p>
+     * Cloning is done though the use of serialization.
+     *
+     * @param <T> the type of serializable object.
+     * @param src the collection to clone.
+     * @return a deep copy of the specified object.
+     *
+     * @see ObjectsUtil.clone
+     */
+    public static <T extends Event> T clone(T src) {
+        T dst = ObjectsUtil.clone(src);
+        dst.setConsumed(false);
+        return dst;
+    }
 
     /**
      * Returns the {@link State status} of the {@code Event}.
@@ -73,6 +163,13 @@ public interface Event {
      * @param consumed {@code true} if the events was consumed.
      */
     public void setConsumed(boolean consumed);
+
+    /**
+     * Indicates if this event should be automatically consumed by {@link ConsumeEventsLink}.
+     *
+     * @return {@code true} is this event should be automatically consumed
+     */
+    public boolean isAutoConsumable();
 
     /**
      * Status indicates the result of an {@link EventHandler}.

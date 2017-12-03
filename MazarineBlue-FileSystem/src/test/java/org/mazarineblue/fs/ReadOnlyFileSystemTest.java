@@ -24,7 +24,7 @@ import org.junit.After;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
-import org.mazarineblue.fs.util.TestFileSystem;
+import org.mazarineblue.fs.util.AdapterFileSystemSpy;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -32,7 +32,7 @@ import org.mazarineblue.fs.util.TestFileSystem;
 public class ReadOnlyFileSystemTest
         extends AdapterFileSystemTest {
 
-    private TestFileSystem spy;
+    private AdapterFileSystemSpy spy;
     private FileSystem fs;
 
     @Before
@@ -48,7 +48,7 @@ public class ReadOnlyFileSystemTest
     }
 
     @Override
-    protected FileSystem createFileSystem(TestFileSystem spy) {
+    protected AdapterFileSystem createFileSystem(AdapterFileSystemSpy spy) {
         return new ReadOnlyFileSystem(spy);
     }
 
@@ -61,28 +61,28 @@ public class ReadOnlyFileSystemTest
 
     @Test(expected = IOException.class)
     @Override
-    public void mkfileContent()
+    public void mkfile_Content()
             throws IOException {
         fs.mkfile(null, "oof");
     }
 
     @Test(expected = IOException.class)
     @Override
-    public void mkdirInputStream()
+    public void mkdir_InputStream()
             throws IOException {
         fs.mkfile(null, new BufferedInputStream(null));
     }
 
     @Test(expected = IOException.class)
     @Override
-    public void mkfileArray()
+    public void mkfile_Array()
             throws IOException {
         fs.mkfile(null, new Object[]{"abc", "def"});
     }
 
     @Test(expected = IOException.class)
     @Override
-    public void mkfileIterator()
+    public void mkfile_Collection()
             throws IOException {
         fs.mkfile(null, new ArrayList<>(4));
     }
@@ -90,14 +90,14 @@ public class ReadOnlyFileSystemTest
     @Test
     @Override
     public void isReadable_False() {
-        spy.setReadable(false);
+        spy.setIsReadable(false);
         assertTrue(fs.isReadable(null));
     }
 
     @Test
     @Override
     public void isReadable_True() {
-        spy.setReadable(true);
+        spy.setIsReadable(true);
         assertTrue(fs.isReadable(null));
     }
 }

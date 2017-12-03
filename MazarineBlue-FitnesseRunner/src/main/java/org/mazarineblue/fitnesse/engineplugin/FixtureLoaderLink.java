@@ -17,28 +17,20 @@
  */
 package org.mazarineblue.fitnesse.engineplugin;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.mazarineblue.eventbus.EventHandler;
 import org.mazarineblue.eventdriven.Interpreter;
 import org.mazarineblue.eventdriven.Invoker;
 import org.mazarineblue.eventdriven.Link;
-import org.mazarineblue.fitnesse.engineplugin.exceptions.FixtureNotFoundException;
-import org.mazarineblue.fitnesse.engineplugin.exceptions.FixtureNotPublicException;
-import org.mazarineblue.fitnesse.engineplugin.exceptions.NoSuchConstructorException;
 import org.mazarineblue.fitnesse.events.NewInstanceEvent;
-import org.mazarineblue.fitnesse.events.PathEvent;
 import org.mazarineblue.keyworddriven.Library;
 import org.mazarineblue.keyworddriven.events.AddLibraryEvent;
 import org.mazarineblue.keyworddriven.events.RemoveLibraryEvent;
+import org.mazarineblue.libraries.fixtures.FixtureLoaderLibrary;
+import org.mazarineblue.libraries.fixtures.events.PathEvent;
 
 /**
  * A {@code ClasssLoaderLink} is a {@code Link} that loads a class dynamically
@@ -52,9 +44,7 @@ import org.mazarineblue.keyworddriven.events.RemoveLibraryEvent;
 public class FixtureLoaderLink
         extends Link {
 
-    private static final String NAMESPACE = "org.mazarineblue.fixtures";
-
-    private final List<String> paths;
+    private FixtureLoaderLibrary lib = new FixtureLoaderLibrary();
     private final Map<String, Library> map = new HashMap<>(4);
 
     /**
@@ -64,12 +54,12 @@ public class FixtureLoaderLink
      * @param paths the paths to look in for classes.
      */
     public FixtureLoaderLink(String... paths) {
-        this.paths = new ArrayList<>(asList(paths));
+        stream(paths).forEach(p -> lib.eventHandler(new PathEvent(p)));
     }
 
     @Override
     public String toString() {
-        return "paths = " + Arrays.toString(paths.toArray());
+        return lib.toString();
     }
 
     /**
@@ -82,7 +72,7 @@ public class FixtureLoaderLink
      */
     @EventHandler
     public void eventHandler(PathEvent event) {
-        paths.add(event.getPath());
+        lib.eventHandler(event);
         event.setConsumed(true);
     }
 
@@ -99,8 +89,8 @@ public class FixtureLoaderLink
     public void eventHandler(NewInstanceEvent event)
             throws ReflectiveOperationException {
         if (isLibraryRegisteredBy(event.getActor()))
-            deregisterLibrary(event.getInvoker(), event.getActor());
-        registerLibrary(event.getInvoker(), event.getActor(), createLibrary(event));
+            deregisterLibrary(event.invoker(), event.getActor());
+        registerLibrary(event.invoker(), event.getActor(), createLibrary(event));
         event.setConsumed(true);
     }
 
@@ -116,68 +106,8 @@ public class FixtureLoaderLink
 
     private Library createLibrary(NewInstanceEvent event)
             throws ReflectiveOperationException {
-        Class<?> fixtureType = searchPathsForClass(paths, event.getFixture());
-        Object obj = newInstance(fixtureType, event.getArguments());
-        return new FixtureLibrary(NAMESPACE, obj);
+        return lib.createLibrary(event.getFixture(), event.getArguments());
     }
-
-    // <editor-fold defaultstate="collapsed" desc="Helper methods for createLibrary()">
-    private Class<?> searchPathsForClass(List<String> paths, String className) {
-        List<String> classNames = convertToFullName(paths, className);
-        Class<?> type = searchClassNamesForClass(classNames);
-        if (type != null)
-            return type;
-        throw new FixtureNotFoundException(className, paths);
-    }
-
-    private List<String> convertToFullName(List<String> paths, String className) {
-        List<String> list = new ArrayList<>(paths.size() + 1);
-        paths.stream().forEach(path -> list.add(path + "." + className));
-        list.add(className);
-        return list;
-    }
-
-    private Class<?> searchClassNamesForClass(List<String> classNames) {
-        for (String className : classNames) {
-            Class<?> type = tryForClassName(className);
-            if (type != null)
-                return type;
-        }
-        return null;
-    }
-
-    private Class<?> tryForClassName(String className) {
-        try {
-            Class<?> type = Class.forName(className);
-            if (!Modifier.isPublic(type.getModifiers()))
-                throw new FixtureNotPublicException(className);
-            return type;
-        } catch (ClassNotFoundException ex) {
-            return null;
-        }
-    }
-
-    private Object newInstance(Class<?> fixtureType, Object[] arguments)
-            throws InstantiationException, IllegalAccessException, InvocationTargetException {
-        Constructor<?> constructor = getConstructor(fixtureType, arguments);
-        return constructor.newInstance(arguments);
-    }
-
-    private Constructor<?> getConstructor(Class<?> fixtureType, Object[] arguments) {
-        Class<?>[] parameterTypes = convertToParameterType(arguments);
-        for (Constructor<?> constructor : fixtureType.getConstructors())
-            if (Arrays.equals(parameterTypes, constructor.getParameterTypes()))
-                return constructor;
-        throw new NoSuchConstructorException(fixtureType, parameterTypes);
-    }
-
-    private Class<?>[] convertToParameterType(Object[] arguments) {
-        Class<?>[] parameterTypes = new Class<?>[arguments.length];
-        for (int i = 0; i < arguments.length; ++i)
-            parameterTypes[i] = arguments[i].getClass();
-        return parameterTypes;
-    }
-    // </editor-fold>
 
     private void registerLibrary(Invoker invoker, String actor, Library library) {
         map.put(actor, library);
@@ -187,14 +117,14 @@ public class FixtureLoaderLink
     @Override
     public int hashCode() {
         return 3 * 11 * 11
-                + 11 * Objects.hashCode(this.paths)
+                + 11 * Objects.hashCode(this.lib)
                 + Objects.hashCode(this.map);
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
-                && Objects.equals(this.paths, ((FixtureLoaderLink) obj).paths)
+        return this == obj || obj != null && getClass() == obj.getClass()
+                && Objects.equals(this.lib, ((FixtureLoaderLink) obj).lib)
                 && Objects.equals(this.map, ((FixtureLoaderLink) obj).map);
     }
 }

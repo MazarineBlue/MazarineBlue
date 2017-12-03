@@ -39,12 +39,28 @@ public class ReflectionSubscriberSpy
 
     private int received = 0;
 
+    /**
+     * Event handlers are not meant to be called directly, instead publish an
+     * event to an {@link Interpreter}; please see the specified event for more
+     * information about this event handler.
+     *
+     * @param event the event this {@code EventHandler} processes.
+     * @see ConsumableEvent
+     */
     @EventHandler
     public void handler(ConsumableEvent event) {
         ++received;
         event.setConsumed(true);
     }
 
+    /**
+     * Event handlers are not meant to be called directly, instead publish an
+     * event to an {@link Interpreter}; please see the specified event for more
+     * information about this event handler.
+     *
+     * @param event the event this {@code EventHandler} processes.
+     * @see TestEvent
+     */
     @EventHandler
     public void eventHandler(TestEvent event) {
         ++received;

@@ -9,6 +9,7 @@ node Client {
 node Server {
     Standalone -- [Main]
     [Main] #-right(0-# [Runner]
+    [Main] --> [Engine]
     [Runner] --> [Engine]
     [Engine] #-right(0-# [Feed]
     [Engine] .left.> (Link)

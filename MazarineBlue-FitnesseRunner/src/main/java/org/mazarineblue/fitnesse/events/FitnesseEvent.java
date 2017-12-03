@@ -17,7 +17,8 @@
  */
 package org.mazarineblue.fitnesse.events;
 
-import org.mazarineblue.eventdriven.InvokerEvent;
+import org.mazarineblue.eventbus.Event;
+import org.mazarineblue.libraries.fixtures.events.FixtureEvent;
 
 /**
  * A {@code FitnesseEvent} is the base {@link Event} of all events in the
@@ -26,5 +27,7 @@ import org.mazarineblue.eventdriven.InvokerEvent;
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
 public abstract class FitnesseEvent
-        extends InvokerEvent {
+        extends FixtureEvent {
+
+    private static final long serialVersionUID = 1L;
 }

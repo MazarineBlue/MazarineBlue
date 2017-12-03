@@ -31,6 +31,7 @@ import org.mazarineblue.utililities.ID;
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
+@SuppressWarnings("serial")
 public class TestEvent
         extends AbstractEvent {
 
@@ -48,7 +49,7 @@ public class TestEvent
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
+        return this == obj || obj != null && getClass() == obj.getClass()
                 && Objects.equals(this.id, ((TestEvent) obj).id);
     }
 }

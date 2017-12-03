@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) 2017 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -17,16 +17,8 @@
  */
 package org.mazarineblue.utililities.exceptions;
 
-/**
- * An {@code UnclonableObjectException} is thrown by {@code CloneUtil} when it
- * was not able to clone an object.
- *
- * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
- */
 public class UnclonableObjectException
         extends RuntimeException {
-
-    private static final long serialVersionUID = 1L;
 
     public UnclonableObjectException(Throwable cause) {
         super(cause);

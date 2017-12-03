@@ -18,14 +18,18 @@
 package org.mazarineblue.fitnesse.engineplugin;
 
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.mazarineblue.fitnesse.events.NewInstanceEvent;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
-public class NewInstanceEventTest {
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
+public class NewInstanceEventTest
+        extends TestHashCodeAndEquals<NewInstanceEvent> {
 
     private NewInstanceEvent a;
 
@@ -40,27 +44,9 @@ public class NewInstanceEventTest {
     }
 
     @Test
-    @SuppressWarnings("ObjectEqualsNull")
-    public void equals_Null() {
-        assertFalse(a.equals(null));
-    }
-
-    @Test
-    @SuppressWarnings("IncompatibleEquals")
-    public void equals_DifferentClass() {
-        assertFalse(a.equals(""));
-    }
-
-    @Test
     public void hashCode_DifferentInstance() {
         NewInstanceEvent b = new NewInstanceEvent("rotca", "fixture", "arg1", "arg2");
         assertNotEquals(a.hashCode(), b.hashCode());
-    }
-
-    @Test
-    public void equals_DifferentInstance() {
-        NewInstanceEvent b = new NewInstanceEvent("rotca", "fixture", "arg1", "arg2");
-        assertNotEquals(a, b);
     }
 
     @Test
@@ -70,32 +56,29 @@ public class NewInstanceEventTest {
     }
 
     @Test
+    public void equals_DifferentInstance() {
+        NewInstanceEvent b = new NewInstanceEvent("rotca", "fixture", "arg1", "arg2");
+        assertFalse(a.equals(b));
+    }
+
+    @Test
     public void equals_DifferentFixture() {
         NewInstanceEvent b = new NewInstanceEvent("actor", "erutxif", "arg1", "arg2");
-        assertNotEquals(a, b);
+        assertFalse(a.equals(b));
     }
 
-    @Test
-    public void hashCode_DifferentArguments() {
-        NewInstanceEvent b = new NewInstanceEvent("actor", "fixture", "arg2", "arg1");
-        assertNotEquals(a.hashCode(), b.hashCode());
+    @Override
+    protected NewInstanceEvent getIdenticalObject() {
+        return new NewInstanceEvent("actor", "fixture", "arg1", "arg2");
     }
 
-    @Test
-    public void equals_DifferentArguments() {
-        NewInstanceEvent b = new NewInstanceEvent("actor", "fixture", "arg2", "arg1");
-        assertNotEquals(a, b);
+    @Override
+    protected NewInstanceEvent getObject() {
+        return a;
     }
 
-    @Test
-    public void hashCode_Identical() {
-        NewInstanceEvent b = new NewInstanceEvent("actor", "fixture", "arg1", "arg2");
-        assertEquals(a.hashCode(), b.hashCode());
-    }
-
-    @Test
-    public void equals_Identical() {
-        NewInstanceEvent b = new NewInstanceEvent("actor", "fixture", "arg1", "arg2");
-        assertEquals(a, b);
+    @Override
+    protected NewInstanceEvent getDifferentObject() {
+        return new NewInstanceEvent("actor", "fixture", "arg2", "arg1");
     }
 }

@@ -19,16 +19,16 @@ package org.mazarineblue.swingrunner;
 
 import java.awt.Window;
 import java.io.File;
+import static java.lang.Thread.currentThread;
 import java.util.concurrent.TimeoutException;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
+import static javax.swing.SwingUtilities.invokeLater;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
-import org.mazarineblue.swing.SwingUtil;
 import org.mazarineblue.swingrunner.archive.exceptions.FileAccessException;
 import org.mazarineblue.swingrunner.archive.exceptions.UnableToReadFromFileException;
 import org.mazarineblue.swingrunner.archive.exceptions.UnableToWriteToFileException;
@@ -36,13 +36,16 @@ import org.mazarineblue.swingrunner.exceptions.NoFileSelectedException;
 import org.mazarineblue.swingrunner.exceptions.NoSheetSelectedException;
 import org.mazarineblue.swingrunner.exceptions.UserException;
 import org.mazarineblue.swingrunner.util.DummyExceptionReporter;
+import static org.mazarineblue.utilities.swing.SwingUtil.fetchChildIndexed;
+import static org.mazarineblue.utilities.swing.SwingUtil.fetchWindowTitled;
+import static org.mazarineblue.utilities.swing.SwingUtil.waitFor;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
 public class ExceptionHandlerTest {
 
-    private static final int TIMEOUT = 1000;
+    private static final int TIMEOUT = 2000;
 
     private JDialog dialog;
     private String title;
@@ -66,28 +69,28 @@ public class ExceptionHandlerTest {
     @Test
     public void nullPointer()
             throws TimeoutException {
-        dialog = openErrorDialog(new NullPointerException(), TIMEOUT);
+        dialog = openErrorDialog(new NullPointerException());
         assertErrorMessage("Unknown error occurred.", dialog);
     }
 
     @Test
     public void NoFileSelectedException()
             throws TimeoutException {
-        dialog = openErrorDialog(new NoFileSelectedException(), TIMEOUT);
+        dialog = openErrorDialog(new NoFileSelectedException());
         assertErrorMessage("A file needs to be selected.", dialog);
     }
 
     @Test
     public void NoSheetSelectedException()
             throws TimeoutException {
-        dialog = openErrorDialog(new NoSheetSelectedException(), TIMEOUT);
+        dialog = openErrorDialog(new NoSheetSelectedException());
         assertErrorMessage("A sheet needs to be selected.", dialog);
     }
 
     @Test
     public void SwingException()
             throws TimeoutException {
-        dialog = openErrorDialog(new UserException(), TIMEOUT);
+        dialog = openErrorDialog(new UserException());
         assertErrorMessage("Unknown user error occurred.", dialog);
     }
 
@@ -95,7 +98,7 @@ public class ExceptionHandlerTest {
     public void UnableToReadFromFileException()
             throws TimeoutException {
         File file = new File("404");
-        dialog = openErrorDialog(new UnableToReadFromFileException(file, null), TIMEOUT);
+        dialog = openErrorDialog(new UnableToReadFromFileException(file, null));
         assertErrorMessage("Unable to read from file: " + file, dialog);
     }
 
@@ -103,7 +106,7 @@ public class ExceptionHandlerTest {
     public void UnableToWriteToFileException()
             throws TimeoutException {
         File file = new File("404");
-        dialog = openErrorDialog(new UnableToWriteToFileException(file, null), TIMEOUT);
+        dialog = openErrorDialog(new UnableToWriteToFileException(file, null));
         assertErrorMessage("Unable to write to file: " + file, dialog);
     }
 
@@ -111,17 +114,17 @@ public class ExceptionHandlerTest {
     public void FileAccessException()
             throws TimeoutException {
         File file = new File("404");
-        dialog = openErrorDialog(new FileAccessException(file, null), TIMEOUT);
+        dialog = openErrorDialog(new FileAccessException(file, null));
         assertErrorMessage("Unknown error occurred with file: " + file, dialog);
     }
 
-    private JDialog openErrorDialog(Throwable ex, long timeout)
+    private JDialog openErrorDialog(Throwable ex)
             throws TimeoutException {
-        SwingUtilities.invokeLater(() -> handler.uncaughtException(Thread.currentThread(), ex));
-        return SwingUtil.waitFor(() -> SwingUtil.fetchWindowTitled(parent, title, JDialog.class), timeout);
+        invokeLater(() -> handler.uncaughtException(currentThread(), ex));
+        return waitFor(() -> fetchWindowTitled(parent, title, JDialog.class), TIMEOUT);
     }
 
     private void assertErrorMessage(String errorMessage, JDialog dialog) {
-        assertEquals(errorMessage, SwingUtil.fetchChildIndexed(dialog, 0, JLabel.class).getText());
+        assertEquals(errorMessage, fetchChildIndexed(dialog, 0, JLabel.class).getText());
     }
 }

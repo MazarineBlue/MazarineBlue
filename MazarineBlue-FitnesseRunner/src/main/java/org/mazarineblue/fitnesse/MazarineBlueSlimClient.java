@@ -21,10 +21,12 @@ import fitnesse.slim.instructions.Instruction;
 import fitnesse.slim.instructions.InstructionExecutor;
 import fitnesse.testsystems.slim.SlimClient;
 import java.io.IOException;
+import static java.lang.Thread.currentThread;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.mazarineblue.eventbus.Event;
+import org.mazarineblue.fitnesse.engineplugin.FitnesseSubscriber;
 import org.mazarineblue.threadrunner.ServiceRunner;
 import org.mazarineblue.threadrunner.ServiceRunnerFactory;
 import org.mazarineblue.threadrunner.events.ByeEvent;
@@ -88,7 +90,7 @@ class MazarineBlueSlimClient
             pipe.write(new ByeEvent());
             runner.bye();
         } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
+            currentThread().interrupt();
             throw new IOException(ex);
         } finally {
             clean();
@@ -103,7 +105,7 @@ class MazarineBlueSlimClient
             pipe.write(new KillEvent());
             runner.kill();
         } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
+            currentThread().interrupt();
         } finally {
             runner.bye();
             clean();

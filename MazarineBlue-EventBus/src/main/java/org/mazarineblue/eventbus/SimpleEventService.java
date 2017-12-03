@@ -114,13 +114,12 @@ public class SimpleEventService<E extends Event>
     }
 
     private boolean hasHandler(Subscriber<E> subscriber) {
-        for (Method baseHandler : subscriber.getClass().getMethods()) {
-            if (!isEventHandler(baseHandler))
-                continue;
-            if (!isValidEventHandler(baseHandler))
-                throw new IllegalEventHandlerException(subscriber);
-            return true;
-        }
+        for (Method baseHandler : subscriber.getClass().getMethods())
+            if (isEventHandler(baseHandler))
+                if (!isValidEventHandler(baseHandler))
+                    throw new IllegalEventHandlerException(subscriber);
+                else
+                    return true;
         return false;
     }
 
@@ -178,7 +177,7 @@ public class SimpleEventService<E extends Event>
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
+        return this == obj || obj != null && getClass() == obj.getClass()
                 && Objects.equals(this.eventType, ((SimpleEventService<?>) obj).eventType)
                 && Objects.equals(this.subscriptions, ((SimpleEventService<?>) obj).subscriptions);
     }

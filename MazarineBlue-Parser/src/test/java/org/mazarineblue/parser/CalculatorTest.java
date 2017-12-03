@@ -25,13 +25,15 @@
  */
 package org.mazarineblue.parser;
 
+import static java.lang.Long.parseLong;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mazarineblue.parser.analyser.syntax.precedenceclimbing.Associativity;
+import static org.junit.rules.ExpectedException.none;
+import static org.mazarineblue.parser.analyser.syntax.precedenceclimbing.Associativity.LEFT;
 import org.mazarineblue.parser.analyser.syntax.precedenceclimbing.storage.BinaryOperator;
 import org.mazarineblue.parser.analyser.syntax.precedenceclimbing.storage.UnaryOperator;
 import org.mazarineblue.parser.exceptions.InvalidExpressionException;
@@ -44,7 +46,7 @@ public class CalculatorTest {
 
     @Rule
     @SuppressWarnings("PublicField")
-    public ExpectedException exception = ExpectedException.none();
+    public ExpectedException exception = none();
     private StringPrecedenceClimbingParser<Object> parser;
 
     @Before
@@ -62,7 +64,7 @@ public class CalculatorTest {
         if (obj instanceof Long)
             return (Long) obj;
         if (obj instanceof String)
-            return Long.parseLong(((String) obj).trim());
+            return parseLong(((String) obj).trim());
         throw new UnsupportedOperationException();
     }
 
@@ -72,8 +74,18 @@ public class CalculatorTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void addGroupCharacters_NullOpenChar_ThrowsIllegalArgumentException() {
+        parser.addGroupCharacters(null, ")");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addGroupCharacters_NullCloseChar_ThrowsIllegalArgumentException() {
+        parser.addGroupCharacters("(", null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void addUnaryOperator_NullKey_ThrowsIllegalArgumentException() {
-        parser.addOperator(null, new UnaryOperator(1, Associativity.LEFT), t -> -convert(t));
+        parser.addOperator(null, new UnaryOperator(1, LEFT), t -> -convert(t));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -83,12 +95,12 @@ public class CalculatorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void addUnaryOperator_NullFunction_ThrowsIllegalArgumentException() {
-        parser.addOperator("+", new UnaryOperator(1, Associativity.LEFT), null);
+        parser.addOperator("+", new UnaryOperator(1, LEFT), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void addBinaryOperator_NullKey_ThrowsIllegalArgumentException() {
-        parser.addOperator(null, new BinaryOperator(1, Associativity.LEFT), (t, u) -> convert(t) + convert(u));
+        parser.addOperator(null, new BinaryOperator(1, LEFT), (t, u) -> convert(t) + convert(u));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -98,35 +110,43 @@ public class CalculatorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void addBinaryOperator_NullFunction_ThrowsIllegalArgumentException() {
-        parser.addOperator("+", new BinaryOperator(1, Associativity.LEFT), null);
+        parser.addOperator("+", new BinaryOperator(1, LEFT), null);
     }
 
     @Test
     public void parse_Alphanumeric_ThrowsSemanticExpressionException() {
         exception.expect(SemanticExpressionException.class);
         exception.expectMessage(String.format(InvalidExpressionException.FORMAT_CAUSE, 2, "For input string: \"4a\""));
-        parser.addOperator("+", new BinaryOperator(1, Associativity.LEFT), (t, u) -> convert(t) + convert(u));
+        parser.addOperator("+", new BinaryOperator(1, LEFT), (t, u) -> convert(t) + convert(u));
         assertEquals(12, (long) parser.parse("4 + 4a"));
     }
 
     @Test
     public void parse_PlusOparetor() {
-        parser.addOperator("+", new BinaryOperator(1, Associativity.LEFT), (t, u) -> convert(t) + convert(u));
+        parser.addOperator("+", new BinaryOperator(1, LEFT), (t, u) -> convert(t) + convert(u));
         assertEquals(12, (long) parser.parse("4 + 4 + 4"));
     }
 
     @Test
     public void parse_PlusMultiplyOperatorWithPrecedenceDifference() {
-        parser.addOperator("+", new BinaryOperator(1, Associativity.LEFT), (t, u) -> convert(t) + convert(u));
-        parser.addOperator("*", new BinaryOperator(2, Associativity.LEFT), (t, u) -> convert(t) * convert(u));
+        parser.addOperator("+", new BinaryOperator(1, LEFT), (t, u) -> convert(t) + convert(u));
+        parser.addOperator("*", new BinaryOperator(2, LEFT), (t, u) -> convert(t) * convert(u));
         assertEquals(32, (long) parser.parse("4 * 4 + 4 * 4"));
     }
 
     @Test
     public void parse_PlusMultiplyBinaryMinusUnaryOperatorWithPrecedenceDifference() {
-        parser.addOperator("+", new BinaryOperator(1, Associativity.LEFT), (t, u) -> convert(t) + convert(u));
-        parser.addOperator("*", new BinaryOperator(2, Associativity.LEFT), (t, u) -> convert(t) * convert(u));
-        parser.addOperator("-", new UnaryOperator(1, Associativity.LEFT), t -> -convert(t));
+        parser.addOperator("+", new BinaryOperator(1, LEFT), (t, u) -> convert(t) + convert(u));
+        parser.addOperator("*", new BinaryOperator(2, LEFT), (t, u) -> convert(t) * convert(u));
+        parser.addOperator("-", new UnaryOperator(1, LEFT), t -> -convert(t));
         assertEquals(0, (long) parser.parse("4 * 4 + 4 * -4"));
+    }
+
+    @Test
+    public void parse_PlusMultiplyOperatorWithExplicitGroupings() {
+        parser.addOperator("+", new BinaryOperator(1, LEFT), (t, u) -> convert(t) + convert(u));
+        parser.addOperator("*", new BinaryOperator(2, LEFT), (t, u) -> convert(t) * convert(u));
+        parser.addGroupCharacters("(", ")");
+        assertEquals(128, (long) parser.parse("4 * (4 + 4) * 4"));
     }
 }

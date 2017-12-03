@@ -17,17 +17,40 @@
  */
 package org.mazarineblue.consolerunner;
 
+import org.mazarineblue.fs.DiskFileSystem;
+import org.mazarineblue.fs.FileSystem;
 import org.mazarineblue.plugins.Runner;
 import org.mazarineblue.plugins.RunnerPlugin;
 import org.openide.util.lookup.ServiceProvider;
 
+/**
+ * A {@code ConsoleRunnerPlugin} is a {@code RunnerPlugin}, which creates a
+ * {@link ConsoleRunner} dynamically to read feeds from the local disk.
+ *
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 @ServiceProvider(service = RunnerPlugin.class)
 public class ConsoleRunnerPlugin
         implements RunnerPlugin {
 
+    public static final String APP = "app";
+    public static final String NAME = "console";
+    private final FileSystem fs;
+
+    /**
+     * Creates a runner, which uses the local disk to read feeds from.
+     */
+    public ConsoleRunnerPlugin() {
+        fs = new DiskFileSystem();
+    }
+
+    ConsoleRunnerPlugin(FileSystem fs) {
+        this.fs = fs;
+    }
+
     @Override
     public String name() {
-        return "console";
+        return NAME;
     }
 
     @Override
@@ -37,6 +60,6 @@ public class ConsoleRunnerPlugin
 
     @Override
     public Runner createRunner() {
-        return new ConsoleRunner();
+        return new ConsoleRunner(fs);
     }
 }

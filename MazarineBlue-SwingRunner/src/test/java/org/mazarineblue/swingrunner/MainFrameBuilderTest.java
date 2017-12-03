@@ -34,6 +34,9 @@ import org.mazarineblue.swingrunner.exceptions.FileSystemNotSetException;
 import org.mazarineblue.swingrunner.screens.main.MainFrameBuilder;
 import org.mazarineblue.swingrunner.util.TestFileSelector;
 
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 public class MainFrameBuilderTest {
 
     private MainFrameBuilder builder;
@@ -47,7 +50,7 @@ public class MainFrameBuilderTest {
         builder.setFileSelector(new TestFileSelector(new File(".")));
         builder.setExceptionHandler(new DummyExceptionHandler());
         FeedExecutorOutput output = new FeedExecutorOutputSpy(2);
-        builder.setFeedExecutorFactory(TestFeedExecutorFactory.getDefaultInstance(fs, output));
+        builder.setFeedExecutorFactory(TestFeedExecutorFactory.newInstance(fs, output));
     }
 
     @After

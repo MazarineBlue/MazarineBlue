@@ -35,7 +35,7 @@ public class PrimativesTest {
 
     @Before
     public void setup() {
-        primatives = Primatives.getDefaultInstance();
+        primatives = Primatives.newInstance();
     }
 
     @After

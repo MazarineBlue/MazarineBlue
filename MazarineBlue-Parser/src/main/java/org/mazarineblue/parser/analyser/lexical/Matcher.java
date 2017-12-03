@@ -47,6 +47,8 @@ public abstract class Matcher<T> {
         return "start=" + startIndex + ", end=" + endIndex + ", match=" + match;
     }
 
+    public abstract int length();
+
     /**
      * Test if this matches will match the specified character.
      *
@@ -67,6 +69,17 @@ public abstract class Matcher<T> {
 
     protected final void setMatch(boolean match) {
         this.match = match;
+    }
+
+    /**
+     * Test if the {@link #setStart(int) setStart} method was called and
+     * {@link #setEnd(int) setEnd} method was not called.
+     *
+     * @return {@code true} is matcher is processing the input stream of
+     *         characters.
+     */
+    protected boolean isProcessing() {
+        return startIndex >= 0 && endIndex == -1;
     }
 
     /**
@@ -140,6 +153,6 @@ public abstract class Matcher<T> {
      * @return {@code true} if this matcher should be stored before the other.
      */
     public boolean before(Matcher<T> other) {
-        return getStart() < other.getStart() && getEnd() < other.getEnd();
+        return length() > other.length();
     }
 }

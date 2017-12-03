@@ -29,6 +29,8 @@ import org.mazarineblue.swingrunner.archive.exceptions.UnableToWriteToFileExcept
 
 class RecentFiles {
 
+    private static final long serialVersionUID = 1L;
+
     private final FileSystem fs;
     private final File location;
     private final int max;

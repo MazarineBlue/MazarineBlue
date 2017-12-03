@@ -17,13 +17,15 @@
  */
 package org.mazarineblue.swingrunner.screens.about;
 
-import java.awt.Color;
+import static java.awt.Color.BLACK;
+import static java.awt.Color.LIGHT_GRAY;
 import java.awt.Font;
+import static java.awt.Font.BOLD;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import java.util.ArrayList;
-import org.mazarineblue.swingrunner.util.GraphicalMessage;
 
 /**
  * A {@code GraphicalTextImageFetcher} is a {@code ImageFetcher} that can
@@ -51,7 +53,7 @@ public class GraphicalTextImageFetcher
     }
 
     /**
-     * Adds a {@code GraphicalMessage}
+     * Adds a {@code GraphicalMessageImpl}
      *
      * @param e the element to add to the list.
      */
@@ -61,12 +63,12 @@ public class GraphicalTextImageFetcher
 
     @Override
     public Image getImage() {
-        Image image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Image image = new BufferedImage(width, height, TYPE_INT_RGB);
         Graphics graphics = image.getGraphics();
-        graphics.setColor(Color.LIGHT_GRAY);
+        graphics.setColor(LIGHT_GRAY);
         graphics.fillRect(0, 0, width, height);
-        graphics.setColor(Color.BLACK);
-        graphics.setFont(new Font("Arial Black", Font.BOLD, 20));
+        graphics.setColor(BLACK);
+        graphics.setFont(new Font("Arial Black", BOLD, 20));
         list.stream().forEach(line -> graphics.drawString(line.getMessage(), line.getX(), line.getY()));
         return image;
     }

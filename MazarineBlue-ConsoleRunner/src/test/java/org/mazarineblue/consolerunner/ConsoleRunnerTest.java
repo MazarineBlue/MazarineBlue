@@ -27,16 +27,19 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.mazarineblue.eventdriven.ExceptionThrowingLink;
+import org.mazarineblue.eventdriven.TestException;
 import org.mazarineblue.eventdriven.util.TestInvokerEvent;
 import org.mazarineblue.executors.FeedExecutorFactory;
 import org.mazarineblue.executors.util.FeedExecutorOutputSpy;
-import org.mazarineblue.executors.util.TestException;
 import org.mazarineblue.executors.util.TestFeedExecutorFactory;
 import org.mazarineblue.fs.MemoryFileSystem;
 import org.mazarineblue.links.ConsumeEventsLink;
 import org.mazarineblue.links.util.EventConvertorLink;
 import org.mazarineblue.plugins.PluginLoader;
 
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 public class ConsoleRunnerTest {
 
     private final static String PROPER_FILE = "demo.txt";
@@ -55,7 +58,7 @@ public class ConsoleRunnerTest {
         fs.mkfile(new File(PROPER_FILE), "| Keyword | Argument |");
         fs.mkfile(new File(UNSUPPORTED_FILE), "");
         output = new FeedExecutorOutputSpy(2);
-        feedExecutorFactory = TestFeedExecutorFactory.getDefaultInstance(fs, output);
+        feedExecutorFactory = TestFeedExecutorFactory.newInstance(fs, output);
         cli = new ConsoleRunner(output, feedExecutorFactory);
     }
 
@@ -67,27 +70,31 @@ public class ConsoleRunnerTest {
     }
 
     @Test
-    public void nullArguments_HelpPrinted() {
-        cli.execute((String[]) null);
+    public void nullArgument_RuntimeExceptionThrown_CausesUnreadableFeeds() {
+        feedExecutorFactory.addLink(() -> new ExceptionThrowingLink(TestException::new));
+        cli.setArguments((String[]) null);
+        cli.start();
+        output.throwFirstException();
         assertTrue(output.helpPrinted());
-        assertArrayEquals(new String[0], output.getProcessingFiles());
+        assertArrayEquals(new String[]{}, output.getProcessingFiles());
         assertArrayEquals(new String[0], output.getMissingFiles());
+        assertArrayEquals(new String[0], output.getUnreadableFiles());
+        assertArrayEquals(new String[0], output.getFilesNotSupported());
+        assertEquals(0, output.getThrownExceptions().length);
     }
 
     @Test
-    public void noArguments_helpPrinted() {
-        cli.execute(new String[0]);
+    public void zeroArgument_RuntimeExceptionThrown_CausesUnreadableFeeds() {
+        feedExecutorFactory.addLink(() -> new ExceptionThrowingLink(TestException::new));
+        cli.setArguments();
+        cli.start();
+        output.throwFirstException();
         assertTrue(output.helpPrinted());
-        assertArrayEquals(new String[0], output.getProcessingFiles());
+        assertArrayEquals(new String[]{}, output.getProcessingFiles());
         assertArrayEquals(new String[0], output.getMissingFiles());
-    }
-
-    @Test
-    public void singleArgument_MissingFile_HelpPrinted() {
-        cli.execute(MISSING_FILE);
-        assertTrue(output.helpPrinted());
-        assertArrayEquals(new String[0], output.getProcessingFiles());
-        assertArrayEquals(new String[]{MISSING_FILE}, output.getMissingFiles());
+        assertArrayEquals(new String[0], output.getUnreadableFiles());
+        assertArrayEquals(new String[0], output.getFilesNotSupported());
+        assertEquals(0, output.getThrownExceptions().length);
     }
 
     @Test
@@ -101,28 +108,6 @@ public class ConsoleRunnerTest {
         assertArrayEquals(new String[0], output.getFilesNotSupported());
         assertEquals(1, output.getThrownExceptions().length);
         assertEquals(TestException.class, output.getThrownExceptions()[0].getClass());
-    }
-
-    @Test
-    public void singleArgument_FileNotSupportedExceptionThrown_CausesUnreadableFeed() {
-        cli.execute(UNSUPPORTED_FILE);
-        assertTrue(output.helpPrinted());
-        assertArrayEquals(new String[]{UNSUPPORTED_FILE}, output.getProcessingFiles());
-        assertArrayEquals(new String[0], output.getUnreadableFiles());
-        assertArrayEquals(new String[0], output.getMissingFiles());
-        assertArrayEquals(new String[]{UNSUPPORTED_FILE}, output.getFilesNotSupported());
-        assertEquals(0, output.getThrownExceptions().length);
-    }
-
-    @Test
-    public void singleArgument_UnsupprtedFeed_CausesCausesUnreadableFeed() {
-        cli.execute(UNSUPPORTED_FILE);
-        assertTrue(output.helpPrinted());
-        assertArrayEquals(new String[]{UNSUPPORTED_FILE}, output.getProcessingFiles());
-        assertArrayEquals(new String[0], output.getMissingFiles());
-        assertArrayEquals(new String[0], output.getUnreadableFiles());
-        assertArrayEquals(new String[]{UNSUPPORTED_FILE}, output.getFilesNotSupported());
-        assertEquals(0, output.getThrownExceptions().length);
     }
 
     @Test

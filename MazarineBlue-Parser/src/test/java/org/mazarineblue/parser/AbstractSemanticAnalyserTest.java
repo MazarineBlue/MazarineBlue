@@ -28,7 +28,7 @@ package org.mazarineblue.parser;
 import org.mazarineblue.parser.tokens.Token;
 import org.mazarineblue.parser.tokens.Tokens;
 import org.mazarineblue.parser.tree.SyntaxTreeNode;
-import org.mazarineblue.parser.tree.TreeUtil;
+import static org.mazarineblue.parser.tree.TreeUtil.mkLeaf;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -41,6 +41,6 @@ abstract class AbstractSemanticAnalyserTest {
     }
 
     protected static SyntaxTreeNode<String> leaf(String value) {
-        return TreeUtil.mkLeaf(token(value));
+        return mkLeaf(token(value));
     }
 }

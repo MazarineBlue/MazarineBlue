@@ -32,7 +32,9 @@ import java.util.function.Function;
 import org.mazarineblue.parser.exceptions.IllegalSyntaxTreeException;
 import org.mazarineblue.parser.tokens.Token;
 import org.mazarineblue.parser.tree.SyntaxTreeNode;
-import org.mazarineblue.parser.tree.TreeUtil;
+import static org.mazarineblue.parser.tree.TreeUtil.isBinary;
+import static org.mazarineblue.parser.tree.TreeUtil.isLeaf;
+import static org.mazarineblue.parser.tree.TreeUtil.isUnary;
 
 /**
  * A {@code TreeEvaluatorAnalyser} is a {@code SemanticAnalyser} that
@@ -84,11 +86,11 @@ public class TreeEvaluatorAnalyser<R>
     public R evaluate(SyntaxTreeNode<String> tree) {
         if (tree == null)
             throw new IllegalSyntaxTreeException(tree);
-        if (TreeUtil.isLeaf(tree))
+        if (isLeaf(tree))
             return leafFunc.apply(getTokenValue(tree));
-        if (TreeUtil.isUnary(tree))
+        if (isUnary(tree))
             return evaluateUnaryTree(tree);
-        if (TreeUtil.isBinary(tree))
+        if (isBinary(tree))
             return evaluateBinaryTree(tree);
         throw new IllegalSyntaxTreeException(tree);
     }

@@ -21,12 +21,14 @@ package org.mazarineblue.swingrunner.screens.about;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -43,7 +45,7 @@ public class ImagePanel
 
     private transient Image image;
 
-    ImagePanel(Image image) {
+    public ImagePanel(Image image) {
         this.image = image;
     }
 
@@ -55,6 +57,26 @@ public class ImagePanel
 
     public Image getImage() {
         return image;
+    }
+
+    @Override
+    public int hashCode() {
+        try {
+            return 5 * 71
+                    + Arrays.hashCode(getData(convertImage(this.image)));
+        } catch (IOException ex) {
+            return 0;
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        try {
+            return this == obj || obj != null && getClass() == obj.getClass()
+                    && Arrays.equals(getData(convertImage(this.image)), getData(convertImage(((ImagePanel) obj).image)));
+        } catch (IOException ex) {
+            return false;
+        }
     }
 
     private void writeObject(ObjectOutputStream output)
@@ -71,8 +93,7 @@ public class ImagePanel
     }
 
     private static BufferedImage convertImage(Image image) {
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
-                                                        BufferedImage.TYPE_INT_RGB);
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), TYPE_INT_RGB);
         bufferedImage.createGraphics().drawImage(image, null, null);
         return bufferedImage;
     }
@@ -92,7 +113,7 @@ public class ImagePanel
 
     private static Image readImage(ObjectInputStream input)
             throws IOException {
-        byte[] data = new byte[input.read()];
+        byte[] data = new byte[input.readInt()];
         input.readFully(data);
         return ImageIO.read(new ByteArrayInputStream(data));
     }

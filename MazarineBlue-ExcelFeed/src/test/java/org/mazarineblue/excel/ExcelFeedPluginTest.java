@@ -70,8 +70,8 @@ public class ExcelFeedPluginTest {
         assertTrue(plugin.canProcess("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void readSheetNames_Null_ThrowsNullPointerException() {
+    @Test(expected = CorruptWorkbookException.class)
+    public void readSheetNames_Null_ThrowsException() {
         plugin.readSheetNames(null);
     }
 

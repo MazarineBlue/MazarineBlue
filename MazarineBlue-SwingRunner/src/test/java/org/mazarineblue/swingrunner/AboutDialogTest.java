@@ -33,11 +33,11 @@ import org.mazarineblue.executors.FeedExecutorFactory;
 import org.mazarineblue.executors.util.TestFeedExecutorFactory;
 import org.mazarineblue.fs.FileSystem;
 import org.mazarineblue.fs.MemoryFileSystem;
-import org.mazarineblue.pictures.ImageUtil;
+import static org.mazarineblue.pictures.ImageUtil.createPicture;
 import org.mazarineblue.pictures.Picture;
-import org.mazarineblue.swing.SwingUtil;
 import org.mazarineblue.swingrunner.config.Config;
 import org.mazarineblue.swingrunner.screens.about.AboutDialog;
+import org.mazarineblue.swingrunner.screens.about.AboutDialogBuilder;
 import org.mazarineblue.swingrunner.screens.about.GraphicalTextImageFetcher;
 import org.mazarineblue.swingrunner.screens.about.ImageFetcher;
 import org.mazarineblue.swingrunner.screens.about.ImagePanel;
@@ -47,8 +47,9 @@ import org.mazarineblue.swingrunner.screens.main.MainFrameBuilder;
 import org.mazarineblue.swingrunner.util.DummyExceptionReporter;
 import org.mazarineblue.swingrunner.util.ExceptionReporter;
 import org.mazarineblue.swingrunner.util.TestFileSelector;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.mazarineblue.utilities.swing.SwingUtil.clickButton;
+import static org.mazarineblue.utilities.swing.SwingUtil.fetchChildNamed;
+import static org.mazarineblue.utilities.swing.SwingUtil.fetchWindowTitled;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -62,7 +63,7 @@ public class AboutDialogTest {
     public void setupClass()
             throws IOException {
         URL url = getClass().getClassLoader().getResource(new File("logo.png").getPath());
-        mazarineBlue = ImageUtil.createPicture(ImageIO.read(url));
+        mazarineBlue = createPicture(ImageIO.read(url));
     }
 
     @After
@@ -82,14 +83,13 @@ public class AboutDialogTest {
         builder.setConfig(config);
         builder.setFileSelector(new TestFileSelector(new File("")));
         builder.setExceptionHandler(new TestExceptionHandler());
-        FeedExecutorFactory factory = TestFeedExecutorFactory.getDefaultInstance(fs);
+        FeedExecutorFactory factory = TestFeedExecutorFactory.newInstance(fs);
         builder.setFeedExecutorFactory(factory);
         MainFrame frame = new MainFrame(builder);
 
 //        model.addListener(new TestListener(fs));
-
-        SwingUtil.clickButton(frame, "aboutMenuItem");
-        dialog = SwingUtil.fetchWindowTitled(frame, "About MazarineBlue", AboutDialog.class);
+        clickButton(frame, "aboutMenuItem");
+        dialog = fetchWindowTitled(frame, "About MazarineBlue", AboutDialog.class);
         assertEquals("MazarineBlue", getTextFromLabel(dialog, "titleLabel"));
         assertEquals("Version", getTextFromLabel(dialog, "versionLabel"));
         assertEquals("Build date", getTextFromLabel(dialog, "buildDateLabel"));
@@ -98,8 +98,8 @@ public class AboutDialogTest {
         assertEquals("Alex de Kruijff", getTextFromLabel(dialog, "leadDeveloperName"));
         assertEquals("Daan Verbiest", getTextFromLabel(dialog, "graphicalDesignName"));
 
-        Image image = SwingUtil.fetchChildNamed(dialog, "logoPanel", ImagePanel.class).getImage();
-        Picture actual = ImageUtil.createPicture(image);
+        Image image = fetchChildNamed(dialog, "logoPanel", ImagePanel.class).getImage();
+        Picture actual = createPicture(image);
         assertEquals(mazarineBlue, actual);
     }
 
@@ -107,7 +107,7 @@ public class AboutDialogTest {
     public void defaultLogo()
             throws IOException {
         ImageFetcher fetcher = new GraphicalTextImageFetcher(150, 150);
-        dialog = new AboutDialog(null, fetcher);
+        dialog = new AboutDialog(new AboutDialogBuilder().setImageFetcher(fetcher).setResourceBundle("MazarineBlue"));
         assertEquals("MazarineBlue", getTextFromLabel(dialog, "titleLabel"));
         assertEquals("Version", getTextFromLabel(dialog, "versionLabel"));
         assertEquals("Build date", getTextFromLabel(dialog, "buildDateLabel"));
@@ -116,8 +116,8 @@ public class AboutDialogTest {
         assertEquals("Alex de Kruijff", getTextFromLabel(dialog, "leadDeveloperName"));
         assertEquals("Daan Verbiest", getTextFromLabel(dialog, "graphicalDesignName"));
 
-        Image image = SwingUtil.fetchChildNamed(dialog, "logoPanel", ImagePanel.class).getImage();
-        Picture actual = ImageUtil.createPicture(image);
+        Image image = fetchChildNamed(dialog, "logoPanel", ImagePanel.class).getImage();
+        Picture actual = createPicture(image);
         assertNotEquals(mazarineBlue, actual);
     }
 
@@ -128,7 +128,7 @@ public class AboutDialogTest {
         ImageFetcher backup = new GraphicalTextImageFetcher(150, 150);
         ExceptionReporter reporter = new DummyExceptionReporter();
         ImageFetcher fetcher = new URLImageFetcher(url, backup, reporter);
-        dialog = new AboutDialog(null, fetcher);
+        dialog = new AboutDialog(new AboutDialogBuilder().setImageFetcher(fetcher).setResourceBundle("MazarineBlue"));
         assertEquals("MazarineBlue", getTextFromLabel(dialog, "titleLabel"));
         assertEquals("Version", getTextFromLabel(dialog, "versionLabel"));
         assertEquals("Build date", getTextFromLabel(dialog, "buildDateLabel"));
@@ -137,11 +137,11 @@ public class AboutDialogTest {
         assertEquals("Alex de Kruijff", getTextFromLabel(dialog, "leadDeveloperName"));
         assertEquals("Daan Verbiest", getTextFromLabel(dialog, "graphicalDesignName"));
 
-        Image image = SwingUtil.fetchChildNamed(dialog, "logoPanel", ImagePanel.class).getImage();
-        Picture picture = ImageUtil.createPicture(image);
+        Image image = fetchChildNamed(dialog, "logoPanel", ImagePanel.class).getImage();
+        Picture picture = createPicture(image);
     }
 
     private static String getTextFromLabel(Component parent, String name) {
-        return SwingUtil.fetchChildNamed(parent, name, JLabel.class).getText();
+        return fetchChildNamed(parent, name, JLabel.class).getText();
     }
 }

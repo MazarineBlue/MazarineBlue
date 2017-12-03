@@ -26,7 +26,7 @@
 package org.mazarineblue.parser;
 
 import org.mazarineblue.parser.analyser.lexical.StringLexicalAnalyser;
-import org.mazarineblue.parser.analyser.lexical.matchers.BracketVariableMatcher;
+import org.mazarineblue.parser.analyser.lexical.matchers.ComplexVariableMatcher;
 import org.mazarineblue.parser.analyser.lexical.matchers.SimpleVariableMatcher;
 import org.mazarineblue.parser.analyser.semantic.SemanticAnalyser;
 import org.mazarineblue.parser.analyser.semantic.TreeConcatenatingAnalyser;
@@ -42,9 +42,6 @@ import org.mazarineblue.parser.analyser.syntax.TokenConcatenatingAnalyser;
 public class StringVariableParser
         implements Parser<String, String> {
 
-    private final StringLexicalAnalyser lexicalAnalyser;
-    private final SyntacticAnalyser<String> syntacticAnalyser;
-    private final SemanticAnalyser<String, String> semanticAnalyser;
     private final GenericParser<String, String> parser;
 
     /**
@@ -54,11 +51,13 @@ public class StringVariableParser
      * @param source the variable source to use for the replacements.
      */
     public StringVariableParser(VariableSource<String> source) {
-        lexicalAnalyser = new StringLexicalAnalyser();
-        lexicalAnalyser.add(new BracketVariableMatcher());
+        StringLexicalAnalyser lexicalAnalyser = new StringLexicalAnalyser();
+        lexicalAnalyser.add(new ComplexVariableMatcher());
         lexicalAnalyser.add(new SimpleVariableMatcher());
-        syntacticAnalyser = new TokenConcatenatingAnalyser<>();
-        semanticAnalyser = new TreeConcatenatingAnalyser(source);
+
+        SyntacticAnalyser<String> syntacticAnalyser = new TokenConcatenatingAnalyser<>();
+        SemanticAnalyser<String, String> semanticAnalyser = new TreeConcatenatingAnalyser(source);
+
         parser = new GenericParser<>(lexicalAnalyser, syntacticAnalyser, semanticAnalyser);
     }
 

@@ -32,83 +32,83 @@ import org.mazarineblue.utililities.exceptions.InputConvertException;
  */
 public class TypeConvertor {
 
-    private Primatives primatives = Primatives.getDefaultInstance();
+    private Primatives primatives = Primatives.newInstance();
     private final Map<Tupel<Class<?>>, Function<Object, Object>> methods = new HashMap<>(128);
 
     /**
      * Constructs the a {@code TypeConvertor}.
      */
     public TypeConvertor() {
-        methods.put(new Tupel<>(Byte.class, Short.class),           (Object input) -> (byte) (short) input);
-        methods.put(new Tupel<>(Byte.class, Integer.class),         (Object input) -> (byte) (int) input);
-        methods.put(new Tupel<>(Byte.class, Long.class),            (Object input) -> (byte) (long) input);
-        methods.put(new Tupel<>(Byte.class, Float.class),           (Object input) -> (byte) (float) input);
-        methods.put(new Tupel<>(Byte.class, Double.class),          (Object input) -> (byte) (double) input);
-        methods.put(new Tupel<>(Byte.class, Character.class),       (Object input) -> Byte.parseByte(input.toString()));
-        methods.put(new Tupel<>(Byte.class, String.class),          (Object input) -> Byte.parseByte((String) input));
+        methods.put(new Tupel<>(Byte.class, Short.class), (Object input) -> (byte) (short) input);
+        methods.put(new Tupel<>(Byte.class, Integer.class), (Object input) -> (byte) (int) input);
+        methods.put(new Tupel<>(Byte.class, Long.class), (Object input) -> (byte) (long) input);
+        methods.put(new Tupel<>(Byte.class, Float.class), (Object input) -> (byte) (float) input);
+        methods.put(new Tupel<>(Byte.class, Double.class), (Object input) -> (byte) (double) input);
+        methods.put(new Tupel<>(Byte.class, Character.class), (Object input) -> Byte.parseByte(input.toString()));
+        methods.put(new Tupel<>(Byte.class, String.class), (Object input) -> Byte.parseByte((String) input));
 
-        methods.put(new Tupel<>(Short.class, Byte.class),           (Object input) -> (short) (byte) input);
-        methods.put(new Tupel<>(Short.class, Integer.class),        (Object input) -> (short) (int) input);
-        methods.put(new Tupel<>(Short.class, Long.class),           (Object input) -> (short) (long) input);
-        methods.put(new Tupel<>(Short.class, Float.class),          (Object input) -> (short) (float) input);
-        methods.put(new Tupel<>(Short.class, Double.class),         (Object input) -> (short) (double) input);
-        methods.put(new Tupel<>(Short.class, Character.class),      (Object input) -> Short.parseShort(input.toString()));
-        methods.put(new Tupel<>(Short.class, String.class),         (Object input) -> Short.parseShort((String) input));
+        methods.put(new Tupel<>(Short.class, Byte.class), (Object input) -> (short) (byte) input);
+        methods.put(new Tupel<>(Short.class, Integer.class), (Object input) -> (short) (int) input);
+        methods.put(new Tupel<>(Short.class, Long.class), (Object input) -> (short) (long) input);
+        methods.put(new Tupel<>(Short.class, Float.class), (Object input) -> (short) (float) input);
+        methods.put(new Tupel<>(Short.class, Double.class), (Object input) -> (short) (double) input);
+        methods.put(new Tupel<>(Short.class, Character.class), (Object input) -> Short.parseShort(input.toString()));
+        methods.put(new Tupel<>(Short.class, String.class), (Object input) -> Short.parseShort((String) input));
 
-        methods.put(new Tupel<>(Integer.class, Byte.class),         (Object input) -> (int) (byte) input);
-        methods.put(new Tupel<>(Integer.class, Short.class),        (Object input) -> (int) (short) input);
-        methods.put(new Tupel<>(Integer.class, Long.class),         (Object input) -> (int) (long) input);
-        methods.put(new Tupel<>(Integer.class, Float.class),        (Object input) -> (int) (float) input);
-        methods.put(new Tupel<>(Integer.class, Double.class),       (Object input) -> (int) (double) input);
-        methods.put(new Tupel<>(Integer.class, Character.class),    (Object input) -> Integer.parseInt(input.toString()));
-        methods.put(new Tupel<>(Integer.class, String.class),       (Object input) -> Integer.parseInt((String) input));
+        methods.put(new Tupel<>(Integer.class, Byte.class), (Object input) -> (int) (byte) input);
+        methods.put(new Tupel<>(Integer.class, Short.class), (Object input) -> (int) (short) input);
+        methods.put(new Tupel<>(Integer.class, Long.class), (Object input) -> (int) (long) input);
+        methods.put(new Tupel<>(Integer.class, Float.class), (Object input) -> (int) (float) input);
+        methods.put(new Tupel<>(Integer.class, Double.class), (Object input) -> (int) (double) input);
+        methods.put(new Tupel<>(Integer.class, Character.class), (Object input) -> Integer.parseInt(input.toString()));
+        methods.put(new Tupel<>(Integer.class, String.class), (Object input) -> Integer.parseInt((String) input));
 
-        methods.put(new Tupel<>(Long.class, Byte.class),            (Object input) -> (long) (byte) input);
-        methods.put(new Tupel<>(Long.class, Short.class),           (Object input) -> (long) (short) input);
-        methods.put(new Tupel<>(Long.class, Integer.class),         (Object input) -> (long) (int) input);
-        methods.put(new Tupel<>(Long.class, Float.class),           (Object input) -> (long) (float) input);
-        methods.put(new Tupel<>(Long.class, Double.class),          (Object input) -> (long) (double) input);
-        methods.put(new Tupel<>(Long.class, Character.class),       (Object input) -> Long.parseLong(input.toString()));
-        methods.put(new Tupel<>(Long.class, String.class),          (Object input) -> Long.parseLong((String) input));
+        methods.put(new Tupel<>(Long.class, Byte.class), (Object input) -> (long) (byte) input);
+        methods.put(new Tupel<>(Long.class, Short.class), (Object input) -> (long) (short) input);
+        methods.put(new Tupel<>(Long.class, Integer.class), (Object input) -> (long) (int) input);
+        methods.put(new Tupel<>(Long.class, Float.class), (Object input) -> (long) (float) input);
+        methods.put(new Tupel<>(Long.class, Double.class), (Object input) -> (long) (double) input);
+        methods.put(new Tupel<>(Long.class, Character.class), (Object input) -> Long.parseLong(input.toString()));
+        methods.put(new Tupel<>(Long.class, String.class), (Object input) -> Long.parseLong((String) input));
 
-        methods.put(new Tupel<>(Float.class, Byte.class),           (Object input) -> (float) ((byte) input));
-        methods.put(new Tupel<>(Float.class, Short.class),          (Object input) -> (float) ((short) input));
-        methods.put(new Tupel<>(Float.class, Integer.class),        (Object input) -> (float) ((int) input));
-        methods.put(new Tupel<>(Float.class, Long.class),           (Object input) -> (float) ((long) input));
-        methods.put(new Tupel<>(Float.class, Double.class),         (Object input) -> (float) (double) input);
-        methods.put(new Tupel<>(Float.class, Character.class),      (Object input) -> Float.parseFloat(input.toString()));
-        methods.put(new Tupel<>(Float.class, String.class),         (Object input) -> Float.parseFloat((String) input));
+        methods.put(new Tupel<>(Float.class, Byte.class), (Object input) -> (float) ((byte) input));
+        methods.put(new Tupel<>(Float.class, Short.class), (Object input) -> (float) ((short) input));
+        methods.put(new Tupel<>(Float.class, Integer.class), (Object input) -> (float) ((int) input));
+        methods.put(new Tupel<>(Float.class, Long.class), (Object input) -> (float) ((long) input));
+        methods.put(new Tupel<>(Float.class, Double.class), (Object input) -> (float) (double) input);
+        methods.put(new Tupel<>(Float.class, Character.class), (Object input) -> Float.parseFloat(input.toString()));
+        methods.put(new Tupel<>(Float.class, String.class), (Object input) -> Float.parseFloat((String) input));
 
-        methods.put(new Tupel<>(Double.class, Byte.class),          (Object input) -> (double) ((byte) input));
-        methods.put(new Tupel<>(Double.class, Short.class),         (Object input) -> (double) ((short) input));
-        methods.put(new Tupel<>(Double.class, Integer.class),       (Object input) -> (double) ((int) input));
-        methods.put(new Tupel<>(Double.class, Long.class),          (Object input) -> (double) ((long) input));
-        methods.put(new Tupel<>(Double.class, Float.class),         (Object input) -> (double) (float) input);
-        methods.put(new Tupel<>(Double.class, Character.class),     (Object input) -> Double.parseDouble(input.toString()));
-        methods.put(new Tupel<>(Double.class, String.class),        (Object input) -> Double.parseDouble((String) input));
+        methods.put(new Tupel<>(Double.class, Byte.class), (Object input) -> (double) ((byte) input));
+        methods.put(new Tupel<>(Double.class, Short.class), (Object input) -> (double) ((short) input));
+        methods.put(new Tupel<>(Double.class, Integer.class), (Object input) -> (double) ((int) input));
+        methods.put(new Tupel<>(Double.class, Long.class), (Object input) -> (double) ((long) input));
+        methods.put(new Tupel<>(Double.class, Float.class), (Object input) -> (double) (float) input);
+        methods.put(new Tupel<>(Double.class, Character.class), (Object input) -> Double.parseDouble(input.toString()));
+        methods.put(new Tupel<>(Double.class, String.class), (Object input) -> Double.parseDouble((String) input));
 
-        methods.put(new Tupel<>(Boolean.class, Byte.class),         (Object input) -> ((byte) input) != 0);
-        methods.put(new Tupel<>(Boolean.class, Short.class),        (Object input) -> ((short) input) != 0);
-        methods.put(new Tupel<>(Boolean.class, Integer.class),      (Object input) -> ((int) input) != 0);
-        methods.put(new Tupel<>(Boolean.class, Long.class),         (Object input) -> ((long) input) != 0);
-        methods.put(new Tupel<>(Boolean.class, Character.class),    (Object input) -> ((Character) input) != 0);
-        methods.put(new Tupel<>(Boolean.class, String.class),       (Object input) -> Boolean.parseBoolean((String) input));
+        methods.put(new Tupel<>(Boolean.class, Byte.class), (Object input) -> ((byte) input) != 0);
+        methods.put(new Tupel<>(Boolean.class, Short.class), (Object input) -> ((short) input) != 0);
+        methods.put(new Tupel<>(Boolean.class, Integer.class), (Object input) -> ((int) input) != 0);
+        methods.put(new Tupel<>(Boolean.class, Long.class), (Object input) -> ((long) input) != 0);
+        methods.put(new Tupel<>(Boolean.class, Character.class), (Object input) -> ((Character) input) != 0);
+        methods.put(new Tupel<>(Boolean.class, String.class), (Object input) -> Boolean.parseBoolean((String) input));
 
-        methods.put(new Tupel<>(Character.class, String.class),     (Object input) -> {
+        methods.put(new Tupel<>(Character.class, String.class), (Object input) -> {
                 String str = (String) input;
                 if (str.length() == 1)
                     return str.charAt(0);
                 throw new InputConvertException();
             });
 
-        methods.put(new Tupel<>(String.class, Byte.class),          (Object input) -> Byte.toString((byte) input));
-        methods.put(new Tupel<>(String.class, Short.class),         (Object input) -> Short.toString((short) input));
-        methods.put(new Tupel<>(String.class, Integer.class),       (Object input) -> Integer.toString((int) input));
-        methods.put(new Tupel<>(String.class, Long.class),          (Object input) -> Long.toString((long) input));
-        methods.put(new Tupel<>(String.class, Float.class),         (Object input) -> Float.toString((float) input));
-        methods.put(new Tupel<>(String.class, Double.class),        (Object input) -> Double.toString((double) input));
-        methods.put(new Tupel<>(String.class, Boolean.class),       (Object input) -> Boolean.toString((boolean) input));
-        methods.put(new Tupel<>(String.class, Character.class),     (Object input) -> Character.toString((char) input));
+        methods.put(new Tupel<>(String.class, Byte.class), (Object input) -> Byte.toString((byte) input));
+        methods.put(new Tupel<>(String.class, Short.class), (Object input) -> Short.toString((short) input));
+        methods.put(new Tupel<>(String.class, Integer.class), (Object input) -> Integer.toString((int) input));
+        methods.put(new Tupel<>(String.class, Long.class), (Object input) -> Long.toString((long) input));
+        methods.put(new Tupel<>(String.class, Float.class), (Object input) -> Float.toString((float) input));
+        methods.put(new Tupel<>(String.class, Double.class), (Object input) -> Double.toString((double) input));
+        methods.put(new Tupel<>(String.class, Boolean.class), (Object input) -> Boolean.toString((boolean) input));
+        methods.put(new Tupel<>(String.class, Character.class), (Object input) -> Character.toString((char) input));
     }
 
     /**
@@ -154,8 +154,9 @@ public class TypeConvertor {
      * @return the converted object.
      */
     public Object convert(Class<?> outputType, Object input) {
-        return outputType.equals(Object.class) || outputType.isAssignableFrom(input.getClass()) ? input
-                : getMethod(outputType, input).apply(input);
+        Class<?> type = convertType(outputType);
+        return type.equals(Object.class) || type.isAssignableFrom(input.getClass()) ? input
+                : getMethod(type, input).apply(input);
     }
 
     private Function<Object, Object> getMethod(Class<?> outputType, Object input) {

@@ -20,7 +20,7 @@ package org.mazarineblue.swingrunner.screens.about;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
-import java.util.logging.Level;
+import static java.util.logging.Level.SEVERE;
 import javax.imageio.ImageIO;
 import org.mazarineblue.swingrunner.util.ExceptionReporter;
 
@@ -57,7 +57,7 @@ public class URLImageFetcher
         try {
             return ImageIO.read(url);
         } catch (IOException ex) {
-            reporter.log(Level.SEVERE, null, ex);
+            reporter.log(SEVERE, null, ex);
             return backupFetcher.getImage();
         }
     }

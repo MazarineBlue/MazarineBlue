@@ -19,6 +19,7 @@ package org.mazarineblue.swingrunner.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static java.util.logging.Logger.getLogger;
 
 /**
  * A {@code LoggerExceptionReporter} is a {@code ExceptionReporter} that
@@ -29,7 +30,7 @@ import java.util.logging.Logger;
 public class LoggerExceptionReporter
         implements ExceptionReporter {
 
-    private static final Logger LOGGER = Logger.getLogger(LoggerExceptionReporter.class.getName());
+    private static final Logger LOGGER = getLogger(LoggerExceptionReporter.class.getName());
 
     @Override
     public void log(Level level, String msg, Throwable thrown) {

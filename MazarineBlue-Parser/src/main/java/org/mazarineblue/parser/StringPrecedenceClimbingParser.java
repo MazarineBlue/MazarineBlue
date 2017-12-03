@@ -111,7 +111,8 @@ public class StringPrecedenceClimbingParser<R>
      * @param function   the function to register.
      * @return this
      */
-    public StringPrecedenceClimbingParser<R> addOperator(String identifier, UnaryOperator operator, Function<Object, R> function) {
+    public StringPrecedenceClimbingParser<R> addOperator(String identifier, UnaryOperator operator,
+                                                         Function<Object, R> function) {
         lexicalAnalyser.add(new StringMatcher(identifier));
         syntacticAnalyser.addOperator(identifier, operator);
         semanticAnalyser.addFunction(identifier, function);
@@ -128,7 +129,8 @@ public class StringPrecedenceClimbingParser<R>
      * @param function   the function to register.
      * @return this
      */
-    public StringPrecedenceClimbingParser<R> addOperator(String identifier, BinaryOperator operator, BiFunction<Object, Object, R> function) {
+    public StringPrecedenceClimbingParser<R> addOperator(String identifier, BinaryOperator operator,
+                                                         BiFunction<Object, Object, R> function) {
         lexicalAnalyser.add(new StringMatcher(identifier));
         syntacticAnalyser.addOperator(identifier, operator);
         semanticAnalyser.addFunction(identifier, function);

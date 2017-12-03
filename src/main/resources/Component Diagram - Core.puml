@@ -2,9 +2,9 @@
 [MazarineBlue-EventBus] <- [MazarineBlue-Engine]
 [MazarineBlue-Engine] <- [MazarineBlue-EngineExtended]
 
-FeedPlugin )-- [MazarineBlue-PlainTextFeed]
-[MazarineBlue-EngineExtended] -- LibraryPlugin
-[MazarineBlue-EngineExtended] -- FeedPlugin
+[MazarineBlue-EngineExtended] -(0- [MazarineBlue-PlainTextFeed]: Feed
+[MazarineBlue-EngineExtended] -(0- [MazarineBlue-ExcelFeed]: Feed
+[MazarineBlue-EngineExtended] -(0- [MazarineBlue-Toolkit]: Library
 
 [MazarineBlue-EngineExtended] --> [MazarineBlue-FileSystem]
 [MazarineBlue-EngineExtended] --> [MazarineBlue-VariableStore]

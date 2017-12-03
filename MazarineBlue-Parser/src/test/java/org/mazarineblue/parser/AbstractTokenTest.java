@@ -25,62 +25,39 @@
  */
 package org.mazarineblue.parser;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.mazarineblue.parser.tokens.Token;
-import org.mazarineblue.parser.tokens.Tokens;
+import static org.mazarineblue.parser.tokens.Tokens.createLiteralToken;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public class AbstractTokenTest {
-
-    @Test
-    public void equals_OneTokenAndNull() {
-        Token<String> a = Tokens.createLiteralToken("foo", 0);
-        assertNotNull(a);
-    }
-
-    @Test
-    public void equals_DifferentClasses() {
-        Token<String> a = Tokens.createLiteralToken("foo", 0);
-        assertNotEquals(a, "");
-    }
-
-    @Test
-    public void hashCode_DifferentValues() {
-        int a = Tokens.createLiteralToken("foo", 0).hashCode();
-        int b = Tokens.createLiteralToken("oof", 0).hashCode();
-        assertNotEquals(a, b);
-    }
-
-    @Test
-    public void equals_DifferentValues() {
-        Token<String> a = Tokens.createLiteralToken("foo", 0);
-        Token<String> b = Tokens.createLiteralToken("oof", 0);
-        assertNotEquals(a, b);
-    }
+public class AbstractTokenTest
+        extends TestHashCodeAndEquals<Token<String>> {
 
     @Test
     public void hashCode_DifferentIndexes() {
-        int a = Tokens.createLiteralToken("foo", 0).hashCode();
-        int b = Tokens.createLiteralToken("foo", 9).hashCode();
+        int a = createLiteralToken("foo", 0).hashCode();
+        int b = createLiteralToken("foo", 9).hashCode();
         assertNotEquals(a, b);
     }
 
     @Test
-    public void hashCode_EqualTokens() {
-        int a = Tokens.createLiteralToken("foo", 0).hashCode();
-        int b = Tokens.createLiteralToken("foo", 0).hashCode();
-        assertEquals(a, b);
+    public void equals_DifferentIndexes() {
+        Token<String> a = createLiteralToken("foo", 0);
+        Token<String> b = createLiteralToken("foo", 9);
+        assertNotEquals(a, b);
     }
 
-    @Test
-    public void equals_EqualTokens() {
-        Token<String> a = Tokens.createLiteralToken("foo", 0);
-        Token<String> b = Tokens.createLiteralToken("foo", 0);
-        assertEquals(a, b);
+    @Override
+    protected Token<String> getObject() {
+        return createLiteralToken("foo", 0);
+    }
+
+    @Override
+    protected Token<String> getDifferentObject() {
+        return createLiteralToken("oof", 0);
     }
 }

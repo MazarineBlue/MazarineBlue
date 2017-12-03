@@ -25,14 +25,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mazarineblue.eventbus.Event.matchesNoneAutoConsumable;
 import org.mazarineblue.eventdriven.Feed;
 import org.mazarineblue.eventdriven.Interpreter;
 import org.mazarineblue.eventdriven.util.FeedExecutorListenerSpy;
 import org.mazarineblue.fs.MemoryFileSystem;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
-import org.mazarineblue.plugins.FeedService;
+import static org.mazarineblue.plugins.FeedService.canProcess;
+import static org.mazarineblue.plugins.FeedService.createFeed;
+import static org.mazarineblue.plugins.FeedService.getSheetNames;
 import org.mazarineblue.plugins.PluginLoader;
 
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 public class PlainTextFeedPluginTest {
 
     private MemoryFileSystem fs;
@@ -52,33 +58,33 @@ public class PlainTextFeedPluginTest {
     @Test
     public void testCanProcess() {
         fs.mkfile(file, "");
-        assertTrue(FeedService.canProcess(fs, file));
+        assertTrue(canProcess(fs, file));
     }
 
     @Test
     public void testReadSheetNames() {
         fs.mkfile(file, "");
-        assertArrayEquals(new String[]{"Main"}, FeedService.readSheetNames(fs, file));
+        assertArrayEquals(new String[]{"Main"}, getSheetNames(fs, file));
     }
 
     @Test
     public void hasNext_EmptyFile_ReturnsFalse() {
         fs.mkfile(file, "");
-        Feed feed = FeedService.createFeed(fs, file);
+        Feed feed = createFeed(fs, file);
         assertFalse(feed.hasNext());
     }
 
     @Test
     public void hasNext_NoColumnsInFile_ReturnsFalse() {
         fs.mkfile(file, "|");
-        Feed feed = FeedService.createFeed(fs, file);
+        Feed feed = createFeed(fs, file);
         assertFalse(feed.hasNext());
     }
 
     @Test
     public void hasNext_NonEmptyFile_ReturnsTrue() {
         fs.mkfile(file, "| |");
-        Feed feed = FeedService.createFeed(fs, file);
+        Feed feed = createFeed(fs, file);
         assertTrue(feed.hasNext());
     }
 
@@ -86,7 +92,7 @@ public class PlainTextFeedPluginTest {
     public void next_NonEmptyFile_EventContainsEmptyValues() {
         fs.mkfile(file, "| |");
 
-        Feed feed = FeedService.createFeed(fs, file);
+        Feed feed = createFeed(fs, file);
         ExecuteInstructionLineEvent e = (ExecuteInstructionLineEvent) feed.next();
 
         assertEquals("", e.getNamespace());
@@ -98,7 +104,7 @@ public class PlainTextFeedPluginTest {
     @Test
     public void hasNext_RecordWithPath_ReturnsTrue() {
         fs.mkfile(file, "| Namespace.Keyword |");
-        Feed feed = FeedService.createFeed(fs, file);
+        Feed feed = createFeed(fs, file);
         assertTrue(feed.hasNext());
     }
 
@@ -106,18 +112,18 @@ public class PlainTextFeedPluginTest {
     public void next_RecordWithPath_EventContainsNamespaceAndKeyword() {
         fs.mkfile(file, "| Namespace.Keyword |");
 
-        Feed feed = FeedService.createFeed(fs, file);
+        Feed feed = createFeed(fs, file);
         ExecuteInstructionLineEvent e = (ExecuteInstructionLineEvent) feed.next();
 
         assertEquals("namespace", e.getNamespace());
-        assertEquals("Keyword", e.getKeyword());
+        assertEquals("keyword", e.getKeyword());
         assertArrayEquals(new Object[0], e.getArguments());
     }
 
     @Test
     public void hasNext_RecordWithPathAndArguments_ReturnTrue() {
         fs.mkfile(file, "| Keyword | Argument 1 | Argument 2 |");
-        Feed feed = FeedService.createFeed(fs, file);
+        Feed feed = createFeed(fs, file);
         assertTrue(feed.hasNext());
     }
 
@@ -125,11 +131,11 @@ public class PlainTextFeedPluginTest {
     public void hasNext_RecordWithPathAndArguments_Y() {
         fs.mkfile(file, "| Keyword | Argument 1 | Argument 2 |");
 
-        Feed feed = FeedService.createFeed(fs, file);
+        Feed feed = createFeed(fs, file);
         ExecuteInstructionLineEvent e = (ExecuteInstructionLineEvent) feed.next();
 
         assertEquals("", e.getNamespace());
-        assertEquals("Keyword", e.getKeyword());
+        assertEquals("keyword", e.getKeyword());
         assertArrayEquals(new String[]{"Argument 1", "Argument 2"}, e.getArguments());
     }
 
@@ -140,8 +146,8 @@ public class PlainTextFeedPluginTest {
         table.addLine("Keyword 2", "Argument 1", "Argument 2");
         Feed feed = new PlainTextFeed(table);
 
-        FeedExecutorListenerSpy feedExecuteListenerSpy = new FeedExecutorListenerSpy();
-        Interpreter interpreter = Interpreter.getDefaultInstance();
+        FeedExecutorListenerSpy feedExecuteListenerSpy = new FeedExecutorListenerSpy(matchesNoneAutoConsumable());
+        Interpreter interpreter = Interpreter.newInstance();
         interpreter.setFeedExecutorListener(feedExecuteListenerSpy);
         interpreter.execute(feed);
 

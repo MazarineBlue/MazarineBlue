@@ -29,12 +29,10 @@ import org.mazarineblue.fitnesse.events.AssignFitnesseEvent;
 import org.mazarineblue.fitnesse.events.CallFitnesseEvent;
 import org.mazarineblue.fitnesse.events.CreateFitnesseEvent;
 import org.mazarineblue.fitnesse.events.FitnesseEvent;
-import org.mazarineblue.fitnesse.events.FixtureEvent;
 import org.mazarineblue.fitnesse.events.NewInstanceEvent;
-import org.mazarineblue.fitnesse.events.PathEvent;
-import org.mazarineblue.fitnesse.events.PathFitnesseEvent;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
-import org.mazarineblue.variablestore.events.AssignVariableEvent;
+import org.mazarineblue.libraries.fixtures.events.FixtureEvent;
+import org.mazarineblue.variablestore.events.SetVariableEvent;
 import org.mazarineblue.variablestore.events.VariableStoreEvent;
 
 /**
@@ -50,20 +48,6 @@ public class FitnesseSubscriber
         extends ReflectionSubscriber<Event> {
 
     private final Map<String, String> instancesSeen = new HashMap<>(4);
-
-    /**
-     * Event handlers are not meant to be called directly, instead publish an
-     * event to an {@link Interpreter}; please see the specified event for more
-     * information about this event handler.
-     *
-     * @param event the event this {@code EventHandler} processes.
-     * @see PathFitnesseEvent
-     */
-    @EventHandler
-    public void eventHandler(PathFitnesseEvent event) {
-        event.getInvoker().publish(new PathEvent(event.getPath()));
-        event.setConsumed(true);
-    }
 
     /**
      * Event handlers are not meant to be called directly, instead publish an
@@ -91,7 +75,7 @@ public class FitnesseSubscriber
 
     private void createFixture(CreateFitnesseEvent event) {
         instancesSeen.put(event.getInstance(), event.getFixture());
-        event.getInvoker().publish(new NewInstanceEvent(event.getInstance(), event.getFixture(), event.getArguments()));
+        event.invoker().publish(new NewInstanceEvent(event.getInstance(), event.getFixture(), event.getArguments()));
     }
     // </editor-fold>
 
@@ -106,7 +90,7 @@ public class FitnesseSubscriber
     @EventHandler
     public void eventHandler(CallFitnesseEvent event) {
         ExecuteInstructionLineEvent e = new ExecuteInstructionLineEvent(event.getMethod(), event.getArguments());
-        event.getInvoker().publish(e);
+        event.invoker().publish(e);
         event.setResult(e.getResult());
         event.setConsumed(true);
     }
@@ -121,7 +105,7 @@ public class FitnesseSubscriber
      */
     @EventHandler
     public void eventHandler(AssignFitnesseEvent event) {
-        event.getInvoker().publish(new AssignVariableEvent(event.getSymbol(), event.getValue()));
+        event.invoker().publish(new SetVariableEvent(event.getSymbol(), event.getValue()));
         event.setConsumed(true);
     }
 
@@ -138,7 +122,7 @@ public class FitnesseSubscriber
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
+        return this == obj || obj != null && getClass() == obj.getClass()
                 && Objects.equals(this.instancesSeen, ((FitnesseSubscriber) obj).instancesSeen);
     }
 }

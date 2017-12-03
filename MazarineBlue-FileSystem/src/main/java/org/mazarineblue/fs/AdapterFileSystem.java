@@ -80,6 +80,18 @@ public class AdapterFileSystem
     }
 
     @Override
+    public void delete(File file)
+            throws IOException {
+        adaptee.delete(file);
+    }
+
+    @Override
+    public void deleteAll()
+            throws IOException {
+        adaptee.deleteAll();
+    }
+
+    @Override
     public File getParent(File file) {
         return adaptee.getParent(file);
     }
@@ -142,5 +154,15 @@ public class AdapterFileSystem
     @Override
     public boolean isReadable(File file) {
         return adaptee.isReadable(file);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

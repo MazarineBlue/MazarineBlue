@@ -74,7 +74,7 @@ final class Entry<E extends Event> {
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
+        return this == obj || obj != null && getClass() == obj.getClass()
                 && Objects.equals(this.eventType, ((Entry<?>) obj).eventType)
                 && Objects.equals(this.filter, ((Entry<?>) obj).filter)
                 && Objects.equals(this.subscriber, ((Entry<?>) obj).subscriber);

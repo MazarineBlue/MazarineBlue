@@ -27,17 +27,17 @@ package org.mazarineblue.eventbus;
 
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
-import org.mazarineblue.eventbus.Event.Status;
+import static org.mazarineblue.eventbus.Event.Status.OK;
 import org.mazarineblue.eventbus.events.AbstractEvent;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public class AbstractEventTest {
+public class AbstractEventTest
+        extends TestHashCodeAndEquals {
 
     private AbstractEvent event;
 
@@ -53,7 +53,7 @@ public class AbstractEventTest {
 
     @Test
     public void status_ReturnsOK() {
-        assertEquals(Status.OK, event.status());
+        assertEquals(OK, event.status());
     }
 
     @Test
@@ -66,25 +66,13 @@ public class AbstractEventTest {
         assertEquals("", event.responce());
     }
 
-    @Test
-    @SuppressWarnings("ObjectEqualsNull")
-    public void equals_Null() {
-        assertFalse(event.equals(null));
+    @Override
+    protected Object getObject() {
+        return event;
     }
 
-    @Test
-    @SuppressWarnings("IncompatibleEquals")
-    public void equals_DifferentClass() {
-        assertFalse(event.equals(""));
-    }
-
-    @Test
-    public void hashCode_SameClass() {
-        assertEquals(event.hashCode(), new DummyEvent().hashCode());
-    }
-
-    @Test
-    public void equals_SameClass() {
-        assertTrue(event.equals(new DummyEvent()));
+    @Override
+    protected Object getDifferentObject() {
+        return "";
     }
 }

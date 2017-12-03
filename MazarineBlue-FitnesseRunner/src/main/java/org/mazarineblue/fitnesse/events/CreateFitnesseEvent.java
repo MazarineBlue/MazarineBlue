@@ -18,6 +18,7 @@
 package org.mazarineblue.fitnesse.events;
 
 import java.util.Objects;
+import org.mazarineblue.fitnesse.engineplugin.FitnesseSubscriber;
 import org.mazarineblue.utililities.ArgumentList;
 
 /**
@@ -28,6 +29,8 @@ import org.mazarineblue.utililities.ArgumentList;
  */
 public class CreateFitnesseEvent
         extends FitnesseEvent {
+
+    private static final long serialVersionUID = 1L;
 
     private final String instance;
     private final String fixture;
@@ -49,7 +52,12 @@ public class CreateFitnesseEvent
 
     @Override
     public String toString() {
-        return "" + instance + ", " + fixture + ", [" + arguments + "]";
+        return instance + ", " + fixture + ", [" + arguments + "]";
+    }
+
+    @Override
+    public String message() {
+        return "instance=" + instance + ", fixture=" + fixture + ", arguments=[" + arguments + "]";
     }
 
     public String getInstance() {
@@ -66,7 +74,7 @@ public class CreateFitnesseEvent
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
+        return this == obj || obj != null && getClass() == obj.getClass()
                 && Objects.equals(this.instance, ((CreateFitnesseEvent) obj).instance)
                 && Objects.equals(this.fixture, ((CreateFitnesseEvent) obj).fixture)
                 && Objects.equals(this.arguments, ((CreateFitnesseEvent) obj).arguments);

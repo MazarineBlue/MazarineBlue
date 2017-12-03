@@ -28,6 +28,7 @@ package org.mazarineblue.eventbus.events;
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
+@SuppressWarnings("serial")
 public class ConsumableEvent
         extends AbstractEvent {
 }

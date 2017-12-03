@@ -17,7 +17,9 @@
  */
 package org.mazarineblue.utililities;
 
-import java.util.Arrays;
+import static java.util.Arrays.deepEquals;
+import static java.util.Arrays.deepHashCode;
+import static java.util.Arrays.deepToString;
 
 /**
  * A {@code Tupel} is a data structure that allows to store multiple variables
@@ -42,19 +44,19 @@ public class Tupel<T> {
 
     @Override
     public String toString() {
-        return Arrays.deepToString(array);
+        return deepToString(array);
     }
 
     @Override
     public int hashCode() {
         return 3 * 79
-                + Arrays.deepHashCode(this.array);
+                + deepHashCode(this.array);
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
-                && Arrays.deepEquals(this.array, ((Tupel<?>) obj).array);
+        return this == obj || obj != null && getClass() == obj.getClass()
+                && deepEquals(this.array, ((Tupel<?>) obj).array);
     }
 
     /**

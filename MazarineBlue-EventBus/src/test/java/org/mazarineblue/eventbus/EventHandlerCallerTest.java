@@ -118,7 +118,7 @@ public class EventHandlerCallerTest {
         public void setup() {
             owner = new Object() {
                 @EventHandler
-                public void eventHandler(AbstractEvent e) {
+                public void eventHandler(AbstractEvent event) {
                     throw new TestTargetException();
                 }
             };

@@ -26,10 +26,14 @@
 package org.mazarineblue.eventbus.events;
 
 import org.mazarineblue.eventbus.Event;
+import org.mazarineblue.eventbus.Event.Status;
+import static org.mazarineblue.eventbus.Event.Status.OK;
+import org.mazarineblue.utililities.SerializableClonable;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
+@SuppressWarnings("serial")
 public class EventSpy
         implements Event {
 
@@ -60,11 +64,20 @@ public class EventSpy
     @Override
     public Status status() {
         ++count;
-        return Status.OK;
+        return OK;
     }
 
     @Override
     public void setConsumed(boolean consumed) {
         ++count;
+    }
+
+    @Override
+    public boolean isAutoConsumable() {
+        return false;
+    }
+
+    @Override
+    public <T extends SerializableClonable> void copyTransient(T src) {
     }
 }

@@ -81,6 +81,23 @@ public interface FileSystem {
             throws IOException;
 
     /**
+     * Deletes the file.
+     *
+     * @param file the delete
+     * @throws IOException when the file couldn't be deleted.
+     */
+    public void delete(File file)
+            throws IOException;
+
+    /**
+     * Delete all files (optional operation).
+     *
+     * @throws IOException when some files couldn't be deleted.
+     */
+    public void deleteAll()
+            throws IOException;
+
+    /**
      * Obtains bytes from a file as a input stream.
      *
      * @param file the file to fetch the bytes from.

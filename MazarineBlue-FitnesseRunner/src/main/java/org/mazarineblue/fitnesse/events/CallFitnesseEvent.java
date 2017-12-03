@@ -17,8 +17,14 @@
  */
 package org.mazarineblue.fitnesse.events;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Objects;
+import org.mazarineblue.fitnesse.engineplugin.FitnesseSubscriber;
 import org.mazarineblue.utililities.ArgumentList;
+import org.mazarineblue.utililities.SerializableClonable;
 
 /**
  * A {@code CallFitnesseEvent} is a {@code FitnesseEvent} that instructs a
@@ -30,9 +36,11 @@ import org.mazarineblue.utililities.ArgumentList;
 public class CallFitnesseEvent
         extends FitnesseEvent {
 
-    private final String instance;
-    private final String method;
-    private final ArgumentList arguments;
+    private static final long serialVersionUID = 1L;
+
+    private String instance;
+    private String method;
+    private ArgumentList arguments;
     private Object result;
 
     /**
@@ -56,8 +64,14 @@ public class CallFitnesseEvent
         return "" + instance + ", " + method + ", [" + arguments + "]";
     }
 
-    public String getInstance() {
-        return instance;
+    @Override
+    public String message() {
+        return "instance=" + instance + ", method=" + method + ", arguments=[" + arguments + "]";
+    }
+
+    @Override
+    public String responce() {
+        return "result=" + result;
     }
 
     public String getMethod() {
@@ -87,9 +101,38 @@ public class CallFitnesseEvent
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
+        return this == obj || obj != null && getClass() == obj.getClass()
                 && Objects.equals(this.instance, ((CallFitnesseEvent) obj).instance)
                 && Objects.equals(this.method, ((CallFitnesseEvent) obj).method)
                 && Objects.equals(this.arguments, ((CallFitnesseEvent) obj).arguments);
+    }
+
+    private void writeObject(ObjectOutputStream out)
+            throws IOException {
+        out.writeObject(instance);
+        out.writeObject(method);
+        out.writeObject(arguments);
+        out.writeBoolean(result instanceof Serializable);
+        if (result instanceof Serializable)
+            out.writeObject(result);
+    }
+
+    @Override
+    public <E extends SerializableClonable> void copyTransient(E other) {
+        super.copyTransient(other);
+        instance = ((CallFitnesseEvent) other).instance;
+        method = ((CallFitnesseEvent) other).method;
+        if (result == null)
+            result = ((CallFitnesseEvent) other).result;
+    }
+
+    private void readObject(ObjectInputStream in)
+            throws IOException, ClassNotFoundException {
+        instance = (String) in.readObject();
+        method = (String) in.readObject();
+        arguments = (ArgumentList) in.readObject();
+        boolean flag = in.readBoolean();
+        if (flag)
+            result = in.readObject();
     }
 }

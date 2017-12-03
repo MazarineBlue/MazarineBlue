@@ -27,4 +27,6 @@ import org.mazarineblue.eventbus.events.AbstractEvent;
  */
 public abstract class RunnerEvent
         extends AbstractEvent {
+
+    private static final long serialVersionUID = 1L;
 }

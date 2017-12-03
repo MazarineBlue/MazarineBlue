@@ -27,6 +27,7 @@ import org.mazarineblue.executors.listeners.SubscriberFactory;
 import org.mazarineblue.fitnesse.engineplugin.FitnesseSubscriber;
 import org.mazarineblue.fitnesse.engineplugin.FixtureLoaderLink;
 import org.mazarineblue.fitnesse.events.FitnesseEvent;
+import org.mazarineblue.fs.FileSystem;
 import org.mazarineblue.links.ConsumeEventsLink;
 import org.mazarineblue.links.UnconsumedExceptionThrowerLink;
 import org.mazarineblue.threadrunner.ThreadServiceRunnerFactory;
@@ -44,6 +45,14 @@ public class MazarineBlueFitnessePlugin
 
     public static final String NAME = "mazarineblue";
     public static final int TIMEOUT = 4000; // Timeout in milliseconds
+    private final FeedExecutorBuilder builder = new FeedExecutorBuilder();
+
+    MazarineBlueFitnessePlugin() {
+    }
+
+    MazarineBlueFitnessePlugin(FileSystem fs) {
+        builder.setFileSystem(fs);
+    }
 
     @Override
     public void registerTestSystemFactories(TestSystemFactoryRegistry registry) {
@@ -55,8 +64,8 @@ public class MazarineBlueFitnessePlugin
     }
 
     private FeedExecutorFactory createInterpreterFactory() {
-        FeedExecutorFactory factory = FeedExecutorFactory.getDefaultInstance(new FeedExecutorBuilder());
-        factory.addSubscriber(SubscriberFactory.getDefaultInstance(FitnesseEvent.class, null, new FitnesseSubscriber()));
+        FeedExecutorFactory factory = FeedExecutorFactory.newInstance(builder);
+        factory.addSubscriber(SubscriberFactory.newInstance(FitnesseEvent.class, null, new FitnesseSubscriber()));
         factory.addLinkAfterEventBus(() -> new UnconsumedExceptionThrowerLink(RunnerEvent.class));
         factory.addLink(FixtureLoaderLink::new);
         factory.addLink(() -> new ConsumeEventsLink(ExceptionThrownEvent.class));

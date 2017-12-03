@@ -25,6 +25,8 @@
 package org.mazarineblue.eventbus.events;
 
 import org.mazarineblue.eventbus.Event;
+import static org.mazarineblue.eventbus.Event.Status.OK;
+import org.mazarineblue.utililities.SerializableClonable;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -41,7 +43,7 @@ public abstract class AbstractEvent
 
     @Override
     public Status status() {
-        return Status.OK;
+        return OK;
     }
 
     @Override
@@ -65,12 +67,21 @@ public abstract class AbstractEvent
     }
 
     @Override
+    public boolean isAutoConsumable() {
+        return false;
+    }
+
+    @Override
+    public <T extends SerializableClonable> void copyTransient(T src) {
+    }
+
+    @Override
     public int hashCode() {
         return 3;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass();
+        return this == obj || obj != null && getClass() == obj.getClass();
     }
 }

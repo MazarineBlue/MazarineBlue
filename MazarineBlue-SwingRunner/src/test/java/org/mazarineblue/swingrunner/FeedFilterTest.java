@@ -25,13 +25,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
-import org.mazarineblue.executors.util.SupportAllFilesFeedPlugin;
 import org.mazarineblue.fs.FileSystem;
 import org.mazarineblue.fs.HiddenFileSystem;
 import org.mazarineblue.fs.MemoryFileSystem;
 import org.mazarineblue.fs.SocketFileSystem;
 import org.mazarineblue.fs.WriteOnlyFileSystem;
 import org.mazarineblue.plugins.PluginLoader;
+import org.mazarineblue.plugins.util.MemoryFeedPlugin;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -129,7 +129,7 @@ public class FeedFilterTest {
             throws IOException {
         fs.mkfile(file);
         filter = new FeedFilter(fs);
-        PluginLoader.getInstance().injectPlugin(new SupportAllFilesFeedPlugin());
+        PluginLoader.getInstance().injectPlugin(new MemoryFeedPlugin());
         assertTrue(filter.accept(file));
     }
 }

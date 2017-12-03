@@ -19,6 +19,7 @@ package org.mazarineblue.swingrunner.config;
 
 import java.io.File;
 import java.io.IOException;
+import static java.lang.System.getProperty;
 import org.mazarineblue.fs.FileSystem;
 
 /**
@@ -28,10 +29,12 @@ import org.mazarineblue.fs.FileSystem;
  */
 public class Config {
 
-    private final FileSystem fs;
     private static final int MAX_RECENT_FILES = 10;
-    private static final File HOME = new File(System.getProperty("user.home"));
-    private static final File RECENT_FILES_LOCATION = new File(HOME, ".Mazarine.recentFiles");
+    private static final File HOME = new File(getProperty("user.home"));
+    private static final File RECENT_FILES_LOCATION = new File(HOME, ".MazarineBlue.recentFiles");
+    private static final long serialVersionUID = 1L;
+
+    private final FileSystem fs;
     private RecentFiles recentFiles;
     private boolean readOnly = false;
 

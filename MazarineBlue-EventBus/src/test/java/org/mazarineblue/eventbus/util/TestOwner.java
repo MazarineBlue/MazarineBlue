@@ -44,15 +44,31 @@ public class TestOwner {
         return count;
     }
 
+    /**
+     * Event handlers are not meant to be called directly, instead publish an
+     * event to an {@link Interpreter}; please see the specified event for more
+     * information about this event handler.
+     *
+     * @param event the event this {@code EventHandler} processes.
+     * @see AbstractEvent
+     */
     @EventHandler
-    public void firstHandler(AbstractEvent e) {
+    public void firstHandler(AbstractEvent event) {
         ++count;
-        e.setConsumed(true);
+        event.setConsumed(true);
     }
 
+    /**
+     * Event handlers are not meant to be called directly, instead publish an
+     * event to an {@link Interpreter}; please see the specified event for more
+     * information about this event handler.
+     *
+     * @param event the event this {@code EventHandler} processes.
+     * @see AbstractEvent
+     */
     @EventHandler
-    public void secondHandler(AbstractEvent e) {
+    public void secondHandler(AbstractEvent event) {
         ++count;
-        e.setConsumed(true);
+        event.setConsumed(true);
     }
 }

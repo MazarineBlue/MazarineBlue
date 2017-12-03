@@ -17,8 +17,9 @@
  */
 package org.mazarineblue.plaintext;
 
+import static java.lang.System.arraycopy;
 import java.util.ArrayList;
-import java.util.Arrays;
+import static java.util.Arrays.stream;
 import static java.util.Collections.unmodifiableList;
 import java.util.Iterator;
 import java.util.List;
@@ -39,7 +40,7 @@ public class PlainTextTable {
     }
 
     private String toString(String[] columns) {
-        return Arrays.stream(columns).map(column -> column + " | ").reduce("| ", String::concat).trim();
+        return stream(columns).map(column -> column + " | ").reduce("| ", String::concat).trim();
     }
 
     /**
@@ -52,7 +53,7 @@ public class PlainTextTable {
     public boolean addLine(String keyword, String... arguments) {
         String[] columns = new String[arguments.length + 1];
         columns[0] = keyword;
-        System.arraycopy(arguments, 0, columns, 1, arguments.length);
+        arraycopy(arguments, 0, columns, 1, arguments.length);
         return lines.add(columns);
     }
 

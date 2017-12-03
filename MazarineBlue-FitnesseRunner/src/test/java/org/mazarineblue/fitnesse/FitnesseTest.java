@@ -22,10 +22,9 @@ import fitnesse.testrunner.MultipleTestsRunner;
 import fitnesse.testrunner.PagesByTestSystem;
 import fitnesse.testsystems.TestSystemFactory;
 import fitnesse.wiki.WikiPage;
-import fitnesse.wiki.WikiPageUtil;
-import fitnesse.wiki.fs.InMemoryPage;
+import static fitnesse.wiki.WikiPageUtil.setPageContents;
+import static fitnesse.wiki.fs.InMemoryPage.makeRoot;
 import java.util.ArrayList;
-import java.util.Arrays;
 import static java.util.Arrays.asList;
 import java.util.List;
 import org.junit.Test;
@@ -33,7 +32,7 @@ import org.mazarineblue.eventbus.Event;
 import org.mazarineblue.fitnesse.events.AssignFitnesseEvent;
 import org.mazarineblue.fitnesse.events.CallFitnesseEvent;
 import org.mazarineblue.fitnesse.events.CreateFitnesseEvent;
-import org.mazarineblue.fitnesse.events.PathFitnesseEvent;
+import org.mazarineblue.libraries.fixtures.events.PathEvent;
 import org.mazarineblue.threadrunner.events.ByeEvent;
 import org.mazarineblue.threadrunner.util.ServiceRunnerFactoryDummy;
 import org.mazarineblue.utililities.TwoWayPipe;
@@ -60,9 +59,9 @@ public class FitnesseTest {
                 + "\n";
 
         List<List<String>> table = new ArrayList<>(4);
-        table.add(Arrays.asList("pints of milk remaining", "go to store?"));
-        table.add(Arrays.asList("0", "yes"));
-        table.add(Arrays.asList("1", "no"));
+        table.add(asList("pints of milk remaining", "go to store?"));
+        table.add(asList("0", "yes"));
+        table.add(asList("1", "no"));
 
         WriteAssertingTwoWayPipe<Event> expectedResult = new WriteAssertingTwoWayPipe<>();
         expectedResult.add(new CreateFitnesseEvent("decisionTable_0", "ShouldIBuyMilk"));
@@ -95,11 +94,11 @@ public class FitnesseTest {
                 + "\n";
 
         List<List<String>> table = new ArrayList<>(4);
-        table.add(Arrays.asList("# description", "1c", "$1", "total cents?", "$ total?"));
-        table.add(Arrays.asList("some simple additions", "52", "0", "52", "0.52"));
-        table.add(Arrays.asList("save the total cents in a symbol", "106", "20", "$totalCents=", "21.06"));
-        table.add(Arrays.asList("now use the total cents that were stored", "$totalCents", "10", "3106", "~=31.1",
-                                "An example for Value Comparisons"));
+        table.add(asList("# description", "1c", "$1", "total cents?", "$ total?"));
+        table.add(asList("some simple additions", "52", "0", "52", "0.52"));
+        table.add(asList("save the total cents in a symbol", "106", "20", "$totalCents=", "21.06"));
+        table.add(asList("now use the total cents that were stored", "$totalCents", "10", "3106", "~=31.1",
+                         "An example for Value Comparisons"));
 
         WriteAssertingTwoWayPipe<Event> expectedResult = new WriteAssertingTwoWayPipe<>();
         expectedResult.add(new CreateFitnesseEvent("dynamicDecisionTable_0", "AddUpChange"));
@@ -234,8 +233,8 @@ public class FitnesseTest {
                 + "\n";
 
         WriteAssertingTwoWayPipe<Event> expectedResult = new WriteAssertingTwoWayPipe<>();
-        expectedResult.add(new PathFitnesseEvent("fitnesse.slim.test"));
-        expectedResult.add(new PathFitnesseEvent("fitnesse.fixtures"));
+        expectedResult.add(new PathEvent("fitnesse.slim.test"));
+        expectedResult.add(new PathEvent("fitnesse.fixtures"));
         expectedResult.add(new ByeEvent());
         runTest(content, expectedResult);
     }
@@ -298,9 +297,9 @@ public class FitnesseTest {
     }
 
     private static PagesByTestSystem getTestcase(String content) {
-        WikiPage page = InMemoryPage.makeRoot("RooT");
-        WikiPageUtil.setPageContents(page, content);
-        List<WikiPage> pages = Arrays.asList(page);
+        WikiPage page = makeRoot("RooT");
+        setPageContents(page, content);
+        List<WikiPage> pages = asList(page);
         return new PagesByTestSystem(pages, page);
     }
 

@@ -20,7 +20,7 @@ package org.mazarineblue.swingrunner.screens.main;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
+import static java.util.Arrays.stream;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
@@ -33,11 +33,11 @@ import org.mazarineblue.swingrunner.config.Config;
 import org.mazarineblue.swingrunner.exceptions.NoFileSelectedException;
 import org.mazarineblue.swingrunner.exceptions.NoSheetSelectedException;
 import org.mazarineblue.swingrunner.screens.about.AboutDialog;
+import org.mazarineblue.swingrunner.screens.about.AboutDialogBuilder;
 import org.mazarineblue.swingrunner.screens.about.GraphicalTextImageFetcher;
 import org.mazarineblue.swingrunner.screens.about.ImageFetcher;
 import org.mazarineblue.swingrunner.screens.about.URLImageFetcher;
 import org.mazarineblue.swingrunner.util.ExceptionReporter;
-import org.mazarineblue.swingrunner.util.GraphicalMessage;
 import org.mazarineblue.swingrunner.util.LoggerExceptionReporter;
 
 public class MainFrame
@@ -47,10 +47,10 @@ public class MainFrame
     private static final long serialVersionUID = 1L;
 
     private final transient FileSystem fs;
-    private final Config config;
-    private final FileSelector selector;
-    private final ExceptionHandler exceptionHandler;
-    private final FeedExecutorFactory feedExecutorFactory;
+    private final transient Config config;
+    private final transient FileSelector selector;
+    private final transient ExceptionHandler exceptionHandler;
+    private final transient FeedExecutorFactory feedExecutorFactory;
 
     public MainFrame(MainFrameBuilder builder) {
         builder.verify();
@@ -208,7 +208,7 @@ public class MainFrame
             File[] files = config.getRecentFiles();
             if (files == null || files.length == 0)
                 return new DefaultComboBoxModel<>();
-            return new DefaultComboBoxModel<>(FeedService.readSheetNames(fs, files[0]));
+            return new DefaultComboBoxModel<>(FeedService.getSheetNames(fs, files[0]));
         } catch (RuntimeException | IOException ex) {
             exceptionHandler.exception(ex);
             return new DefaultComboBoxModel<>();
@@ -216,7 +216,9 @@ public class MainFrame
     }
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        JDialog dialog = new AboutDialog(this, getLogoFetcher(new File("logo.png")));
+        JDialog dialog = new AboutDialog(new AboutDialogBuilder(this)
+                .setImageFetcher(getLogoFetcher(new File("logo.png")))
+                .setResourceBundle("MazarineBlue"));
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
@@ -225,8 +227,8 @@ public class MainFrame
         String path = file.getPath();
         URL url = getClass().getClassLoader().getResource(path);
         GraphicalTextImageFetcher backup = new GraphicalTextImageFetcher(150, 150);
-        backup.addGraphicalMessage(new GraphicalMessage("Image IO", 25, 65));
-        backup.addGraphicalMessage(new GraphicalMessage("Error", 25, 90));
+        backup.addGraphicalMessage(new GraphicalMessageImpl("Image IO", 25, 65));
+        backup.addGraphicalMessage(new GraphicalMessageImpl("Error", 25, 90));
         return new URLImageFetcher(url, backup, LOGGER);
     }
 
@@ -245,7 +247,7 @@ public class MainFrame
 
     private void process(File file) {
         insertFile(file);
-        replaceSheets(FeedService.readSheetNames(fs, file));
+        replaceSheets(FeedService.getSheetNames(fs, file));
         config.writeToRecentFile(getRecentFiles());
     }
 
@@ -264,7 +266,7 @@ public class MainFrame
 
     private void replaceSheets(String[] sheets) {
         sheetComboBox.removeAllItems();
-        Arrays.stream(sheets).forEach(sheetComboBox::addItem);
+        stream(sheets).forEach(sheetComboBox::addItem);
     }
 
     private void sheetComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sheetComboBoxActionPerformed

@@ -17,17 +17,138 @@
  */
 package org.mazarineblue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import static java.lang.System.lineSeparator;
+import org.junit.After;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 import org.junit.Test;
+import static org.mazarineblue.Main.main;
+import static org.mazarineblue.plugins.PluginLoader.getInstance;
+import org.mazarineblue.plugins.Runner;
+import org.mazarineblue.plugins.RunnerPlugin;
+import org.mazarineblue.plugins.util.RunnerSpy;
+import org.mazarineblue.utililities.exceptions.NeverThrownException;
+import org.mazarineblue.utililities.util.TestUtilityClass;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public class MainTest {
+public class MainTest
+        extends TestUtilityClass {
 
-    /**
-     * Test of main method, of class Main.
-     */
+    private PrintStream backup;
+    private ByteArrayOutputStream output;
+
+    public MainTest() {
+        super(Main.class);
+    }
+
+    @Before
+    @SuppressWarnings("UseOfSystemOutOrSystemErr")
+    public void setup() {
+        backup = System.err;
+        output = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(output));
+    }
+
+    @After
+    public void teardown() {
+        getInstance().reload();
+        System.setOut(backup);
+        backup = null;
+        output = null;
+    }
+
     @Test
-    public void testMain() {
+    public void main_NoArgumens_NoAdditionPlugins() {
+        main();
+        String expected = "usage: <command> [<args>]" + lineSeparator()
+                + "Commands:" + lineSeparator()
+                + "help   prints help information" + lineSeparator()
+                + lineSeparator();
+        assertEquals(expected, output.toString());
+    }
+
+    @Test
+    public void main_ShowHelp_AdditionalPlugin_WithSmallDescription() {
+        getInstance().injectPlugin(new RunnerPlugin() {
+            @Override
+            public String name() {
+                return "lorem ipsum";
+            }
+
+            @Override
+            public String description() {
+                return "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+            }
+
+            @Override
+            public Runner createRunner() {
+                throw new NeverThrownException();
+            }
+        });
+        main("my plugin");
+        String expected = "usage: <command> [<args>]" + lineSeparator()
+                + "Commands:" + lineSeparator()
+                + "help          prints help information" + lineSeparator()
+                + "lorem ipsum   Lorem ipsum dolor sit amet, consectetur adipiscing elit." + lineSeparator()
+                + lineSeparator();
+        assertEquals(expected, output.toString());
+    }
+
+    @Test
+    public void main_ShowHelp_AdditionalPlugin_WithLongDescription() {
+        getInstance().injectPlugin(new RunnerPlugin() {
+            @Override
+            public String name() {
+                return "lorem ipsum";
+            }
+
+            @Override
+            public String description() {
+                return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                        + "Nulla nisl justo, venenatis a eros eu, efficitur eleifend nisi.";
+            }
+
+            @Override
+            public Runner createRunner() {
+                throw new NeverThrownException();
+            }
+        });
+        main("help");
+        String expected = "usage: <command> [<args>]" + lineSeparator()
+                + "Commands:" + lineSeparator()
+                + "help          prints help information" + lineSeparator()
+                + "lorem ipsum   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ..." + lineSeparator()
+                + lineSeparator();
+        assertEquals(expected, output.toString());
+    }
+
+    @Test
+    public void main_CreateRunner_AdditionalPlugin_WithSmallDescription() {
+        RunnerSpy runnerSpy = new RunnerSpy();
+        getInstance().injectPlugin(new RunnerPlugin() {
+            @Override
+            public String name() {
+                return "lorem ipsum";
+            }
+
+            @Override
+            public String description() {
+                throw new NeverThrownException();
+            }
+
+            @Override
+            public Runner createRunner() {
+                return runnerSpy;
+            }
+        });
+        main("lorem ipsum", "Argument 1", "Argument 2");
+        assertArrayEquals(new String[]{"Argument 1", "Argument 2"}, runnerSpy.getArguments());
+        assertTrue(runnerSpy.isStarted());
     }
 }

@@ -48,12 +48,14 @@ import org.mazarineblue.eventbus.filters.BlockingFilter;
 import org.mazarineblue.eventbus.subscribers.DummySubscriber;
 import org.mazarineblue.eventbus.subscribers.ReflectionSubscriberSpy;
 import org.mazarineblue.eventbus.subscribers.SubscriberSpy;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
 @RunWith(HierarchicalContextRunner.class)
-public class SimpleEventServiceTest {
+public class SimpleEventServiceTest
+        extends TestHashCodeAndEquals<EventService<Event>> {
 
     private static Event event;
 
@@ -102,7 +104,8 @@ public class SimpleEventServiceTest {
 
     @Test(expected = EventHandlerMissingException.class)
     public void subscribe_EmptyReflectionSubscriber_ThrowsEventHandlerMissingException() {
-        ReflectionSubscriber<Event> emptySubscriber = new ReflectionSubscriber<Event>() {};
+        ReflectionSubscriber<Event> emptySubscriber = new ReflectionSubscriber<Event>() {
+        };
         service.subscribe(null, null, emptySubscriber);
     }
 
@@ -217,36 +220,32 @@ public class SimpleEventServiceTest {
     }
 
     @Test
-    @SuppressWarnings("ObjectEqualsNull")
-    public void equals_Null() {
-        assertFalse(service.equals(null));
+    public void hashCode_DifferentBaseEvent() {
+        int a = service.hashCode();
+        int b = new SimpleEventService<>(AbstractEvent.class).hashCode();
+        assertNotEquals(a, b);
     }
 
     @Test
-    @SuppressWarnings("IncompatibleEquals")
-    public void equals_DifferentClass() {
-        assertFalse(service.equals(""));
-    }
-
-    @Test
-    @SuppressWarnings("IncompatibleEquals")
     public void equals_DifferentBaseEvent() {
         SimpleEventService<Event> other = new SimpleEventService<>(AbstractEvent.class);
-        assertNotEquals(service, other);
+        assertFalse(service.equals(other));
     }
 
-    @Test
-    @SuppressWarnings("IncompatibleEquals")
-    public void equals_DifferentContent() {
+    @Override
+    protected EventService<Event> getIdenticalObject() {
+        return new SimpleEventService<>();
+    }
+
+    @Override
+    protected EventService<Event> getObject() {
+        return service;
+    }
+
+    @Override
+    protected EventService<Event> getDifferentObject() {
         SimpleEventService<Event> other = new SimpleEventService<>();
         other.subscribe(null, null, new DummySubscriber<>());
-        assertNotEquals(service, other);
-    }
-
-    @Test
-    @SuppressWarnings("IncompatibleEquals")
-    public void equals_IdenticalContent() {
-        SimpleEventService<Event> other = new SimpleEventService<>();
-        assertEquals(service, other);
+        return other;
     }
 }

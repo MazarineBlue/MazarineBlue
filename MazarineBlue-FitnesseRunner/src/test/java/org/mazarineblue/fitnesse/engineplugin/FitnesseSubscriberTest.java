@@ -20,8 +20,6 @@ package org.mazarineblue.fitnesse.engineplugin;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,10 +34,9 @@ import org.mazarineblue.fitnesse.events.AssignFitnesseEvent;
 import org.mazarineblue.fitnesse.events.CallFitnesseEvent;
 import org.mazarineblue.fitnesse.events.CreateFitnesseEvent;
 import org.mazarineblue.fitnesse.events.NewInstanceEvent;
-import org.mazarineblue.fitnesse.events.PathEvent;
-import org.mazarineblue.fitnesse.events.PathFitnesseEvent;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
-import org.mazarineblue.variablestore.events.AssignVariableEvent;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
+import org.mazarineblue.variablestore.events.SetVariableEvent;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -51,7 +48,7 @@ public class FitnesseSubscriberTest {
     @SuppressWarnings("PublicInnerClass")
     public class Main {
 
-        private final Feed feed = new MemoryFeed(1);
+        private Feed feed;
         private Interpreter interpreter;
         private FitnesseSubscriber subscriber;
         private LinkSpy link;
@@ -59,21 +56,19 @@ public class FitnesseSubscriberTest {
 
         @Before
         public void setup() {
-            interpreter = Interpreter.getDefaultInstance();
+            feed = new MemoryFeed(1);
+            interpreter = Interpreter.newInstance();
             interpreter.addLink(link = new LinkSpy());
             interpreter.addLink(new EventBusLink(null, null, subscriber = new FitnesseSubscriber()));
         }
 
         @After
         public void teardown() {
+            feed = null;
             interpreter = null;
-        }
-
-        @Test
-        public void path() {
-            interpreter.execute(new MemoryFeed(event = new PathFitnesseEvent("info.fitnesse.fixture")));
-            assertEquals(new PathEvent("info.fitnesse.fixture"), link.next());
-            assertTrue(event.isConsumed());
+            subscriber = null;
+            link = null;
+            event = null;
         }
 
         @Test
@@ -104,68 +99,27 @@ public class FitnesseSubscriberTest {
         public void assign() {
             event = new AssignFitnesseEvent("symbol", "some value");
             interpreter.execute(new MemoryFeed(event));
-            assertEquals(new AssignVariableEvent("symbol", "some value"), link.next());
+            assertEquals(new SetVariableEvent("symbol", "some value"), link.next());
             assertTrue(event.isConsumed());
         }
     }
 
     @SuppressWarnings("PublicInnerClass")
-    public class EqualsAndHashCode {
+    public class EqualsAndHashCode
+            extends TestHashCodeAndEquals<FitnesseSubscriber> {
 
-        private FitnesseSubscriber a;
-
-        @Before
-        public void setup() {
-            a = new FitnesseSubscriber();
+        @Override
+        protected FitnesseSubscriber getObject() {
+            return new FitnesseSubscriber();
         }
 
-        @After
-        public void teardown() {
-            a = null;
-        }
-
-        @Test
-        @SuppressWarnings("ObjectEqualsNull")
-        public void equals_Null() {
-            assertFalse(a.equals(null));
-        }
-
-        @Test
-        @SuppressWarnings("IncompatibleEquals")
-        public void equals_DifferentClass() {
-            assertFalse(a.equals(""));
-        }
-
-        @Test
-        public void hashCode_DifferentContent() {
-            FitnesseSubscriber b = new FitnesseSubscriber();
-            processEvent(b, new CreateFitnesseEvent("instance", "fixture"));
-            assertNotEquals(a.hashCode(), b.hashCode());
-        }
-
-        @Test
-        public void equals_DifferentContent() {
-            FitnesseSubscriber b = new FitnesseSubscriber();
-            processEvent(b, new CreateFitnesseEvent("instance", "fixture"));
-            assertNotEquals(a, b);
-        }
-
-        private void processEvent(FitnesseSubscriber b, CreateFitnesseEvent createFitnesseEvent) {
-            Interpreter interpreter = Interpreter.getDefaultInstance();
-            interpreter.addLink(new EventBusLink(null, null, b));
-            interpreter.execute(new MemoryFeed(createFitnesseEvent));
-        }
-
-        @Test
-        public void hashCode_IdenticalContent() {
-            FitnesseSubscriber b = new FitnesseSubscriber();
-            assertEquals(a.hashCode(), b.hashCode());
-        }
-
-        @Test
-        public void equals_IdenticalContent() {
-            FitnesseSubscriber b = new FitnesseSubscriber();
-            assertEquals(a, b);
+        @Override
+        protected FitnesseSubscriber getDifferentObject() {
+            FitnesseSubscriber subscriber = new FitnesseSubscriber();
+            Interpreter interpreter = Interpreter.newInstance();
+            interpreter.addLink(new EventBusLink(null, null, subscriber));
+            interpreter.execute(new MemoryFeed(new CreateFitnesseEvent("instance", "fixture")));
+            return subscriber;
         }
     }
 }

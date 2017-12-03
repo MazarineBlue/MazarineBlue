@@ -11,7 +11,7 @@
         <version>0.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>MazarineBlue-Excel</artifactId>
+    <artifactId>MazarineBlue-ExcelFeed</artifactId>
     <packaging>jar</packaging>
 
     <name>MazarineBlue - ExcelFeed module</name>
@@ -37,40 +37,23 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>MazarineBlue-EngineExtended</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <!--
-        <dependency>
-            <artifactId>MazarineBlue-EventBus</artifactId>
-            <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Engine-Plugins</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <artifactId>MazarineBlue-Engine</artifactId>
             <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Engine-Core-EventDriven</artifactId>
             <version>${project.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <artifactId>MazarineBlue-Utilities</artifactId>
             <groupId>${project.groupId}</groupId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <artifactId>MazarineBlue-Utilities</artifactId>
-            <groupId>${project.groupId}</groupId>
             <version>${project.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <artifactId>MazarineBlue-VariableStore</artifactId>
-            <groupId>${project.groupId}</groupId>
-            <version>${project.version}</version>
-        </dependency>
--->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>

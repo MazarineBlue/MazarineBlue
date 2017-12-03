@@ -17,8 +17,13 @@
  */
 package org.mazarineblue.fitnesse.events;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Objects;
 import org.mazarineblue.fitnesse.engineplugin.FitnesseSubscriber;
+import org.mazarineblue.utililities.SerializableClonable;
 
 /**
  * An {@code AssignFitnesseEvent} is a {@code FitnesseEvent} that instructs a
@@ -30,8 +35,10 @@ import org.mazarineblue.fitnesse.engineplugin.FitnesseSubscriber;
 public class AssignFitnesseEvent
         extends FitnesseEvent {
 
-    private final String symbol;
-    private final Object value;
+    private static final long serialVersionUID = 1L;
+
+    private String symbol;
+    private Object value;
 
     /**
      * Constructs an {@code AssignFitnesseEvent} as an instruction for
@@ -44,6 +51,16 @@ public class AssignFitnesseEvent
     public AssignFitnesseEvent(String symbol, Object value) {
         this.symbol = symbol;
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return symbol + "=" + value;
+    }
+
+    @Override
+    public String message() {
+        return "symbol=" + symbol + ", value=" + value;
     }
 
     public String getSymbol() {
@@ -63,13 +80,28 @@ public class AssignFitnesseEvent
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
+        return this == obj || obj != null && getClass() == obj.getClass()
                 && Objects.equals(this.symbol, ((AssignFitnesseEvent) obj).symbol)
                 && Objects.equals(this.value, ((AssignFitnesseEvent) obj).value);
     }
 
+    private void writeObject(ObjectOutputStream out)
+            throws IOException {
+        out.writeObject(symbol);
+        if (value instanceof Serializable)
+            out.writeObject(value);
+    }
+
     @Override
-    public String toString() {
-        return "" + symbol + "=" + value;
+    public <E extends SerializableClonable> void copyTransient(E other) {
+        super.copyTransient(other);
+        symbol = ((AssignFitnesseEvent) other).symbol;
+        value = ((AssignFitnesseEvent) other).value;
+    }
+
+    private void readObject(ObjectInputStream in)
+            throws IOException, ClassNotFoundException {
+        symbol = (String) in.readObject();
+        value = in.readObject();
     }
 }

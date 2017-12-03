@@ -108,9 +108,9 @@ public class TwoWayPipeFeedTest { // bank
     @Test(timeout = TIMEOUT)
     public void next_EventReadFromPipe()
             throws InterruptedException {
-        Event event = new TestEvent();
-        redirect.write(event);
-        assertEquals(event, feed.next());
+        Event e = new TestEvent();
+        redirect.write(e);
+        assertEquals(e, feed.next());
     }
 
     @Test(timeout = TIMEOUT, expected = InterruptedRuntimeException.class)
@@ -134,8 +134,8 @@ public class TwoWayPipeFeedTest { // bank
     @Test(timeout = TIMEOUT)
     public void done_EventWriteToPipe()
             throws InterruptedException {
-        Event event = new TestEvent();
-        feed.done(event);
-        assertEquals(event, redirect.read(Event.class));
+        Event e = new TestEvent();
+        feed.done(e);
+        assertEquals(e, redirect.read(Event.class));
     }
 }

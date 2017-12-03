@@ -27,6 +27,11 @@ package org.mazarineblue.eventbus;
 
 import org.mazarineblue.eventbus.events.AbstractEvent;
 
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 public class DummyEvent
         extends AbstractEvent {
+
+    private static final long serialVersionUID = 1L;
 }

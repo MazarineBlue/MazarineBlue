@@ -19,8 +19,14 @@ package org.mazarineblue.pictures;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import org.mazarineblue.utililities.util.TestUtilityClass;
 
-public class PixelUtilTest {
+public class PixelUtilTest
+        extends TestUtilityClass {
+
+    public PixelUtilTest() {
+        super(PixelUtil.class);
+    }
 
     @Test
     public void pixel() {

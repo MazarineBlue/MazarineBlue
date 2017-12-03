@@ -30,14 +30,16 @@ import java.util.List;
 import java.util.Queue;
 import org.mazarineblue.parser.analyser.syntax.SyntacticAnalyser;
 import org.mazarineblue.parser.analyser.syntax.TokenManager;
+import static org.mazarineblue.parser.analyser.syntax.precedenceclimbing.Associativity.LEFT;
 import org.mazarineblue.parser.analyser.syntax.precedenceclimbing.storage.BinaryOperator;
 import org.mazarineblue.parser.analyser.syntax.precedenceclimbing.storage.Storage;
 import org.mazarineblue.parser.analyser.syntax.precedenceclimbing.storage.UnaryOperator;
 import org.mazarineblue.parser.exceptions.SyntacticExpressionException;
 import org.mazarineblue.parser.tokens.Token;
-import org.mazarineblue.parser.tokens.Tokens;
+import static org.mazarineblue.parser.tokens.Tokens.createSpecialMarkToken;
 import org.mazarineblue.parser.tree.SyntaxTreeNode;
-import org.mazarineblue.parser.tree.TreeUtil;
+import static org.mazarineblue.parser.tree.TreeUtil.mkLeaf;
+import static org.mazarineblue.parser.tree.TreeUtil.mkNode;
 
 /**
  * A {@code PrecedenceClimbingAnalyser} is a {@code SyntacticAnalyser} that
@@ -50,7 +52,7 @@ import org.mazarineblue.parser.tree.TreeUtil;
 public class PrecedenceClimbingAnalyser<T>
         implements PrecedenceClimbingRegister<T>, SyntacticAnalyser<T> {
 
-    private final Token<T> end = Tokens.createSpecialMarkToken("END");
+    private final Token<T> end = createSpecialMarkToken("END");
     private final Storage<T> storage = new Storage<>();
 
     @Override
@@ -128,7 +130,7 @@ public class PrecedenceClimbingAnalyser<T>
         private SyntaxTreeNode<T> parseUnaryTerm(Token<T> token) {
             Operator operator = storage.unary(token);
             SyntaxTreeNode<T> node = parseExpression(operator.getPrecedence());
-            return TreeUtil.mkNode(token, node);
+            return mkNode(token, node);
         }
 
         private SyntaxTreeNode<T> parseGrouping(Token<T> token) {
@@ -139,21 +141,23 @@ public class PrecedenceClimbingAnalyser<T>
 
         private void expect(T t, int index) {
             T value = tokens.peek().getValue();
-            if (value == null || !value.equals(t))
+            if (value == null)
+                throw new SyntacticExpressionException(index);
+            if (!value.equals(t))
                 throw new SyntacticExpressionException(index);
             tokens.next();
         }
 
         private SyntaxTreeNode<T> parseSentinal(Token<T> token) {
-            return TreeUtil.mkLeaf(token);
+            return mkLeaf(token);
         }
 
         private SyntaxTreeNode<T> parseExpressionLoop(SyntaxTreeNode<T> tree) {
             Token<T> token = tokens.next();
             Operator operator = storage.binary(token);
-            int p = operator.getAssociativity() == Associativity.LEFT
+            int p = operator.getAssociativity() == LEFT
                     ? operator.getPrecedence() + 1 : operator.getPrecedence();
-            return TreeUtil.mkNode(token, tree, parseExpression(p));
+            return mkNode(token, tree, parseExpression(p));
         }
     }
 }

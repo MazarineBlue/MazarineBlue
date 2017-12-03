@@ -204,6 +204,8 @@ public class TypeConvertorTest {
     @Test
     @SuppressWarnings({"UnnecessaryBoxing", "BooleanConstructorCall"})
     public void convert_Accept() {
+        assertConvertEquals(new Byte((byte) 2), byte.class, (byte) 2);
+
         assertConvertEquals(new Byte((byte) 2), Byte.class, (byte) 2);
         assertConvertEquals(new Byte((byte) 3), Byte.class, (short) 3);
         assertConvertEquals(new Byte((byte) 4), Byte.class, 4);

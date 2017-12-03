@@ -33,8 +33,16 @@ import org.mazarineblue.eventbus.events.AbstractEvent;
  */
 class PrivateOwner {
 
+    /**
+     * Event handlers are not meant to be called directly, instead publish an
+     * event to an {@link Interpreter}; please see the specified event for more
+     * information about this event handler.
+     *
+     * @param event the event this {@code EventHandler} processes.
+     * @see AbstractEvent
+     */
     @EventHandler
-    public void eventHandler(AbstractEvent e) {
-        e.setConsumed(true);
+    public void eventHandler(AbstractEvent event) {
+        event.setConsumed(true);
     }
 }

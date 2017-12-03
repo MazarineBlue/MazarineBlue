@@ -25,4 +25,6 @@ package org.mazarineblue.threadrunner.events;
  */
 public class ByeEvent
         extends RunnerEvent {
+
+    private static final long serialVersionUID = 1L;
 }

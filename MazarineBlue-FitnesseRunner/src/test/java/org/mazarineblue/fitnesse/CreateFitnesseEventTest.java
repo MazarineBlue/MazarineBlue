@@ -17,85 +17,53 @@
  */
 package org.mazarineblue.fitnesse;
 
-import org.junit.After;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import org.junit.Before;
 import org.junit.Test;
 import org.mazarineblue.fitnesse.events.CreateFitnesseEvent;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
-public class CreateFitnesseEventTest {
-
-    private CreateFitnesseEvent a;
-
-    @Before
-    public void setup() {
-        a = new CreateFitnesseEvent("instance", "fixture", "arg1", "arg2");
-    }
-
-    @After
-    public void teardown() {
-        a = null;
-    }
-
-    @Test
-    @SuppressWarnings("ObjectEqualsNull")
-    public void equals_Null() {
-        assertFalse(a.equals(null));
-    }
-
-    @Test
-    @SuppressWarnings("IncompatibleEquals")
-    public void equals_DifferentClass() {
-        assertFalse(a.equals(""));
-    }
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
+public class CreateFitnesseEventTest
+        extends TestHashCodeAndEquals<CreateFitnesseEvent> {
 
     @Test
     public void hashCode_DifferentInstance() {
+        CreateFitnesseEvent a = new CreateFitnesseEvent("instance", "fixture", "arg1", "arg2");
         CreateFitnesseEvent b = new CreateFitnesseEvent("ecnatsni", "fixture", "arg1", "arg2");
+        assertNotEquals(a.hashCode(), b.hashCode());
+    }
+
+    @Test
+    public void hashCode_DifferentFixture() {
+        CreateFitnesseEvent a = new CreateFitnesseEvent("instance", "fixture", "arg1", "arg2");
+        CreateFitnesseEvent b = new CreateFitnesseEvent("instance", "erutxif", "arg1", "arg2");
         assertNotEquals(a.hashCode(), b.hashCode());
     }
 
     @Test
     public void equals_DifferentInstance() {
+        CreateFitnesseEvent a = new CreateFitnesseEvent("instance", "fixture", "arg1", "arg2");
         CreateFitnesseEvent b = new CreateFitnesseEvent("ecnatsni", "fixture", "arg1", "arg2");
-        assertNotEquals(a, b);
-    }
-
-    @Test
-    public void hashCode_DifferentFixture() {
-        CreateFitnesseEvent b = new CreateFitnesseEvent("instance", "erutxif", "arg1", "arg2");
-        assertNotEquals(a.hashCode(), b.hashCode());
+        assertFalse(a.equals(b));
     }
 
     @Test
     public void equals_DifferentFixture() {
+        CreateFitnesseEvent a = new CreateFitnesseEvent("instance", "fixture", "arg1", "arg2");
         CreateFitnesseEvent b = new CreateFitnesseEvent("instance", "erutxif", "arg1", "arg2");
-        assertNotEquals(a, b);
+        assertFalse(a.equals(b));
     }
 
-    @Test
-    public void hashCode_DifferentArguments() {
-        CreateFitnesseEvent b = new CreateFitnesseEvent("instance", "fixture", "arg2", "arg1");
-        assertNotEquals(a.hashCode(), b.hashCode());
+    @Override
+    protected CreateFitnesseEvent getObject() {
+        return new CreateFitnesseEvent("instance", "fixture", "arg1", "arg2");
     }
 
-    @Test
-    public void equals_DifferentArguments() {
-        CreateFitnesseEvent b = new CreateFitnesseEvent("instance", "fixture", "arg2", "arg1");
-        assertNotEquals(a, b);
-    }
-
-    @Test
-    public void hashCode_Identical() {
-        CreateFitnesseEvent b = new CreateFitnesseEvent("instance", "fixture", "arg1", "arg2");
-        assertEquals(a.hashCode(), b.hashCode());
-    }
-
-    @Test
-    public void equals_Identical() {
-        CreateFitnesseEvent b = new CreateFitnesseEvent("instance", "fixture", "arg1", "arg2");
-        assertEquals(a, b);
+    @Override
+    protected CreateFitnesseEvent getDifferentObject() {
+        return new CreateFitnesseEvent("instance", "fixture", "arg2", "arg1");
     }
 }

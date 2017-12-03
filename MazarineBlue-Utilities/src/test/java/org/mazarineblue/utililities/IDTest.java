@@ -19,69 +19,33 @@ package org.mazarineblue.utililities;
 
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mazarineblue.utililities.ID.getCount;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
 @RunWith(HierarchicalContextRunner.class)
-public class IDTest {
+public class IDTest
+        extends TestHashCodeAndEquals<ID> {
 
     @Test
     public void toString_ReturnsString() {
         ID id = new ID();
         String actual = id.toString();
-        String expected = "" + ID.getCount();
+        String expected = "" + getCount();
         assertEquals(expected, actual);
     }
 
-    @SuppressWarnings("PublicInnerClass")
-    public class EqualsAndHashCode {
+    @Override
+    protected ID getObject() {
+        return new ID(1);
+    }
 
-        private final ID a;
-
-        public EqualsAndHashCode() {
-            a = new ID(1);
-        }
-
-        @Test
-        @SuppressWarnings("ObjectEqualsNull")
-        public void equals_Null() {
-            assertFalse(a.equals(null));
-        }
-
-        @Test
-        @SuppressWarnings("IncompatibleEquals")
-        public void equals_DifferentClass() {
-            assertFalse(a.equals(""));
-        }
-
-        @Test
-        public void hashCode_DifferentID() {
-            final ID b = new ID(2);
-            assertNotEquals(a.hashCode(), b.hashCode());
-        }
-
-        @Test
-        public void equals_DifferentID() {
-            final ID b = new ID(2);
-            assertFalse(a.equals(b));
-        }
-
-        @Test
-        public void hashCode_EquivalentID() {
-            ID b = new ID(1);
-            assertEquals(a.hashCode(), b.hashCode());
-        }
-
-        @Test
-        public void equals_EquivalentID() {
-            ID b = new ID(1);
-            assertTrue(a.equals(b));
-        }
+    @Override
+    protected ID getDifferentObject() {
+        return new ID(2);
     }
 }

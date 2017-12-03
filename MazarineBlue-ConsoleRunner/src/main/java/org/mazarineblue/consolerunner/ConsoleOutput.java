@@ -32,41 +32,68 @@ class ConsoleOutput
     @Override
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public void printHelp() {
-        System.err.println("Usage: app feed1 [feed2 [...]]");
+        System.err.println(String.format("Usage: %s %s feed1 [feed2 [...]]",
+                                         ConsoleRunnerPlugin.APP,
+                                         ConsoleRunnerPlugin.NAME));
+    }
+
+    @Override
+    public void start() {
+        LOGGER.log(INFO, "Started");
+    }
+
+    @Override
+    public void stop() {
+        LOGGER.log(INFO, "Stopped");
     }
 
     @Override
     public void reportProcessingFeed(File file) {
-        LOGGER.log(INFO, "Processing feed: %s", file.toString());
+        LOGGER.log(INFO, "Processing feed: {0}", file.toString());
     }
 
     @Override
     public void reportProcessingFeed(Feed feed) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        LOGGER.log(INFO, "Processing anonymous feed");
     }
 
     @Override
+    @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public void reportFileMissing(File file) {
-        LOGGER.log(SEVERE, "Feed not found: %s", file.toString());
+        String str = String.format("Feed not found: %s", file.toString());
+        LOGGER.log(SEVERE, str);
+        System.err.println(str);
     }
 
     @Override
+    @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public void reportFileNotSupported(File file) {
-        LOGGER.log(SEVERE, "Feed not supported: %s", file.toString());
+        String str = String.format("Feed not supported: %s", file.toString());
+        LOGGER.log(SEVERE, str);
+        System.err.println(str);
     }
 
     @Override
+    @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public void reportUnreadableFile(File file) {
-        LOGGER.log(SEVERE, "Feed unreadable: %s", file.toString());
+        String str = String.format("File unreadable: %s", file.toString());
+        LOGGER.log(SEVERE, str);
+        System.err.println(str);
     }
 
     @Override
+    @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public void reportUnwritableFile(File file) {
-        LOGGER.log(SEVERE, "Feed unwritable: %s", file.toString());
+        String str = String.format("File unwritable: %s", file.toString());
+        LOGGER.log(SEVERE, str);
+        System.err.println(str);
     }
 
     @Override
+    @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public void reportException(Exception ex) {
-        LOGGER.log(SEVERE, "Error: %s", ex.getMessage());
+        String str = String.format("Error: %s", ex.getMessage());
+        LOGGER.log(SEVERE, str);
+        System.err.println(str);
     }
 }

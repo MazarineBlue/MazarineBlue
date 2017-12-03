@@ -21,15 +21,17 @@ import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import org.junit.After;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 @RunWith(HierarchicalContextRunner.class)
-public class ArgumentListTest {
+public class ArgumentListTest
+        extends TestHashCodeAndEquals<ArgumentList> {
 
     private Object[] arr;
     private ArgumentList list;
@@ -98,45 +100,26 @@ public class ArgumentListTest {
         public void getArguments_TwoArguments() {
             assertArrayEquals(arr, list.getArguments());
         }
+    }
 
-        @Test
-        @SuppressWarnings("ObjectEqualsNull")
-        public void equals_Null() {
-            assertFalse(list.equals(null));
-        }
+    @Override
+    protected ArgumentList getObject() {
+        return new ArgumentList("argument 1");
+    }
 
-        @Test
-        @SuppressWarnings("IncompatibleEquals")
-        public void equals_DifferentClass() {
-            assertFalse(list.equals(""));
-        }
-
-        @Test
-        public void hashCode_DifferentContent() {
-            assertNotEquals(new ArgumentList().hashCode(), list.hashCode());
-        }
-
-        @Test
-        public void equals_DifferentContent() {
-            assertFalse(list.equals(new ArgumentList()));
-        }
-
-        @Test
-        public void hashCode_EqualContent() {
-            assertEquals(new ArgumentList(arr).hashCode(), list.hashCode());
-        }
-
-        @Test
-        public void equals_EqualContent() {
-            assertTrue(list.equals(new ArgumentList(arr)));
-        }
+    @Override
+    protected ArgumentList getDifferentObject() {
+        return new ArgumentList("argument 1", "argument 2");
     }
 
     private static Object arrayToString(Object... arr) {
         switch (arr.length) {
-            case 0: return "";
-            case 1: return arr[0];
-            default: return buildString(arr, ", ");
+            case 0:
+                return "";
+            case 1:
+                return arr[0];
+            default:
+                return buildString(arr, ", ");
         }
     }
 

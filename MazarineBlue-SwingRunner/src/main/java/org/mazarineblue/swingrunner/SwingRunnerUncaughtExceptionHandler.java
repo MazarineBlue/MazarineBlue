@@ -18,8 +18,9 @@
 package org.mazarineblue.swingrunner;
 
 import java.awt.Component;
-import java.util.logging.Level;
+import static java.util.logging.Level.SEVERE;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import org.mazarineblue.swingrunner.archive.exceptions.FileAccessException;
 import org.mazarineblue.swingrunner.archive.exceptions.UnableToReadFromFileException;
 import org.mazarineblue.swingrunner.archive.exceptions.UnableToWriteToFileException;
@@ -60,8 +61,8 @@ class SwingRunnerUncaughtExceptionHandler
 
     @Override
     public void uncaughtException(Thread t, Throwable ex) {
-        JOptionPane.showMessageDialog(parent, getErrorMessage(ex), title, JOptionPane.ERROR_MESSAGE);
-        logger.log(Level.SEVERE, null, ex);
+        JOptionPane.showMessageDialog(parent, getErrorMessage(ex), title, ERROR_MESSAGE);
+        logger.log(SEVERE, null, ex);
     }
 
     private String getErrorMessage(Throwable ex) {

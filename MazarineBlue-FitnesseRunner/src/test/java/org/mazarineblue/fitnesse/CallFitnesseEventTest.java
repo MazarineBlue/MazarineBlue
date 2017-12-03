@@ -17,85 +17,53 @@
  */
 package org.mazarineblue.fitnesse;
 
-import org.junit.After;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import org.junit.Before;
 import org.junit.Test;
 import org.mazarineblue.fitnesse.events.CallFitnesseEvent;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
-public class CallFitnesseEventTest {
-
-    private CallFitnesseEvent a;
-
-    @Before
-    public void setup() {
-        a = new CallFitnesseEvent("instance", "method", "arg1", "arg2");
-    }
-
-    @After
-    public void teardown() {
-        a = null;
-    }
-
-    @Test
-    @SuppressWarnings("ObjectEqualsNull")
-    public void equals_Null() {
-        assertFalse(a.equals(null));
-    }
-
-    @Test
-    @SuppressWarnings("IncompatibleEquals")
-    public void equals_DifferentClass() {
-        assertFalse(a.equals(""));
-    }
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
+public class CallFitnesseEventTest
+        extends TestHashCodeAndEquals<CallFitnesseEvent> {
 
     @Test
     public void hashCode_DifferentInstances() {
+        CallFitnesseEvent a = new CallFitnesseEvent("instance", "method", "arg1", "arg2");
         CallFitnesseEvent b = new CallFitnesseEvent("ecnatsni", "method", "arg1", "arg2");
+        assertNotEquals(a.hashCode(), b.hashCode());
+    }
+
+    @Test
+    public void hashCode_DifferentMethod() {
+        CallFitnesseEvent a = new CallFitnesseEvent("instance", "method", "arg1", "arg2");
+        CallFitnesseEvent b = new CallFitnesseEvent("instance", "dohtem", "arg1", "arg2");
         assertNotEquals(a.hashCode(), b.hashCode());
     }
 
     @Test
     public void equals_DifferentInstances() {
+        CallFitnesseEvent a = new CallFitnesseEvent("instance", "method", "arg1", "arg2");
         CallFitnesseEvent b = new CallFitnesseEvent("ecnatsni", "method", "arg1", "arg2");
-        assertNotEquals(a, b);
-    }
-
-    @Test
-    public void hashCode_DifferentMethod() {
-        CallFitnesseEvent b = new CallFitnesseEvent("instance", "dohtem", "arg1", "arg2");
-        assertNotEquals(a.hashCode(), b.hashCode());
+        assertFalse(a.equals(b));
     }
 
     @Test
     public void equals_DifferentMethod() {
+        CallFitnesseEvent a = new CallFitnesseEvent("instance", "method", "arg1", "arg2");
         CallFitnesseEvent b = new CallFitnesseEvent("instance", "dohtem", "arg1", "arg2");
-        assertNotEquals(a, b);
+        assertFalse(a.equals(b));
     }
 
-    @Test
-    public void hashCode_DifferentArguments() {
-        CallFitnesseEvent b = new CallFitnesseEvent("instance", "method", "arg2", "arg1");
-        assertNotEquals(a.hashCode(), b.hashCode());
+    @Override
+    protected CallFitnesseEvent getObject() {
+        return new CallFitnesseEvent("instance", "method", "arg1", "arg2");
     }
 
-    @Test
-    public void equals_DifferentArguments() {
-        CallFitnesseEvent b = new CallFitnesseEvent("instance", "method", "arg2", "arg1");
-        assertNotEquals(a, b);
-    }
-
-    @Test
-    public void hashCode_Identical() {
-        CallFitnesseEvent b = new CallFitnesseEvent("instance", "method", "arg1", "arg2");
-        assertEquals(a.hashCode(), b.hashCode());
-    }
-
-    @Test
-    public void equals_Identical() {
-        CallFitnesseEvent b = new CallFitnesseEvent("instance", "method", "arg1", "arg2");
-        assertEquals(a, b);
+    @Override
+    protected CallFitnesseEvent getDifferentObject() {
+        return new CallFitnesseEvent("instance", "method", "arg2", "arg1");
     }
 }

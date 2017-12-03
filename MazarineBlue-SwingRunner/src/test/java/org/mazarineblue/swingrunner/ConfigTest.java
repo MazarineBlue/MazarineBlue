@@ -29,7 +29,11 @@ import org.junit.Test;
 import org.mazarineblue.fs.FileSystem;
 import org.mazarineblue.fs.MemoryFileSystem;
 import org.mazarineblue.swingrunner.config.Config;
+import static org.mazarineblue.swingrunner.config.Config.recentFilesLocation;
 
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 public class ConfigTest {
 
     private FileSystem fs;
@@ -57,16 +61,16 @@ public class ConfigTest {
     @Test
     public void getMostRecentDirectory_EmptyConfig()
             throws IOException {
-        fs.mkfile(Config.recentFilesLocation(), new ArrayList<>(0));
+        fs.mkfile(recentFilesLocation(), new ArrayList<>(0));
         assertEquals(".", config.getMostRecentDirectory().getPath());
     }
 
     @Test
     public void getMostRecentDirectory_FilledConfig()
             throws IOException {
-        fs.mkdir(new File("dir.txt"));
+        fs.mkdir(new File("dir"));
         fs.mkfile(new File("dir", "file.txt"), "");
-        fs.mkfile(Config.recentFilesLocation(), asList(new File("dir", "file.txt")));
+        fs.mkfile(recentFilesLocation(), asList(new File("dir", "file.txt")));
         assertEquals("dir", config.getMostRecentDirectory().getPath());
     }
 
@@ -75,6 +79,6 @@ public class ConfigTest {
         File[] files = new File[1];
         files[0] = new File("dir", "file");
         config.writeToRecentFile(files);
-        assertTrue(fs.isFile(Config.recentFilesLocation()));
+        assertTrue(fs.isFile(recentFilesLocation()));
     }
 }

@@ -17,6 +17,10 @@
  */
 package org.mazarineblue.swingrunner;
 
+import static java.awt.EventQueue.invokeLater;
+import static java.lang.Thread.setDefaultUncaughtExceptionHandler;
+import static javax.swing.UIManager.getInstalledLookAndFeels;
+import static javax.swing.UIManager.setLookAndFeel;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.mazarineblue.executors.FeedExecutorBuilder;
 import org.mazarineblue.executors.FeedExecutorFactory;
@@ -26,7 +30,6 @@ import org.mazarineblue.plugins.Runner;
 import org.mazarineblue.swingrunner.config.Config;
 import org.mazarineblue.swingrunner.screens.main.MainFrame;
 import org.mazarineblue.swingrunner.screens.main.MainFrameBuilder;
-import org.mazarineblue.swingrunner.util.DiskFileSelector;
 import org.mazarineblue.swingrunner.util.LoggerExceptionReporter;
 
 /**
@@ -39,24 +42,19 @@ public class SwingRunner
         implements Runner {
 
     private final DiskFileSelector diskSelector;
-    private final MainFrameBuilder builder;
     private final MainFrame mainFrame;
     private final Config config;
 
-    public static void main(String... args) {
-        new SwingRunner().execute(args);
-    }
-
     public SwingRunner() {
         setNimbusLookAndFeel();
-        Thread.setDefaultUncaughtExceptionHandler(new SwingRunnerUncaughtExceptionHandler("Error", null, new LoggerExceptionReporter()));
+        setDefaultUncaughtExceptionHandler(new SwingRunnerUncaughtExceptionHandler("Error", null,
+                                                                                   new LoggerExceptionReporter()));
 
         FileSystem fs = new DiskFileSystem();
         config = new Config(fs);
 
         diskSelector = new DiskFileSelector(config.getMostRecentDirectory(), new FeedFilter(fs));
-        builder = getBuilder(fs, config, diskSelector);
-        mainFrame = new MainFrame(builder);
+        mainFrame = new MainFrame(getBuilder(fs, config, diskSelector));
     }
 
     @Override
@@ -66,7 +64,7 @@ public class SwingRunner
 
     @Override
     public void start() {
-        java.awt.EventQueue.invokeLater(() -> getMainFrame().setVisible(true));
+        invokeLater(() -> getMainFrame().setVisible(true));
     }
 
     private static void setNimbusLookAndFeel() {
@@ -74,9 +72,9 @@ public class SwingRunner
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+            for (javax.swing.UIManager.LookAndFeelInfo info : getInstalledLookAndFeels())
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    setLookAndFeel(info.getClassName());
                     break;
                 }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -88,7 +86,8 @@ public class SwingRunner
         MainFrameBuilder builder = new MainFrameBuilder();
         builder.setFileSystem(fs);
         builder.setConfig(config);
-        builder.setFeedExecutorFactory(FeedExecutorFactory.getDefaultInstance(new FeedExecutorBuilder().setFileSystem(fs)));
+        builder.setFeedExecutorFactory(FeedExecutorFactory.newInstance(
+                new FeedExecutorBuilder().setFileSystem(fs)));
         builder.setFileSelector(selector);
         builder.setExceptionHandler(new DummyExceptionHandler());
         return builder;

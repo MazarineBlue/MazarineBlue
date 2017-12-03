@@ -18,15 +18,20 @@
 package org.mazarineblue.consolerunner;
 
 import java.io.File;
-import java.util.Arrays;
+import static java.util.Arrays.copyOf;
 import org.mazarineblue.executors.FeedExecutor;
 import org.mazarineblue.executors.FeedExecutorBuilder;
 import org.mazarineblue.executors.FeedExecutorFactory;
 import org.mazarineblue.executors.FeedExecutorOutput;
-import org.mazarineblue.fs.DiskFileSystem;
 import org.mazarineblue.fs.FileSystem;
 import org.mazarineblue.plugins.Runner;
 
+/**
+ * A {@code ConsoleRunner} is {@code Runner} that can read feeds from a
+ * {@code FileSystem}.
+ *
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 public class ConsoleRunner
         implements Runner {
 
@@ -34,26 +39,29 @@ public class ConsoleRunner
     private final FeedExecutorOutput output;
     private String[] args;
 
-    public static void main(String... args) {
-        new ConsoleRunner().execute(args);
+    /**
+     * Creates a {@code ConsoleRunner}, which runs from the specified
+     * {@code FileSystem}.
+     *
+     * @param fs the file system to load the feeds from
+     */
+    public ConsoleRunner(FileSystem fs) {
+        this(fs, new ConsoleOutput());
     }
 
-    public ConsoleRunner() {
-        this(new DiskFileSystem(), new ConsoleOutput());
+    private ConsoleRunner(FileSystem fs, FeedExecutorOutput output) {
+        this(output,
+             FeedExecutorFactory.newInstance(new FeedExecutorBuilder().setFileSystem(fs).setOutput(output)));
     }
 
-    public ConsoleRunner(FileSystem fs, FeedExecutorOutput output) {
-        this(output, FeedExecutorFactory.getDefaultInstance(new FeedExecutorBuilder().setFileSystem(fs).setOutput(output)));
-    }
-
-    public ConsoleRunner(FeedExecutorOutput output, FeedExecutorFactory feedExecutorFactory) {
+    ConsoleRunner(FeedExecutorOutput output, FeedExecutorFactory feedExecutorFactory) {
         this.output = output;
         this.feedExecutorFactory = feedExecutorFactory;
     }
 
     @Override
     public void setArguments(String... args) {
-        this.args = args == null ? null : Arrays.copyOf(args, args.length);
+        this.args = args == null ? null : copyOf(args, args.length);
     }
 
     @Override

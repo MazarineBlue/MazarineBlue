@@ -6,9 +6,14 @@
 package org.mazarineblue.threadrunner.util;
 
 import java.io.File;
+import static java.lang.Thread.currentThread;
+import static java.lang.Thread.sleep;
 import org.mazarineblue.eventdriven.Feed;
 import org.mazarineblue.executors.util.DummyFeedExecutor;
 
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 public class WaitingFeedExecutor
         extends DummyFeedExecutor {
 
@@ -20,10 +25,10 @@ public class WaitingFeedExecutor
     public void execute(File file, String sheet) {
         try {
             while (true)
-                Thread.sleep(TIME);
+                sleep(TIME);
         } catch (InterruptedException ex) {
             ++interrupted;
-            Thread.currentThread().interrupt();
+            currentThread().interrupt();
         }
     }
 
@@ -31,10 +36,10 @@ public class WaitingFeedExecutor
     public void execute(Feed feed) {
         try {
             while (true)
-                Thread.sleep(TIME);
+                sleep(TIME);
         } catch (InterruptedException ex) {
             ++interrupted;
-            Thread.currentThread().interrupt();
+            currentThread().interrupt();
         }
     }
 }

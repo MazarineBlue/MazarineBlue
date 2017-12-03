@@ -17,13 +17,10 @@
  */
 package org.mazarineblue.excel;
 
-import java.io.EOFException;
-import java.io.IOException;
 import java.io.InputStream;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import static org.apache.poi.ss.usermodel.WorkbookFactory.create;
 import org.mazarineblue.eventdriven.Feed;
 import org.mazarineblue.excel.exceptions.CorruptWorkbookException;
 import org.mazarineblue.excel.exceptions.SheetNotFoundException;
@@ -41,15 +38,15 @@ public class ExcelFeedPlugin
 
     @Override
     public boolean canProcess(String mimeType) {
-        return mimeType.equals("application/vnd.ms-excel")
-                || mimeType.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        return "application/vnd.ms-excel".equals(mimeType)
+                || "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".equals(mimeType);
     }
 
     @Override
     public String[] readSheetNames(InputStream input) {
-        try (Workbook workbook = WorkbookFactory.create(input)) {
+        try (Workbook workbook = create(input)) {
             return getAllSheetNames(workbook);
-        } catch (IOException | InvalidFormatException ex) {
+        } catch (Exception ex) {
             throw new CorruptWorkbookException(ex);
         }
     }
@@ -63,14 +60,15 @@ public class ExcelFeedPlugin
     }
 
     @Override
-    public Feed createFeed(InputStream input, String sheet)
-            throws IOException {
-        try (Workbook workbook = WorkbookFactory.create(input)) {
+    public Feed createFeed(InputStream input, String sheet) {
+        try (Workbook workbook = create(input)) {
             Sheet s = workbook.getSheet(sheet);
             if (s == null)
                 throw new SheetNotFoundException();
             return new ExcelFeed(s);
-        } catch (EOFException | InvalidFormatException ex) {
+        } catch (SheetNotFoundException ex) {
+            throw ex;
+        } catch (Exception ex) {
             throw new CorruptWorkbookException(ex);
         }
     }

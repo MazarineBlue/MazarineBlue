@@ -17,6 +17,10 @@
  */
 package org.mazarineblue.fitnesse.util;
 
+import static java.lang.Math.round;
+import static java.lang.Runtime.getRuntime;
+import static java.lang.System.gc;
+
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
@@ -29,13 +33,13 @@ public class FitnesseUtil {
 
     public static double getMemoryFootprintDiff(long before, long unit) {
         long diff = getMemoryFootprintHelper() - before;
-        return Math.round(diff * 100 / unit) / 100d;
+        return round(diff * 100 / unit) / 100d;
     }
 
     // <editor-fold defaultstate="true" desc="Memory footprint helper methods">
     private static long getMemoryFootprintHelper() {
-        System.gc();
-        return Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        gc();
+        return getRuntime().totalMemory() - getRuntime().freeMemory();
     }
     // </editor-fold>
 

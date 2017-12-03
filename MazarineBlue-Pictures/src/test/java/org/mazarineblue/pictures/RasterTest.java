@@ -18,16 +18,60 @@
 package org.mazarineblue.pictures;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import org.junit.Test;
+import org.mazarineblue.utililities.util.TestHashCodeAndEquals;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public class RasterTest {
+public class RasterTest
+        extends TestHashCodeAndEquals<Object> {
 
     @Test
     public void toString_ReturnsWidthAndHeight() {
         Raster raster = new Raster(3, 4);
         assertEquals("width=3, height=4", raster.toString());
+    }
+
+    @Override
+    protected Object getObject() {
+        return new Raster(4, 4);
+    }
+
+    @Override
+    protected Object getDifferentObject() {
+        return new Raster(4, 3);
+    }
+
+    @Test
+    public void hashCode_DifferentHeigth_ReturnFalse() {
+        int a = getObject().hashCode();
+        int b = new Raster(3, 4).hashCode();
+        assertNotEquals(a, b);
+    }
+
+    @Test
+    public void hashCode_DifferentContent_ReturnFalse() {
+        int a = getObject().hashCode();
+        Raster b = new Raster(4, 4);
+        b.setRGB(0, 0, 127);
+        assertNotEquals(a, b.hashCode());
+    }
+
+    @Test
+    public void equals_DifferentHeigth_ReturnFalse() {
+        Object a = getObject();
+        Raster b = new Raster(3, 4);
+        assertFalse(a.equals(b));
+    }
+
+    @Test
+    public void equals_DifferentContent_ReturnFalse() {
+        Object a = getObject();
+        Raster b = new Raster(4, 4);
+        b.setRGB(0, 0, 127);
+        assertFalse(a.equals(b));
     }
 }

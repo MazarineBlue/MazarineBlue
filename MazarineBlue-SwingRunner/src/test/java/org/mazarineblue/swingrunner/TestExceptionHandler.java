@@ -17,6 +17,9 @@
  */
 package org.mazarineblue.swingrunner;
 
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 public class TestExceptionHandler
         implements ExceptionHandler {
 

@@ -30,7 +30,8 @@ import java.util.List;
 import java.util.Queue;
 import org.mazarineblue.parser.tokens.Token;
 import org.mazarineblue.parser.tree.SyntaxTreeNode;
-import org.mazarineblue.parser.tree.TreeUtil;
+import static org.mazarineblue.parser.tree.TreeUtil.mkLeaf;
+import static org.mazarineblue.parser.tree.TreeUtil.mkNode;
 
 /**
  * A {@code SimpleSyntacticAnalyser} is a {@code SyntacticAnalyser} that
@@ -61,19 +62,19 @@ public class TokenConcatenatingAnalyser<T>
 
     private SyntaxTreeNode<T> buildLeaf(Queue<Token<T>> queue) {
         Token<T> t = queue.remove();
-        return TreeUtil.mkLeaf(t);
+        return mkLeaf(t);
     }
 
     private SyntaxTreeNode<T> buildUnary(Queue<Token<T>> queue) {
         Token<T> t = queue.remove();
         SyntaxTreeNode<T> rigth = build(queue, 1);
-        return TreeUtil.mkNode(t, rigth);
+        return mkNode(t, rigth);
     }
 
     private SyntaxTreeNode<T> buildBinary(Queue<Token<T>> queue, int leftCount, int rigthCount) {
         SyntaxTreeNode<T> left = build(queue, leftCount);
         Token<T> node = queue.remove();
         SyntaxTreeNode<T> rigth = build(queue, rigthCount);
-        return TreeUtil.mkNode(node, left, rigth);
+        return mkNode(node, left, rigth);
     }
 }
