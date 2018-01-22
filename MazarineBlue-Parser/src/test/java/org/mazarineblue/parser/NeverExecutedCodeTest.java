@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,7 +28,8 @@ package org.mazarineblue.parser;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.mazarineblue.parser.tree.SyntaxTreeNode;
-import org.mazarineblue.parser.tree.TreeUtil;
+import static org.mazarineblue.parser.tree.TreeUtil.mkLeaf;
+import static org.mazarineblue.parser.tree.TreeUtil.mkNode;
 import org.mazarineblue.parser.util.TestToken;
 
 /**
@@ -38,20 +39,20 @@ public class NeverExecutedCodeTest {
 
     @Test
     public void leafHasNoLeftChild() {
-        SyntaxTreeNode<String> leaf = TreeUtil.mkLeaf(new TestToken(""));
+        SyntaxTreeNode<String> leaf = mkLeaf(new TestToken(""));
         assertEquals(null, leaf.getLeftChild());
     }
 
     @Test
     public void leafHasNoRightChild() {
-        SyntaxTreeNode<String> leaf = TreeUtil.mkLeaf(new TestToken(""));
+        SyntaxTreeNode<String> leaf = mkLeaf(new TestToken(""));
         assertEquals(null, leaf.getRightChild());
     }
 
     @Test
     public void unaryHasNoLeftChild() {
-        SyntaxTreeNode<String> leaf = TreeUtil.mkLeaf(new TestToken(""));
-        SyntaxTreeNode<String> unary = TreeUtil.mkNode(new TestToken(""), leaf);
+        SyntaxTreeNode<String> leaf = mkLeaf(new TestToken(""));
+        SyntaxTreeNode<String> unary = mkNode(new TestToken(""), leaf);
         assertEquals(null, unary.getLeftChild());
     }
 }

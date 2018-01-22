@@ -1,0 +1,12 @@
+@startuml
+skinparam componentStyle uml2
+
+[MazarineBlue-Main]-->[MazarineBlue-Plugins-Runners]
+[MazarineBlue-Main]-0)-[MazarineBlue-Runners-*]
+[MazarineBlue-Runners-*]-->[MazarineBlue-Engine-Main]
+[MazarineBlue-Runners-*]-->[MazarineBlue-Plugins-Runners]
+
+[MazarineBlue-Runners-FitnessePlugin]-->[MazarineBlue-Runners-ThreadRunner]
+[MazarineBlue-Runners-FitnessePlugin]-->[MazarineBlue-Libraries-Fixture]
+[MazarineBlue-Runners-ThreadRunner]-->[MazarineBlue-Engine-Main]
+@enduml

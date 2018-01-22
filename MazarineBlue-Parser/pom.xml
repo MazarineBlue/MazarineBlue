@@ -14,9 +14,10 @@
     <artifactId>MazarineBlue-Parser</artifactId>
     <packaging>jar</packaging>
 
-    <name>MazarineBlue - Parser module</name>
+    <name>MazarineBlue - Parser</name>
     <description>
-        The Parser module contains the precedence climbing parser.
+        A powerful parser module, including a variable parser, precedence
+        climbing parser and expression builder.
     </description>
     <licenses>
         <license>
@@ -39,6 +40,18 @@
         </developer>
     </developers>
     <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Utilities</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Utilities</artifactId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.opera</groupId>
             <artifactId>operadriver</artifactId>

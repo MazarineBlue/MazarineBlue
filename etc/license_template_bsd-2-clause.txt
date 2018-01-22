@@ -1,7 +1,7 @@
 <#if licenseFirst??>
 ${licenseFirst}
 </#if>
-${licensePrefix}Copyright (c) ${date?date?string("yyyy")} ${project.organization!user}
+${licensePrefix}Copyright (c) ${project.organization!user}
 ${licensePrefix?replace(" +$", "", "r")}
 ${licensePrefix}Redistribution and use in source and binary forms, with or without
 ${licensePrefix}modification, are permitted provided that the following conditions are met:

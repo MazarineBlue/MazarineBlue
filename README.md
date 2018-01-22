@@ -201,7 +201,7 @@ commit message:
 ## Copyright & license
 MazarineBlue is released under the
 [GNU Affero General Public License, version 3][AGPL3 license]. The
-modules MazarineBlue-Parser and MazarineBlue-EventBus are release under
+modules MazarineBlue-Parser and MazarineBlue-EventNotifier are release under
 the [BSD 2-Clause License][BSD 2-clause license].
 
 [logo-image]: https://github.com/MazarineBlue/MazarineBlue/wiki/images/MazarineBlue.png

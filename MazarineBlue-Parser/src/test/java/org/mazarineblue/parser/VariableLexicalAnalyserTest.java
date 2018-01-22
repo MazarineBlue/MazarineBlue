@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,22 +25,28 @@
  */
 package org.mazarineblue.parser;
 
+import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import static java.util.Arrays.asList;
+import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mazarineblue.parser.analyser.lexical.StringLexicalAnalyser;
-import org.mazarineblue.parser.analyser.lexical.matchers.BracketVariableMatcher;
+import org.mazarineblue.parser.analyser.lexical.matchers.ComplexVariableMatcher;
 import org.mazarineblue.parser.analyser.lexical.matchers.SimpleVariableMatcher;
 import org.mazarineblue.parser.exceptions.BracketUnclosedException;
 import org.mazarineblue.parser.exceptions.IllegalCloseBacketException;
+import org.mazarineblue.parser.exceptions.IllegalOpenBacketException;
 import org.mazarineblue.parser.exceptions.VariableSignMissingException;
 import org.mazarineblue.parser.tokens.Token;
-import org.mazarineblue.parser.tokens.Tokens;
+import static org.mazarineblue.parser.tokens.Tokens.createLiteralToken;
+import static org.mazarineblue.parser.tokens.Tokens.createVariableToken;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
+@RunWith(HierarchicalContextRunner.class)
 public class VariableLexicalAnalyserTest {
 
     private StringLexicalAnalyser analyser;
@@ -48,8 +54,11 @@ public class VariableLexicalAnalyserTest {
     @Before
     public void setup() {
         analyser = new StringLexicalAnalyser();
-        analyser.add(new BracketVariableMatcher());
-        analyser.add(new SimpleVariableMatcher());
+    }
+
+    @After
+    public void teardown() {
+        analyser = null;
     }
 
     @Test
@@ -59,77 +68,125 @@ public class VariableLexicalAnalyserTest {
 
     @Test
     public void breakdown_Literal() {
-        assertBreakdown("foo", Tokens.createLiteralToken("foo", 0));
+        assertBreakdown("foo", createLiteralToken("foo", 0));
     }
 
-    @Test
-    public void breakdown_SimpleVariable() {
-        assertBreakdown("$foo", Tokens.createVariableToken("foo", 0));
+    @SuppressWarnings("PublicInnerClass")
+    public class TestWithComplexVariableMatcher {
+
+        @Before
+        public void setup() {
+            analyser.add(new ComplexVariableMatcher());
+        }
+
+        @Test(expected = VariableSignMissingException.class)
+        public void breakdown_ComplexVariable_OpeningBracket() {
+            analyser.breakdown("$f{oo");
+        }
+
+        @Test(expected = IllegalCloseBacketException.class)
+        public void breakdown_ComplexVariable_ClosingBracket() {
+            analyser.breakdown("$f}oo");
+        }
+
+        @Test(expected = BracketUnclosedException.class)
+        public void breakdown_ComplexVariable_UnclosedBracket() {
+            analyser.breakdown("${foo");
+        }
+
+        @Test(expected = IllegalOpenBacketException.class)
+        public void breakdown_ComplexVariable_IllegalOpeningBracket() {
+            analyser.breakdown("${fo{o}");
+        }
+
+        @Test
+        public void breakdown_ComplexVariable() {
+            assertBreakdown("${foo}", createVariableToken("foo", 0));
+        }
+
+        @Test
+        public void breakdown_ComplexVariableAndComplexVariable() {
+            assertBreakdown("${foo}${foo}", createVariableToken("foo", 0), createVariableToken("foo", 6));
+        }
+
+        @Test
+        public void breakdown_ComplexVariableAndLiteral() {
+            assertBreakdown("${foo}foo", createVariableToken("foo", 0), createLiteralToken("foo", 6));
+        }
+
+        @Test
+        public void breakdown_LiteralAndComplexVariable() {
+            assertBreakdown("foo${foo}", createLiteralToken("foo", 0), createVariableToken("foo", 3));
+        }
     }
 
-    @Test(expected = VariableSignMissingException.class)
-    public void breakdown_SimpleVariable_OpeningBracket() {
-        analyser.breakdown("$f{oo");
+    @SuppressWarnings("PublicInnerClass")
+    public class TestWithSimpleVariableMatcher {
+
+        @Before
+        public void setup() {
+            analyser.add(new SimpleVariableMatcher());
+        }
+
+        @Test
+        public void breakdown_SimpleVariable() {
+            assertBreakdown("$foo", createVariableToken("foo", 0));
+        }
+
+        @Test
+        public void breakdown_ComplexVariable_OpeningBracket() {
+            assertBreakdown("$f{oo", createVariableToken("f{oo", 0));
+        }
+
+        @Test
+        public void breakdown_ComplexVariable_ClosingBracket() {
+            assertBreakdown("$f}oo", createVariableToken("f}oo", 0));
+        }
+
+        @Test
+        public void breakdown_SimpleVariableAndSimpleVariable() {
+            assertBreakdown("$foo$foo", createVariableToken("foo", 0), createVariableToken("foo", 4));
+        }
+
+        @Test
+        public void breakdown_SimpleVariableAndLiteral() {
+            assertBreakdown("$foo foo", createVariableToken("foo", 0), createLiteralToken(" foo", 4));
+        }
     }
 
-    @Test(expected = IllegalCloseBacketException.class)
-    public void breakdown_SimpleVariable_ClosingBracket() {
-        analyser.breakdown("$f}oo");
-    }
+    @SuppressWarnings("PublicInnerClass")
+    public class TestWithSimpleAndComplexVariableMatcher {
 
-    @Test
-    public void breakdown_SimpleVariableAndSimpleVariable() {
-        assertBreakdown("$foo$foo", Tokens.createVariableToken("foo", 0), Tokens.createVariableToken("foo", 4));
-    }
+        @Before
+        public void setup() {
+            analyser.add(new ComplexVariableMatcher());
+            analyser.add(new SimpleVariableMatcher());
+        }
 
-    @Test
-    public void breakdown_SimpleVariableAndLiteral() {
-        assertBreakdown("$foo foo", Tokens.createVariableToken("foo", 0), Tokens.createLiteralToken(" foo", 4));
-    }
+        @Test(expected = VariableSignMissingException.class)
+        public void breakdown_ComplexVariable_OpeningBracket() {
+            analyser.breakdown("$f{oo");
+        }
 
-    @Test
-    public void breakdown_LiteralAndSimpleVariableAndLiteral() {
-        assertBreakdown("foo$foo", Tokens.createLiteralToken("foo", 0), Tokens.createVariableToken("foo", 3));
-    }
+        @Test(expected = IllegalCloseBacketException.class)
+        public void breakdown_ComplexVariable_ClosingBracket() {
+            analyser.breakdown("$f}oo");
+        }
 
-    @Test(expected = BracketUnclosedException.class)
-    public void breakdown_BracketVariable_UnclosedBracket() {
-        analyser.breakdown("${foo");
-    }
+        @Test
+        public void breakdown_LiteralAndSimpleVariableAndLiteral() {
+            assertBreakdown("foo$foo", createLiteralToken("foo", 0), createVariableToken("foo", 3));
+        }
 
-    @Test(expected = VariableSignMissingException.class)
-    public void breakdown_BracketVariable_IllegalOpeningBracket() {
-        analyser.breakdown("${fo{o}");
-    }
+        @Test
+        public void breakdown_ComplexVariableAndSimpleVariable() {
+            assertBreakdown("${foo}$foo", createVariableToken("foo", 0), createVariableToken("foo", 6));
+        }
 
-    @Test
-    public void breakdown_BracketVariable() {
-        assertBreakdown("${foo}", Tokens.createVariableToken("foo", 0));
-    }
-
-    @Test
-    public void breakdown_BracketVariableAndBracketVariable() {
-        assertBreakdown("${foo}${foo}", Tokens.createVariableToken("foo", 0), Tokens.createVariableToken("foo", 6));
-    }
-
-    @Test
-    public void breakdown_BracketVariableAndLiteral() {
-        assertBreakdown("${foo}foo", Tokens.createVariableToken("foo", 0), Tokens.createLiteralToken("foo", 6));
-    }
-
-    @Test
-    public void breakdown_LiteralAndBracketVariable() {
-        assertBreakdown("foo${foo}", Tokens.createLiteralToken("foo", 0), Tokens.createVariableToken("foo", 3));
-    }
-
-    @Test
-    public void breakdown_BracketVariableAndSimpleVariable() {
-        assertBreakdown("${foo}$foo", Tokens.createVariableToken("foo", 0), Tokens.createVariableToken("foo", 6));
-    }
-
-    @Test
-    public void breakdown_SimpleVariableAndBracketVariable() {
-        assertBreakdown("$foo${foo}", Tokens.createVariableToken("foo", 0), Tokens.createVariableToken("foo", 4));
+        @Test
+        public void breakdown_SimpleVariableAndComplexVariable() {
+            assertBreakdown("$foo${foo foo}", createVariableToken("foo", 0), createVariableToken("foo foo", 4));
+        }
     }
 
     private void assertBreakdown(String input, Token<?>... tokens) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -22,7 +22,7 @@ import org.junit.After;
 import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
-import org.mazarineblue.fs.util.TestFileSystem;
+import org.mazarineblue.fs.util.AdapterFileSystemSpy;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -30,8 +30,8 @@ import org.mazarineblue.fs.util.TestFileSystem;
 public class WriteOnlyFileSystemTest
         extends AdapterFileSystemTest {
 
-    private TestFileSystem spy;
-    private FileSystem fs;
+    private AdapterFileSystemSpy spy;
+    private AdapterFileSystem fs;
 
     @Before
     public void setup3() {
@@ -46,7 +46,7 @@ public class WriteOnlyFileSystemTest
     }
 
     @Override
-    protected FileSystem createFileSystem(TestFileSystem spy) {
+    protected AdapterFileSystem createFileSystem(AdapterFileSystemSpy spy) {
         return new WriteOnlyFileSystem(spy);
     }
 
@@ -88,14 +88,14 @@ public class WriteOnlyFileSystemTest
     @Test
     @Override
     public void isReadable_False() {
-        spy.setReadable(false);
+        spy.setIsReadable(false);
         assertFalse(fs.isReadable(null));
     }
 
     @Test
     @Override
     public void isReadable_True() {
-        spy.setReadable(true);
+        spy.setIsReadable(true);
         assertFalse(fs.isReadable(null));
     }
 }

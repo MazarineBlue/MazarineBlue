@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -113,7 +113,7 @@ class Raster {
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
+        return this == obj || obj != null && getClass() == obj.getClass()
                 && this.width == ((Raster) obj).width && this.height == ((Raster) obj).height
                 && Arrays.equals(this.rgbArray, ((Raster) obj).rgbArray);
     }

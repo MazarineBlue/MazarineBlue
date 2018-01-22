@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,7 +28,7 @@ package org.mazarineblue.parser;
 import org.mazarineblue.parser.tokens.Token;
 import org.mazarineblue.parser.tokens.Tokens;
 import org.mazarineblue.parser.tree.SyntaxTreeNode;
-import org.mazarineblue.parser.tree.TreeUtil;
+import static org.mazarineblue.parser.tree.TreeUtil.mkLeaf;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -41,6 +41,6 @@ abstract class AbstractSemanticAnalyserTest {
     }
 
     protected static SyntaxTreeNode<String> leaf(String value) {
-        return TreeUtil.mkLeaf(token(value));
+        return mkLeaf(token(value));
     }
 }

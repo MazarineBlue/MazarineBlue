@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -22,8 +22,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Collection;
-import static org.mazarineblue.utililities.StreamUtil.copy;
+import static org.mazarineblue.utililities.Streams.copy;
 
 /**
  * An {@code AbstractFileSystem} is a {@code FileSystem} that works on the hard disk.
@@ -52,6 +53,18 @@ public class DiskFileSystem
     public void mkfile(File file, Collection<?> collection)
             throws IOException {
         mkdir(new FileOutputStream(file), collection);
+    }
+
+    @Override
+    public void delete(File file)
+            throws IOException {
+        Files.delete(file.toPath());
+    }
+
+    @Override
+    public void deleteAll()
+            throws IOException {
+        throw new UnsupportedOperationException("Not supported.");
     }
 
     @Override

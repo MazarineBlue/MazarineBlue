@@ -14,7 +14,7 @@
     <artifactId>MazarineBlue-Utilities</artifactId>
     <packaging>jar</packaging>
 
-    <name>MazarineBlue - Utilities module</name>
+    <name>MazarineBlue - Utilities</name>
     <description>
         The Utilities module provides functionality to the other modules.
     </description>

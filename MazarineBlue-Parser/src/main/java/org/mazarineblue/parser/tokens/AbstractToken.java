@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -68,7 +68,8 @@ public class AbstractToken<T>
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
-                && Objects.equals(this.value, ((AbstractToken<?>) obj).value);
+        return this == obj || obj != null && getClass() == obj.getClass()
+                && Objects.equals(this.value, ((AbstractToken<?>) obj).value)
+                && Objects.equals(this.index, ((AbstractToken<?>) obj).index);
     }
 }

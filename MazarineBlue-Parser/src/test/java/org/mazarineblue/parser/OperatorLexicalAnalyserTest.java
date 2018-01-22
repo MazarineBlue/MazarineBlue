@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,7 +34,7 @@ import org.junit.Test;
 import org.mazarineblue.parser.analyser.lexical.StringLexicalAnalyser;
 import org.mazarineblue.parser.analyser.lexical.matchers.StringMatcher;
 import org.mazarineblue.parser.tokens.Token;
-import org.mazarineblue.parser.tokens.Tokens;
+import static org.mazarineblue.parser.tokens.Tokens.createLiteralToken;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -58,33 +58,33 @@ public class OperatorLexicalAnalyserTest {
 
     @Test
     public void breakdown_Literal() {
-        assertBreakdown("foo", asList(Tokens.createLiteralToken("foo", 0)));
+        assertBreakdown("foo", asList(createLiteralToken("foo", 0)));
     }
 
     @Test
     public void breakdown_LiteralOperatorLiteral() {
-        List<Token<String>> expected = asList(Tokens.createLiteralToken("foo", 0),
-                                              Tokens.createLiteralToken("++", 3),
-                                              Tokens.createLiteralToken("++", 6),
-                                              Tokens.createLiteralToken("foo", 8));
+        List<Token<String>> expected = asList(createLiteralToken("foo", 0),
+                                              createLiteralToken("++", 3),
+                                              createLiteralToken("++", 6),
+                                              createLiteralToken("foo", 8));
         assertBreakdown("foo++ ++foo", expected);
     }
 
     @Test
     public void parseTwoExpressions() {
-        List<Token<String>> expected = asList(Tokens.createLiteralToken("foo", 0),
-                                              Tokens.createLiteralToken("++", 3),
-                                              Tokens.createLiteralToken("++", 6),
-                                              Tokens.createLiteralToken("foo", 8));
+        List<Token<String>> expected = asList(createLiteralToken("foo", 0),
+                                              createLiteralToken("++", 3),
+                                              createLiteralToken("++", 6),
+                                              createLiteralToken("foo", 8));
         assertBreakdown("foo++ ++foo", expected);
         assertBreakdown("foo++ ++foo", expected);
     }
 
     @Test
     public void skipTheImmediateOperator() {
-        List<Token<String>> expected = asList(Tokens.createLiteralToken("foo ", 0),
-                                              Tokens.createLiteralToken(">=", 4),
-                                              Tokens.createLiteralToken(" foo", 6));
+        List<Token<String>> expected = asList(createLiteralToken("foo ", 0),
+                                              createLiteralToken(">=", 4),
+                                              createLiteralToken(" foo", 6));
         assertBreakdown("foo >= foo", expected);
     }
 

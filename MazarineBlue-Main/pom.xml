@@ -14,7 +14,7 @@
     <artifactId>MazarineBlue-Main</artifactId>
     <packaging>jar</packaging>
 
-    <name>MazarineBlue - Main module</name>
+    <name>MazarineBlue - Main</name>
     <description>
     </description>
 
@@ -37,15 +37,27 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>MazarineBlue-Engine</artifactId>
+            <artifactId>MazarineBlue-Plugins-Runners</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Utilities</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Plugins-Runners</artifactId>
             <version>${project.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>MazarineBlue-EngineExtended</artifactId>
+            <artifactId>MazarineBlue-Utilities</artifactId>
             <version>${project.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

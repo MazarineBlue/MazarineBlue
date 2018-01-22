@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -50,6 +50,11 @@ public class StringMatcher
         if (text == null)
             throw new IllegalArgumentException();
         this.text = text;
+    }
+
+    @Override
+    public int length() {
+        return text.length();
     }
 
     @Override

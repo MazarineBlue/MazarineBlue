@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,10 +32,7 @@ import org.mazarineblue.parser.tokens.Token;
  *
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public class TreeUtil {
-
-    private TreeUtil() {
-    }
+public final class TreeUtil {
 
     /**
      * Creates a leaf node that contains the specified {@code Token}.
@@ -108,4 +105,6 @@ public class TreeUtil {
         return node instanceof BinaryNode;
     }
 
+    private TreeUtil() {
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -20,7 +20,7 @@ package org.mazarineblue.fs;
 import org.junit.After;
 import static org.junit.Assert.assertFalse;
 import org.junit.Test;
-import org.mazarineblue.fs.util.TestFileSystem;
+import org.mazarineblue.fs.util.AdapterFileSystemSpy;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -28,8 +28,8 @@ import org.mazarineblue.fs.util.TestFileSystem;
 public class SocketFileSystemTest
         extends AdapterFileSystemTest {
 
-    private TestFileSystem spy;
-    private FileSystem fs;
+    private AdapterFileSystemSpy spy;
+    private AdapterFileSystem fs;
 
     @After
     public void teardown2() {
@@ -38,7 +38,7 @@ public class SocketFileSystemTest
     }
 
     @Override
-    protected FileSystem createFileSystem(TestFileSystem spy) {
+    protected AdapterFileSystem createFileSystem(AdapterFileSystemSpy spy) {
         this.spy = spy;
         return fs = new SocketFileSystem(spy);
     }
@@ -46,28 +46,28 @@ public class SocketFileSystemTest
     @Test
     @Override
     public void isDirectory_False() {
-        spy.setDirectory(false);
+        spy.setIsDirectory(false);
         assertFalse(fs.isDirectory(null));
     }
 
     @Test
     @Override
     public void isDirectory_True() {
-        spy.setDirectory(true);
+        spy.setIsDirectory(true);
         assertFalse(fs.isDirectory(null));
     }
 
     @Test
     @Override
     public void isFile_False() {
-        spy.setFile(false);
+        spy.setIsFile(false);
         assertFalse(fs.isFile(null));
     }
 
     @Test
     @Override
     public void isFile_True() {
-        spy.setFile(true);
+        spy.setIsFile(true);
         assertFalse(fs.isFile(null));
     }
 }

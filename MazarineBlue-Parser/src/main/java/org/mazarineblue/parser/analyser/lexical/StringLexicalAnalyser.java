@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import static java.util.Collections.unmodifiableList;
 import java.util.List;
 import java.util.Optional;
+import static org.mazarineblue.parser.analyser.lexical.Matcher.EOL;
 import org.mazarineblue.parser.tokens.Token;
 
 /**
@@ -57,14 +58,11 @@ public class StringLexicalAnalyser
      * @param matcher the matcher to use for parsing.
      */
     public void add(Matcher<String> matcher) {
-        // @TODO test ordering
-        for (int index = 0; index < matchers.size(); ++index) {
-            Matcher<String> a = matchers.get(index);
-            if (matcher.before(a)) {
+        for (int index = 0; index < matchers.size(); ++index)
+            if (matcher.before(matchers.get(index))) {
                 matchers.add(index, matcher);
                 return;
             }
-        }
         matchers.add(matcher);
     }
 
@@ -112,7 +110,7 @@ public class StringLexicalAnalyser
         }
 
         private void processLeftOvers() {
-            sendChar(Matcher.EOL, input.length());
+            sendChar(EOL, input.length());
             Optional<Matcher<String>> found = searchMatchersForMatch();
             if (found.isPresent())
                 createTokensForParsedData(found.get());

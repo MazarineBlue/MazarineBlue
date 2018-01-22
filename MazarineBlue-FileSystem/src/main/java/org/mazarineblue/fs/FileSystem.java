@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -78,6 +78,23 @@ public interface FileSystem {
      * @throws IOException when the file couldn't be created.
      */
     public void mkfile(File file, Collection<?> col)
+            throws IOException;
+
+    /**
+     * Deletes the file.
+     *
+     * @param file the delete
+     * @throws IOException when the file couldn't be deleted.
+     */
+    public void delete(File file)
+            throws IOException;
+
+    /**
+     * Delete all files (optional operation).
+     *
+     * @throws IOException when some files couldn't be deleted.
+     */
+    public void deleteAll()
             throws IOException;
 
     /**

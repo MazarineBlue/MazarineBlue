@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -27,6 +27,7 @@ package org.mazarineblue.parser;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import static org.mazarineblue.parser.ParserTestUtil.createTokens;
 import org.mazarineblue.parser.analyser.syntax.TokenConcatenatingAnalyser;
 import org.mazarineblue.parser.tree.SyntaxTreeNode;
 
@@ -45,56 +46,56 @@ public class TokenConcatenatingAnalyserTest {
     @Test
     public void buildTree_0Tokens() {
         TokenConcatenatingAnalyser<String> analyser = new TokenConcatenatingAnalyser<>();
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens());
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens());
         assertEquals(null, tree);
     }
 
     @Test
     public void buildTree_1Tokens() {
         TokenConcatenatingAnalyser<String> analyser = new TokenConcatenatingAnalyser<>();
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens("a"));
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens("a"));
         assertEquals("a", tree.toString());
     }
 
     @Test
     public void buildTree_2Tokens() {
         TokenConcatenatingAnalyser<String> analyser = new TokenConcatenatingAnalyser<>();
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens("a", "b"));
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens("a", "b"));
         assertEquals("(a b)", tree.toString());
     }
 
     @Test
     public void buildTree_3Tokens() {
         TokenConcatenatingAnalyser<String> analyser = new TokenConcatenatingAnalyser<>();
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens("a", "b", "c"));
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens("a", "b", "c"));
         assertEquals("(a b c)", tree.toString());
     }
 
     @Test
     public void buildTree_4Tokens() {
         TokenConcatenatingAnalyser<String> analyser = new TokenConcatenatingAnalyser<>();
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens("a", "b", "c", "d"));
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens("a", "b", "c", "d"));
         assertEquals("((a b) c d)", tree.toString());
     }
 
     @Test
     public void buildTree_5Tokens() {
         TokenConcatenatingAnalyser<String> analyser = new TokenConcatenatingAnalyser<>();
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens("a", "b", "c", "d", "e"));
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens("a", "b", "c", "d", "e"));
         assertEquals("((a b) c (d e))", tree.toString());
     }
 
     @Test
     public void buildTree_6Tokens() {
         TokenConcatenatingAnalyser<String> analyser = new TokenConcatenatingAnalyser<>();
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens("a", "b", "c", "d", "e", "f"));
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens("a", "b", "c", "d", "e", "f"));
         assertEquals("((a b c) d (e f))", tree.toString());
     }
 
     @Test
     public void buildTree_7Tokens() {
         TokenConcatenatingAnalyser<String> analyser = new TokenConcatenatingAnalyser<>();
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens("a", "b", "c", "d", "e", "f", "g"));
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens("a", "b", "c", "d", "e", "f", "g"));
         assertEquals("((a b c) d (e f g))", tree.toString());
     }
 }

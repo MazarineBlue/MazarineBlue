@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,20 +28,20 @@ package org.mazarineblue.parser;
 import java.util.ArrayList;
 import java.util.List;
 import org.mazarineblue.parser.tokens.Token;
-import org.mazarineblue.parser.tokens.Tokens;
+import static org.mazarineblue.parser.tokens.Tokens.createLiteralToken;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
 public class ParserTestUtil {
 
-    private ParserTestUtil() {
-    }
-
     public static List<Token<String>> createTokens(String... elements) {
         List<Token<String>> list = new ArrayList<>(elements.length);
         for (String e : elements)
-            list.add(Tokens.createLiteralToken(e, -1));
+            list.add(createLiteralToken(e, -1));
         return list;
+    }
+
+    private ParserTestUtil() {
     }
 }

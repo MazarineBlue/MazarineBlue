@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -20,7 +20,7 @@ package org.mazarineblue.fs;
 import org.junit.After;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import org.mazarineblue.fs.util.TestFileSystem;
+import org.mazarineblue.fs.util.AdapterFileSystemSpy;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -28,8 +28,8 @@ import org.mazarineblue.fs.util.TestFileSystem;
 public class HiddenFileSystemTest
         extends AdapterFileSystemTest {
 
-    private TestFileSystem spy;
-    private FileSystem fs;
+    private AdapterFileSystemSpy spy;
+    private AdapterFileSystem fs;
 
     @After
     public void teardown2() {
@@ -38,7 +38,7 @@ public class HiddenFileSystemTest
     }
 
     @Override
-    protected FileSystem createFileSystem(TestFileSystem spy) {
+    protected AdapterFileSystem createFileSystem(AdapterFileSystemSpy spy) {
         this.spy = spy;
         return fs = new HiddenFileSystem(spy);
     }
@@ -46,14 +46,14 @@ public class HiddenFileSystemTest
     @Test
     @Override
     public void isHidden_False() {
-        spy.setHidden(false);
+        spy.setIsHidden(false);
         assertTrue(fs.isHidden(null));
     }
 
     @Test
     @Override
     public void isHidden_True() {
-        spy.setHidden(true);
+        spy.setIsHidden(true);
         assertTrue(fs.isHidden(null));
     }
 }

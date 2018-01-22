@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -27,6 +27,7 @@ package org.mazarineblue.parser.analyser.lexical;
 
 import org.mazarineblue.parser.tokens.Token;
 import org.mazarineblue.parser.tokens.Tokens;
+import org.mazarineblue.utilities.exceptions.NeverThrownException;
 
 /**
  * A {@code LiteralMatcher} is a {@code Matcher} that matches any string
@@ -52,7 +53,12 @@ class DefaultStringMatcher
     }
 
     @Override
+    public int length() {
+        throw new NeverThrownException();
+    }
+
+    @Override
     public boolean willMatch(char c, int index) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new NeverThrownException();
     }
 }

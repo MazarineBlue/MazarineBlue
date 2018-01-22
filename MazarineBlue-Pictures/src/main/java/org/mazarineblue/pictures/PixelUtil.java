@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -22,15 +22,12 @@ package org.mazarineblue.pictures;
  *
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public class PixelUtil {
+public final class PixelUtil {
 
     public static final int ALPHA = 24;
     public static final int RED = 16;
     public static final int GREEN = 8;
     public static final int BLUE = 0;
-
-    private PixelUtil() {
-    }
 
     /**
      * Calculates the pixel color value using the color components.
@@ -131,5 +128,8 @@ public class PixelUtil {
      */
     public static int setBlue(int pixel, int blue) {
         return (pixel & ~(1 << BLUE)) + (blue << BLUE);
+    }
+
+    private PixelUtil() {
     }
 }

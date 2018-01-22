@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -25,11 +25,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static org.mazarineblue.utililities.StreamUtil.copy;
+import java.util.Map.Entry;
+import static org.mazarineblue.utililities.Streams.copy;
 
 /**
  * An {@code MemoryFileSystem} is a {@code FileSystem} that is fully in memory.
@@ -40,6 +42,7 @@ public class MemoryFileSystem
         extends AbstractFileSystem {
 
     private final Map<String, Payload> files = new HashMap<>(16);
+    private final DirectoryPayload directoryMarker = new DirectoryPayload();
 
     @Override
     public String toString() {
@@ -51,7 +54,7 @@ public class MemoryFileSystem
             throws IOException {
         if (files.containsKey(file.getPath()))
             throw new IOException("Directory already exists: " + file);
-        files.put(file.getPath(), new DirectoryPayload());
+        files.put(file.getPath(), directoryMarker);
     }
 
     @Override
@@ -77,21 +80,36 @@ public class MemoryFileSystem
     }
 
     @Override
-    public InputStream getInputStream(File file)
-            throws IOException {
-        return getInputStream(file.getPath());
+    public void deleteAll() {
+        files.clear();
     }
 
-    private ByteArrayInputStream getInputStream(String path)
+    @Override
+    public void delete(File file)
             throws IOException {
-        if (!files.containsKey(path))
-            throw new FileNotFoundException("File is not found: " + path);
-        byte[] arr = files.get(path).getData();
-        return new ByteArrayInputStream(arr);
+        if (!files.containsKey(file.getPath()))
+            throw new IOException("File does not exists: " + file);
+        if (isDirectoryHelper(file) && listChilderen(file).length != 0)
+            throw new IOException("Directory not empty: " + file);
+        files.remove(file.getParent());
+    }
+
+    @Override
+    public boolean isDirectory(File file) {
+        return isDirectoryHelper(file);
+    }
+
+    private boolean isDirectoryHelper(File file) {
+        Payload payload = files.get(file.getPath());
+        return payload != null && payload instanceof DirectoryPayload;
     }
 
     @Override
     public File[] listChilderen(File dir) {
+        return listChilderenHelper(dir);
+    }
+
+    private File[] listChilderenHelper(File dir) {
         List<File> list = findFiles(dir.getPath());
         list.sort(null);
         return list.toArray(new File[list.size()]);
@@ -109,15 +127,27 @@ public class MemoryFileSystem
         return !base.equals(path) && path.startsWith(base);
     }
 
+
     @Override
-    public boolean exists(File file) {
-        return files.containsKey(file.getPath());
+    public InputStream getInputStream(File file)
+            throws IOException {
+        String path = file.getPath();
+        if (files.containsKey(path))
+            return getInputStream(path);
+        throw new FileNotFoundException(path);
+    }
+
+    private ByteArrayInputStream getInputStream(String path)
+            throws IOException {
+        if (!files.containsKey(path))
+            throw new FileNotFoundException("File is not found: " + path);
+        byte[] arr = files.get(path).getData();
+        return new ByteArrayInputStream(arr);
     }
 
     @Override
-    public boolean isDirectory(File file) {
-        Payload payload = files.get(file.getPath());
-        return payload != null && payload instanceof DirectoryPayload;
+    public boolean exists(File file) {
+        return files.containsKey(file.getPath());
     }
 
     @Override
@@ -156,9 +186,19 @@ public class MemoryFileSystem
                 throws IOException {
             throw new IOException("Can not read from directory");
         }
+
+        @Override
+        public int hashCode() {
+            return 0;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return getClass() == obj.getClass();
+        }
     }
 
-    static class FilePayload
+    private static class FilePayload
             implements Payload {
 
         private final byte[] data;
@@ -177,5 +217,36 @@ public class MemoryFileSystem
         public byte[] getData() {
             return data;
         }
+
+        @Override
+        public int hashCode() {
+            return 7 * 79
+                    + Arrays.hashCode(this.data);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return getClass() == obj.getClass()
+                    && Arrays.equals(this.data, ((FilePayload) obj).data);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return files.entrySet().stream()
+                .map(Entry::hashCode)
+                .reduce(7, (hash, value) -> 83 * hash + value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj || obj != null && getClass() == obj.getClass()
+                && equals((MemoryFileSystem) obj);
+    }
+
+    private boolean equals(final MemoryFileSystem other) {
+        return files.keySet().stream()
+                .allMatch(keyword -> other.files.containsKey(keyword) && files.get(keyword).equals(other.files.get(
+                        keyword)));
     }
 }

@@ -16,4 +16,3 @@
         <netbeans.hint.licensePath>${project.basedir}/../etc/license_template_agpl3.txt</netbeans.hint.licensePath>
     </properties>
 </project-shared-configuration>
-

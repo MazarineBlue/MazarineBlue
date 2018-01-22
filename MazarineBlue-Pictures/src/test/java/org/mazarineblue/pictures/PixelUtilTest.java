@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -19,8 +19,14 @@ package org.mazarineblue.pictures;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import org.mazarineblue.utilities.util.TestUtilityClass;
 
-public class PixelUtilTest {
+public class PixelUtilTest
+        extends TestUtilityClass {
+
+    public PixelUtilTest() {
+        super(PixelUtil.class);
+    }
 
     @Test
     public void pixel() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,10 +30,7 @@ package org.mazarineblue.parser.tokens;
  *
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public class Tokens {
-
-    private Tokens() {
-    }
+public final class Tokens {
 
     /**
      * Construct a literal {@link LiteralToken}.
@@ -76,5 +73,8 @@ public class Tokens {
      */
     public static <T> Token<T> createSpecialMarkToken(String identifier) {
         return new SpecialMarkToken<>(identifier);
+    }
+
+    private Tokens() {
     }
 }

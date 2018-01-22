@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2014 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  * Copyright (c) 2014-2015 Specialisterren
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 package org.mazarineblue.pictures.compounders;
 
 import org.mazarineblue.pictures.Picture;
-import org.mazarineblue.utililities.exceptions.NeverThrownException;
+import org.mazarineblue.utilities.exceptions.NeverThrownException;
 
 /**
  * An {@code CompareCompounder} is a {@code Compounder} that compares two

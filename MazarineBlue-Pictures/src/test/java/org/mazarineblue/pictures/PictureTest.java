@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -39,6 +39,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mazarineblue.pictures.ImageUtil.createPicture;
 import static org.mazarineblue.pictures.ImageUtilTest.getExpectedPixels;
 import static org.mazarineblue.pictures.PixelUtil.pixel;
 import org.mazarineblue.pictures.compounders.CompareCompounder;
@@ -99,7 +100,7 @@ public class PictureTest {
 
     public static Picture createPictureByImage(Dimension dimension, int... rgb)
             throws IOException {
-        return ImageUtil.createPicture(createImage(dimension, rgb));
+        return createPicture(createImage(dimension, rgb));
     }
 
     private static Picture createPictureByInputStream(Dimension dimension, int... rgb)
@@ -173,6 +174,11 @@ public class PictureTest {
         }
     }
     // </editor-fold>
+
+    @Test
+    public void toString_() {
+        assertEquals("width=" + 3 + ", height=" + 4, image3x4.toString());
+    }
 
     @SuppressWarnings("PublicInnerClass")
     public class GetAndSetPixelTest {
@@ -517,7 +523,7 @@ public class PictureTest {
             throws IOException {
         BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         image.setRGB(0, 0, pixel);
-        return ImageUtil.createPicture(image);
+        return createPicture(image);
     }
 
     @Test(expected = PictureMissingException.class)

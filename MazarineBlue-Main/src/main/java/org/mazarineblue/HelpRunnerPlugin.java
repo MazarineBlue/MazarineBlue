@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -19,7 +19,9 @@ package org.mazarineblue;
 
 import org.mazarineblue.plugins.Runner;
 import org.mazarineblue.plugins.RunnerPlugin;
+import org.openide.util.lookup.ServiceProvider;
 
+@ServiceProvider(service = RunnerPlugin.class)
 public class HelpRunnerPlugin
         implements RunnerPlugin {
 

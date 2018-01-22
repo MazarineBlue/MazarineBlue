@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,7 +32,9 @@ import java.util.function.Function;
 import org.mazarineblue.parser.exceptions.IllegalSyntaxTreeException;
 import org.mazarineblue.parser.tokens.Token;
 import org.mazarineblue.parser.tree.SyntaxTreeNode;
-import org.mazarineblue.parser.tree.TreeUtil;
+import static org.mazarineblue.parser.tree.TreeUtil.isBinary;
+import static org.mazarineblue.parser.tree.TreeUtil.isLeaf;
+import static org.mazarineblue.parser.tree.TreeUtil.isUnary;
 
 /**
  * A {@code TreeEvaluatorAnalyser} is a {@code SemanticAnalyser} that
@@ -45,8 +47,8 @@ public class TreeEvaluatorAnalyser<R>
         implements SemanticAnalyser<String, R> {
 
     private final Function<String, R> leafFunc;
-    private final Map<String, Function<Object, R>> unaries = new HashMap<>(4);
-    private final Map<String, BiFunction<Object, Object, R>> binaries = new HashMap<>(4);
+    private final Map<String, Function<R, R>> unaries = new HashMap<>(4);
+    private final Map<String, BiFunction<R, R, R>> binaries = new HashMap<>(4);
 
     public TreeEvaluatorAnalyser(Function<String, R> leafFunc) {
         this.leafFunc = leafFunc;
@@ -60,7 +62,7 @@ public class TreeEvaluatorAnalyser<R>
      * @param identifier the symbol that is paired with the function.
      * @param function   the function that is paired with the symbol.
      */
-    public void addFunction(String identifier, Function<Object, R> function) {
+    public void addFunction(String identifier, Function<R, R> function) {
         if (function == null)
             throw new IllegalArgumentException();
         unaries.put(identifier, function);
@@ -74,7 +76,7 @@ public class TreeEvaluatorAnalyser<R>
      * @param key      the symbol that is paired with the function.
      * @param function the function that is paired with the symbol.
      */
-    public void addFunction(String key, BiFunction<Object, Object, R> function) {
+    public void addFunction(String key, BiFunction<R, R, R> function) {
         if (function == null)
             throw new IllegalArgumentException();
         binaries.put(key, function);
@@ -84,11 +86,11 @@ public class TreeEvaluatorAnalyser<R>
     public R evaluate(SyntaxTreeNode<String> tree) {
         if (tree == null)
             throw new IllegalSyntaxTreeException(tree);
-        if (TreeUtil.isLeaf(tree))
+        if (isLeaf(tree))
             return leafFunc.apply(getTokenValue(tree));
-        if (TreeUtil.isUnary(tree))
+        if (isUnary(tree))
             return evaluateUnaryTree(tree);
-        if (TreeUtil.isBinary(tree))
+        if (isBinary(tree))
             return evaluateBinaryTree(tree);
         throw new IllegalSyntaxTreeException(tree);
     }
@@ -112,29 +114,29 @@ public class TreeEvaluatorAnalyser<R>
     }
 
     private R evaluateUnaryTree(SyntaxTreeNode<String> tree) {
-        Function<Object, R> func = getUnaryFunction(tree);
+        Function<R, R> func = getUnaryFunction(tree);
         R right = evaluate(tree.getRightChild());
         return func.apply(right);
     }
 
     private R evaluateBinaryTree(SyntaxTreeNode<String> tree) {
-        BiFunction<Object, Object, R> func = getBinaryFunction(tree);
+        BiFunction<R, R, R> func = getBinaryFunction(tree);
         R left = evaluate(tree.getLeftChild());
         R right = evaluate(tree.getRightChild());
         return func.apply(left, right);
     }
 
-    private Function<Object, R> getUnaryFunction(SyntaxTreeNode<String> tree) {
+    private Function<R, R> getUnaryFunction(SyntaxTreeNode<String> tree) {
         String key = getTokenValue(tree);
-        Function<Object, R> func = unaries.get(key);
+        Function<R, R> func = unaries.get(key);
         if (func == null)
             throw new IllegalSyntaxTreeException(tree);
         return func;
     }
 
-    private BiFunction<Object, Object, R> getBinaryFunction(SyntaxTreeNode<String> tree) {
+    private BiFunction<R, R, R> getBinaryFunction(SyntaxTreeNode<String> tree) {
         String key = getTokenValue(tree);
-        BiFunction<Object, Object, R> func = binaries.get(key);
+        BiFunction<R, R, R> func = binaries.get(key);
         if (func == null)
             throw new IllegalSyntaxTreeException(tree);
         return func;

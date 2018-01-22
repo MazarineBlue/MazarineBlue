@@ -1,0 +1,87 @@
+@startuml
+annotation org.mazarineblue.eventnotifier.EventHandler
+interface org.mazarineblue.eventnotifier.Event {
+    +boolean isConsumed()
+}
+interface org.mazarineblue.eventnotifier.EventService {
+    +void publish(E event)
+    +boolean subscribe(Class eventType, Filter<E> filter, Subscriber<E> subscriber)
+    +boolean unsubscribe(Class eventType, Filter<E> filter, Subscriber<E> subscriber)
+}
+interface org.mazarineblue.eventnotifier.Filter {
+    +boolean apply(E event)
+}
+interface org.mazarineblue.eventnotifier.Subscriber {
+    +eventHandler(E event)
+}
+abstract class org.mazarineblue.eventnotifier.AbstractEvent
+abstract org.mazarineblue.eventnotifier.ReflectionSubscriber
+class org.mazarineblue.eventnotifier.Entry {
+    -Class eventType
+}
+class org.mazarineblue.eventnotifier.SimpleEventService {
+    -Class eventType
+}
+
+org.mazarineblue.eventnotifier.Event <|-- org.mazarineblue.eventnotifier.AbstractEvent
+org.mazarineblue.eventnotifier.EventService <|-up--- org.mazarineblue.eventnotifier.SimpleEventService
+org.mazarineblue.eventnotifier.SimpleEventService o-> "*" org.mazarineblue.eventnotifier.Entry
+org.mazarineblue.eventnotifier.Entry o--> "1" org.mazarineblue.eventnotifier.Filter
+org.mazarineblue.eventnotifier.Entry o--> "1" org.mazarineblue.eventnotifier.Subscriber
+org.mazarineblue.eventnotifier.Subscriber <|.. org.mazarineblue.eventnotifier.ReflectionSubscriber
+org.mazarineblue.eventnotifier.ReflectionSubscriber .> org.mazarineblue.eventnotifier.EventHandler
+
+interface org.mazarineblue.eventdriven.Chain {
+    +int countLinks()
+    +void addLink(Link link)
+    +void addLink(Link link, Link after)
+    +void removeLink(Link link)
+}
+interface org.mazarineblue.eventdriven.Feed {
+    +boolean hasNext()
+    +Event next()
+    +reset()
+}
+interface org.mazarineblue.eventdriven.Processor {
+    +execute(Feed feed)
+}
+interface org.mazarineblue.eventdriven.Invoker {
+    +int countLinks()
+    +void addLink(Link link)
+    +void addLink(Link link, Link after)
+    +void removeLink(Link link)
+    +void publish(Event event)
+}
+abstract class org.mazarineblue.eventdriven.InvokerEvent {
+    ~setInvoker(Invoker invoker)
+    #Invoker invoker()
+}
+abstract org.mazarineblue.eventdriven.Link
+
+org.mazarineblue.eventdriven.Chain <|.. org.mazarineblue.eventdriven.ChainImpl
+org.mazarineblue.eventdriven.Chain <|.right. org.mazarineblue.eventdriven.Processor
+org.mazarineblue.eventdriven.Processor <|.. org.mazarineblue.eventdriven.ProcessorImpl
+org.mazarineblue.eventdriven.ProcessorImpl --> "1" org.mazarineblue.eventdriven.ChainImpl
+org.mazarineblue.eventdriven.ProcessorImpl ..left> org.mazarineblue.eventdriven.Feed
+org.mazarineblue.eventdriven.Invoker <|.left. org.mazarineblue.eventdriven.ChainImpl
+org.mazarineblue.eventdriven.ChainImpl --> "*" org.mazarineblue.eventdriven.Link
+org.mazarineblue.eventdriven.Feed .left.> org.mazarineblue.eventdriven.InvokerEvent
+org.mazarineblue.eventdriven.InvokerEvent --> "1" org.mazarineblue.eventdriven.Invoker
+org.mazarineblue.eventnotifier.AbstractEvent <|-- org.mazarineblue.eventdriven.InvokerEvent
+
+class org.mazarineblue.eventnotifier.link.EventNotifierLink {
+    +void eventHandler(AddSubscriberInvokerEvent event)
+    +void eventHandler(RemoveSubscriberInvokerEvent event)
+}
+abstract class org.mazarineblue.eventnotifier.link.SubscriberEvent {
+    -Class eventType;
+    -Filter<E> filter;
+    -Subscriber<E> subscriber;
+}
+
+org.mazarineblue.eventdriven.Link <|-- org.mazarineblue.eventnotifier.link.EventNotifierLink
+org.mazarineblue.eventnotifier.link.EventNotifierLink --> "1" org.mazarineblue.eventnotifier.EventService
+org.mazarineblue.eventnotifier.AbstractEvent <|-- org.mazarineblue.eventnotifier.link.SubscriberEvent
+org.mazarineblue.eventnotifier.link.SubscriberEvent --> "1" org.mazarineblue.eventnotifier.Filter
+org.mazarineblue.eventnotifier.link.SubscriberEvent --> "1" org.mazarineblue.eventnotifier.Subscriber
+@enduml

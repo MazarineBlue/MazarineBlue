@@ -1,0 +1,25 @@
+@startuml
+skinparam componentStyle uml2
+
+[MazarineBlue-Plugins-Feeds]-->[MazarineBlue-Engine-EventDriven]
+[MazarineBlue-Plugins-Feeds]-up->[MazarineBlue-FileSystem]
+[MazarineBlue-Plugins-Libraries]-->[MazarineBlue-Engine-KeywordDriven]
+
+[MazarineBlue-Engine-Main]-->[MazarineBlue-Engine-Logger]
+[MazarineBlue-Engine-Main]-->[MazarineBlue-Engine-VariableStore]
+[MazarineBlue-Engine-Main]-->[MazarineBlue-Plugins-Feeds]
+[MazarineBlue-Engine-Main]-->[MazarineBlue-Plugins-Libraries]
+[MazarineBlue-Engine-Main]-right->[MazarineBlue-Engine-NestedInstructions]
+
+[MazarineBlue-Engine-NestedInstructions]-->[MazarineBlue-Engine-KeywordDriven]
+
+[MazarineBlue-Engine-Logger]-->[MazarineBlue-Engine-EventDriven]
+[MazarineBlue-Engine-VariableStore]-->[MazarineBlue-Engine-KeywordDriven]
+[MazarineBlue-Engine-VariableStore]-->[MazarineBlue-Parser]
+
+[MazarineBlue-Engine-KeywordDriven]-->[MazarineBlue-Engine-EventDriven]
+[MazarineBlue-Engine-EventDriven]-->[MazarineBlue-EventNotifier]
+
+[MazarineBlue-Engine-KeywordDriven]-0)-[MazarineBlue-Libraries]
+[MazarineBlue-Engine-EventDriven]-0)-[MazarineBlue-Feeds]
+@enduml

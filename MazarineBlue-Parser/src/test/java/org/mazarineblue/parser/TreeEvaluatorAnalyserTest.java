@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,7 +32,9 @@ import org.junit.Test;
 import org.mazarineblue.parser.analyser.semantic.TreeEvaluatorAnalyser;
 import org.mazarineblue.parser.exceptions.IllegalSyntaxTreeException;
 import org.mazarineblue.parser.tree.SyntaxTreeNode;
-import org.mazarineblue.parser.tree.TreeUtil;
+import org.mazarineblue.parser.tree.TestNode;
+import static org.mazarineblue.parser.tree.TreeUtil.mkLeaf;
+import static org.mazarineblue.parser.tree.TreeUtil.mkNode;
 import org.mazarineblue.parser.util.BinarySpy;
 
 /**
@@ -54,105 +56,111 @@ public class TreeEvaluatorAnalyserTest
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
+    public void evaluate_UnkownToken_ThrowsIllegalSyntaxTreeException() {
+        SyntaxTreeNode<String> tree = new TestNode<>(token("foo"));
+        analyser.evaluate(tree);
+    }
+
+    @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_Null() {
         analyser.evaluate(null);
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_LeafWithNullToken_ThrowsIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkLeaf(null);
+        SyntaxTreeNode<String> tree = mkLeaf(null);
         analyser.evaluate(tree);
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_LeafWithNullValue_ThrowsIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkLeaf(token(null));
+        SyntaxTreeNode<String> tree = mkLeaf(token(null));
         analyser.evaluate(tree);
     }
 
     @Test
     public void evaluate_Leaf_ReturnsString() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkLeaf(token("leaf"));
+        SyntaxTreeNode<String> tree = mkLeaf(token("leaf"));
         assertEquals("leaf", analyser.evaluate(tree));
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_UnaryWithNullToken_ThrowsIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(null, leaf("child"));
+        SyntaxTreeNode<String> tree = mkNode(null, leaf("child"));
         analyser.evaluate(tree);
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_UnaryWithNullValue_ThrowsIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(token(null), leaf("child"));
+        SyntaxTreeNode<String> tree = mkNode(token(null), leaf("child"));
         analyser.evaluate(tree);
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_UnaryWithNullChild_ThrowsIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(token("unary"), null, null);
+        SyntaxTreeNode<String> tree = mkNode(token("unary"), null, null);
         analyser.evaluate(tree);
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_UnaryWithoutOperator_ThrowIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(token("unary"), leaf("child"));
+        SyntaxTreeNode<String> tree = mkNode(token("unary"), leaf("child"));
         analyser.evaluate(tree);
     }
 
     @Test
     public void evaluate_UnaryWithOperator_ReturnsValue() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(token("unary"), leaf("child"));
+        SyntaxTreeNode<String> tree = mkNode(token("unary"), leaf("child"));
         analyser.addFunction("unary", (t) -> 1);
         assertEquals(1, analyser.evaluate(tree));
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_BinaryWithNullToken_ThrowsIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(null, leaf("left"), leaf("right"));
+        SyntaxTreeNode<String> tree = mkNode(null, leaf("left"), leaf("right"));
         analyser.evaluate(tree);
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_BinaryWithNullValue_ThrowsIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(token(null), leaf("left"), leaf("right"));
+        SyntaxTreeNode<String> tree = mkNode(token(null), leaf("left"), leaf("right"));
         analyser.evaluate(tree);
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_BinaryWithLeftChildNull_ThrowsIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(token("binary"), null, leaf("right"));
+        SyntaxTreeNode<String> tree = mkNode(token("binary"), null, leaf("right"));
         analyser.evaluate(tree);
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_Binary_WithLeftChildNullValue_ThrowsIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(token("binary"), leaf(null), leaf("right"));
+        SyntaxTreeNode<String> tree = mkNode(token("binary"), leaf(null), leaf("right"));
         analyser.evaluate(tree);
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_Binary_WithRightChildNull_ThrowsIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(token("binary"), leaf("left"), null);
+        SyntaxTreeNode<String> tree = mkNode(token("binary"), leaf("left"), null);
         analyser.evaluate(tree);
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_Binary_WithRightChildNullValue_ThrowsIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(token("binary"), leaf("left"), leaf(null));
+        SyntaxTreeNode<String> tree = mkNode(token("binary"), leaf("left"), leaf(null));
         analyser.evaluate(tree);
     }
 
     @Test(expected = IllegalSyntaxTreeException.class)
     public void evaluate_BinaryWithoutOperator_ThrowIllegalSyntaxTreeException() {
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(token("binary"), leaf("left"), leaf("right"));
+        SyntaxTreeNode<String> tree = mkNode(token("binary"), leaf("left"), leaf("right"));
         assertEquals("left binary right", analyser.evaluate(tree));
     }
 
     @Test
     public void evaluate_BinaryWithOperator_ReturnValue() {
         BinarySpy<Object, Object, Object> spy = new BinarySpy<>(2);
-        SyntaxTreeNode<String> tree = TreeUtil.mkNode(token("binary"), leaf("left"), leaf("right"));
+        SyntaxTreeNode<String> tree = mkNode(token("binary"), leaf("left"), leaf("right"));
         analyser.addFunction("binary", spy);
         assertEquals(2, analyser.evaluate(tree));
         assertEquals("left", spy.getLeft());

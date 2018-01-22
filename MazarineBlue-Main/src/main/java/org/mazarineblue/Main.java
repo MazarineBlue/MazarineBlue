@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -19,13 +19,15 @@ package org.mazarineblue;
 
 import static java.util.Arrays.copyOfRange;
 import org.mazarineblue.plugins.PluginLoader;
+import org.mazarineblue.plugins.Runner;
 import org.mazarineblue.plugins.RunnerPlugin;
 
-public class Main {
+public final class Main {
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         RunnerPlugin plugin = args.length != 0 ? getPlugin(args[0]) : new HelpRunnerPlugin();
-        plugin.createRunner().execute(copyOfRange(args, 1, args.length));
+        Runner runner = plugin.createRunner();
+        runner.execute(args.length != 0 ? copyOfRange(args, 1, args.length) : new String[0]);
     }
 
     private static RunnerPlugin getPlugin(String command) {
@@ -33,5 +35,8 @@ public class Main {
                 .filter(plugin -> command.equals(plugin.name()))
                 .findFirst()
                 .orElse(new HelpRunnerPlugin());
+    }
+
+    private Main() {
     }
 }

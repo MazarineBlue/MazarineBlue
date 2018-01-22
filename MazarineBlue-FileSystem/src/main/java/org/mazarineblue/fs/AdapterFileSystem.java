@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -77,6 +77,18 @@ public class AdapterFileSystem
     public void mkfile(File file, Collection<?> collection)
             throws IOException {
         adaptee.mkfile(file, collection);
+    }
+
+    @Override
+    public void delete(File file)
+            throws IOException {
+        adaptee.delete(file);
+    }
+
+    @Override
+    public void deleteAll()
+            throws IOException {
+        adaptee.deleteAll();
     }
 
     @Override
