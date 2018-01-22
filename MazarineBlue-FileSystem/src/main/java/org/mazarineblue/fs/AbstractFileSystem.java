@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import java.util.Collection;
 import java.util.List;
-import static org.mazarineblue.utililities.StreamUtil.copy;
+import static org.mazarineblue.utililities.Streams.copy;
 
 /**
  * An {@code AbstractFileSystem} is a {@code FileSystem} that implements methods using other more basis methods.
@@ -115,5 +115,15 @@ public abstract class AbstractFileSystem
     @Override
     public File getParent(File file) {
         return file.getParentFile();
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().getName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj || obj != null && getClass() == obj.getClass();
     }
 }

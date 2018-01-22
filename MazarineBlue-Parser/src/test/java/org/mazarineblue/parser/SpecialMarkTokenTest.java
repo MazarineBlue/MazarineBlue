@@ -26,58 +26,30 @@
 package org.mazarineblue.parser;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.mazarineblue.parser.tokens.Token;
-import org.mazarineblue.parser.tokens.Tokens;
+import static org.mazarineblue.parser.tokens.Tokens.createSpecialMarkToken;
+import org.mazarineblue.utilities.util.TestHashCodeAndEquals;
 
-public class SpecialMarkTokenTest {
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
+public class SpecialMarkTokenTest
+        extends TestHashCodeAndEquals<Token<Object>> {
 
     @Test
     public void toString_Test() {
-        Token<Object> token = Tokens.createSpecialMarkToken("foo");
+        Token<Object> token = createSpecialMarkToken("foo");
         assertEquals("*** foo ***", token.toString());
     }
 
-    @Test
-    public void equals_OneTokenAndNull() {
-        Token<Integer> a = Tokens.createSpecialMarkToken("foo");
-        assertNotNull(a);
+    @Override
+    protected Token<Object> getObject() {
+        return createSpecialMarkToken("foo");
     }
 
-    @Test
-    public void equals_DifferentClasses() {
-        Token<Integer> a = Tokens.createSpecialMarkToken("foo");
-        String b = "foo";
-        assertNotEquals(a, b);
-    }
-
-    @Test
-    public void hashCode_DifferentTokens() {
-        Token<Integer> a = Tokens.createSpecialMarkToken("foo");
-        Token<Integer> b = Tokens.createSpecialMarkToken("oof");
-        assertNotEquals(a.hashCode(), b.hashCode());
-    }
-
-    @Test
-    public void equals_DifferentTokens() {
-        Token<Integer> a = Tokens.createSpecialMarkToken("foo");
-        Token<Integer> b = Tokens.createSpecialMarkToken("oof");
-        assertNotEquals(a, b);
-    }
-
-    @Test
-    public void hashCode_EqualTokens() {
-        Token<Integer> a = Tokens.createSpecialMarkToken("foo");
-        Token<Integer> b = Tokens.createSpecialMarkToken("foo");
-        assertEquals(a.hashCode(), b.hashCode());
-    }
-
-    @Test
-    public void equals_EqualTokens() {
-        Token<Integer> a = Tokens.createSpecialMarkToken("foo");
-        Token<Integer> b = Tokens.createSpecialMarkToken("foo");
-        assertEquals(a, b);
+    @Override
+    protected Token<Object> getDifferentObject() {
+        return createSpecialMarkToken("oof");
     }
 }

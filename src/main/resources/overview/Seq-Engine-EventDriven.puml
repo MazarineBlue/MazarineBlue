@@ -1,0 +1,55 @@
+@startuml
+participant Processor
+participant Feed
+participant Invoker
+participant Chain
+participant Subscriber
+participant Event
+
+--> Processor: execute(feed : Feed)
+activate Processor
+Processor --> Invoker: createInvoker(this, chain : Chain)
+activate Invoker
+Processor <-- Invoker: invoker : Invoker
+deactivate Invoker
+
+loop hastNext == true
+Processor --> Feed: hasNext()
+activate Feed
+Processor <-- Feed: hasNext : boolean
+deactivate Feed
+
+Processor --> Feed: next()
+activate Feed
+Processor <-- Feed: event : Event
+deactivate Feed
+
+Processor --> Event: setInvoker(invoker : Invoker)
+activate Event
+Processor <-- Event
+deactivate Event
+
+Processor --> Chain: publish(event)
+activate Chain
+loop foreach subsriber while consumed == false
+Chain --> Subscriber: eventHandler(event)
+activate Subscriber
+Chain <-- Subscriber
+deactivate Subscriber
+
+Chain --> Event: isConsumed()
+activate Event
+Chain <-- Event: consumed : boolean
+deactivate Event
+end
+Processor <-- Chain
+deactivate Chain
+
+Processor --> Feed: done(event)
+activate Feed
+Processor <-- Feed
+deactivate Feed
+end
+<-- Processor
+deactivate Processor
+@enduml

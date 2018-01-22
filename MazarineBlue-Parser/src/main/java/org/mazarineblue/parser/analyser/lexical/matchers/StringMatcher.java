@@ -53,6 +53,11 @@ public class StringMatcher
     }
 
     @Override
+    public int length() {
+        return text.length();
+    }
+
+    @Override
     public String toString() {
         return "text=" + text + ", " + super.toString();
     }

@@ -17,12 +17,17 @@
  */
 package org.mazarineblue;
 
+import static java.lang.System.lineSeparator;
 import org.mazarineblue.plugins.PluginLoader;
 import org.mazarineblue.plugins.Runner;
 import org.mazarineblue.plugins.RunnerPlugin;
 
 public class HelpRunner
         implements Runner {
+
+    private static final int SEPERATION_SIZE = 3;
+    private int firstColum;
+    private int secondColumnSize;
 
     @Override
     public void setArguments(String... args) {
@@ -32,20 +37,32 @@ public class HelpRunner
     @Override
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
     public void start() {
-        System.out.println("usage: <command> [<args>]");
-        System.out.println("Commands:");
+        System.err.println("usage: <command> [<args>]");
+        System.err.println("Commands:");
+        firstColum = getFirstColumnSize();
+        secondColumnSize = 80 - firstColum - SEPERATION_SIZE;
+        System.err.println(getList());
+    }
 
-        int n = PluginLoader.getInstance().getPlugins(RunnerPlugin.class).stream()
+    private int getFirstColumnSize() {
+        return PluginLoader.getInstance().getPlugins(RunnerPlugin.class).stream()
                 .map(plugin -> plugin.name().length())
                 .max((left, right) -> left - right)
                 .orElse(0);
-        int m = 80 - n - 3;
+    }
 
-        PluginLoader.getInstance().getPlugins(RunnerPlugin.class).stream()
+    private String getList() {
+        return PluginLoader.getInstance().getPlugins(RunnerPlugin.class).stream()
                 .sorted((left, right) -> left.name().compareTo(right.name()))
-                .forEach(plugin -> System.out.println(plugin.name()
-                        + spaces(n - plugin.name().length() + 3)
-                        + limit(plugin.description(), m)));
+                .map(this::getLine)
+                .reduce("", String::concat);
+    }
+
+    private String getLine(RunnerPlugin plugin) {
+        return plugin.name()
+                + spaces(firstColum - plugin.name().length() + SEPERATION_SIZE)
+                + limit(plugin.description(), secondColumnSize)
+                + lineSeparator();
     }
 
     private static String spaces(int n) {

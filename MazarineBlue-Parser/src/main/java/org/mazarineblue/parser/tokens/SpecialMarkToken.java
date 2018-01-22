@@ -70,7 +70,7 @@ class SpecialMarkToken<T>
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
+        return this == obj || obj != null && getClass() == obj.getClass()
                 && Objects.equals(this.identifier, ((SpecialMarkToken<?>) obj).identifier);
     }
 }

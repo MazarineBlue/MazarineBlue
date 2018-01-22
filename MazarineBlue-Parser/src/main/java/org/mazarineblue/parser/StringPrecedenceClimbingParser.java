@@ -27,7 +27,6 @@ package org.mazarineblue.parser;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.mazarineblue.parser.analyser.lexical.StringLexicalAnalyser;
 import org.mazarineblue.parser.analyser.lexical.matchers.StringMatcher;
 import org.mazarineblue.parser.analyser.semantic.TreeEvaluatorAnalyser;
@@ -63,7 +62,6 @@ import org.mazarineblue.parser.analyser.syntax.precedenceclimbing.storage.UnaryO
  *
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-@Immutable
 public class StringPrecedenceClimbingParser<R>
         implements Parser<String, R> {
 
@@ -111,7 +109,8 @@ public class StringPrecedenceClimbingParser<R>
      * @param function   the function to register.
      * @return this
      */
-    public StringPrecedenceClimbingParser<R> addOperator(String identifier, UnaryOperator operator, Function<Object, R> function) {
+    public StringPrecedenceClimbingParser<R> addOperator(String identifier, UnaryOperator operator,
+                                                         Function<R, R> function) {
         lexicalAnalyser.add(new StringMatcher(identifier));
         syntacticAnalyser.addOperator(identifier, operator);
         semanticAnalyser.addFunction(identifier, function);
@@ -128,7 +127,8 @@ public class StringPrecedenceClimbingParser<R>
      * @param function   the function to register.
      * @return this
      */
-    public StringPrecedenceClimbingParser<R> addOperator(String identifier, BinaryOperator operator, BiFunction<Object, Object, R> function) {
+    public StringPrecedenceClimbingParser<R> addOperator(String identifier, BinaryOperator operator,
+                                                         BiFunction<R, R, R> function) {
         lexicalAnalyser.add(new StringMatcher(identifier));
         syntacticAnalyser.addOperator(identifier, operator);
         semanticAnalyser.addFunction(identifier, function);

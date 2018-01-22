@@ -1,0 +1,13 @@
+@startuml
+skinparam componentStyle uml2
+
+[MazarineBlue-Feeds-*]-left->[MazarineBlue-Engine-KeywordDriven]
+[MazarineBlue-Feeds-*]-right->[MazarineBlue-Plugins-Feeds]
+[MazarineBlue-Feeds-*]-(0-[MazarineBlue-Engine-EventDriven]
+
+[MazarineBlue-Plugins-Feeds]-->[MazarineBlue-FileSystem]
+[MazarineBlue-Plugins-Feeds]-->[MazarineBlue-Engine-EventDriven]
+
+[MazarineBlue-Engine-KeywordDriven]-->[MazarineBlue-Engine-EventDriven]
+[MazarineBlue-Engine-EventDriven]-left->[MazarineBlue-EventNotifier]
+@enduml

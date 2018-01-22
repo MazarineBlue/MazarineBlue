@@ -26,7 +26,7 @@
 package org.mazarineblue.parser;
 
 import org.mazarineblue.parser.analyser.lexical.StringLexicalAnalyser;
-import org.mazarineblue.parser.analyser.lexical.matchers.BracketVariableMatcher;
+import org.mazarineblue.parser.analyser.lexical.matchers.ComplexVariableMatcher;
 import org.mazarineblue.parser.analyser.lexical.matchers.SimpleVariableMatcher;
 import org.mazarineblue.parser.analyser.semantic.SemanticAnalyser;
 import org.mazarineblue.parser.analyser.semantic.TreeConcatenatingAnalyser;
@@ -36,16 +36,17 @@ import org.mazarineblue.parser.analyser.syntax.TokenConcatenatingAnalyser;
 /**
  * A {@code StringVariableParser} is a {@code Parser} that looks for variables
  * within a String and replaces the variable name with the its value.
+ * <p>
+ * A variable can be marked using one of two formats: $variable ${my variable}.
+ * The former is separated by a space of a end of line (EOL) character and the
+ * latter can contain spaces.
  *
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
 public class StringVariableParser
-        implements Parser<String, String> {
+        implements Parser<String, Object> {
 
-    private final StringLexicalAnalyser lexicalAnalyser;
-    private final SyntacticAnalyser<String> syntacticAnalyser;
-    private final SemanticAnalyser<String, String> semanticAnalyser;
-    private final GenericParser<String, String> parser;
+    private final GenericParser<String, Object> parser;
 
     /**
      * Constructs a parser with an variable source that is used to replace
@@ -53,17 +54,19 @@ public class StringVariableParser
      *
      * @param source the variable source to use for the replacements.
      */
-    public StringVariableParser(VariableSource<String> source) {
-        lexicalAnalyser = new StringLexicalAnalyser();
-        lexicalAnalyser.add(new BracketVariableMatcher());
+    public StringVariableParser(VariableSource<Object> source) {
+        StringLexicalAnalyser lexicalAnalyser = new StringLexicalAnalyser();
+        lexicalAnalyser.add(new ComplexVariableMatcher());
         lexicalAnalyser.add(new SimpleVariableMatcher());
-        syntacticAnalyser = new TokenConcatenatingAnalyser<>();
-        semanticAnalyser = new TreeConcatenatingAnalyser(source);
+
+        SyntacticAnalyser<String> syntacticAnalyser = new TokenConcatenatingAnalyser<>();
+        SemanticAnalyser<String, Object> semanticAnalyser = new TreeConcatenatingAnalyser(source);
+
         parser = new GenericParser<>(lexicalAnalyser, syntacticAnalyser, semanticAnalyser);
     }
 
     @Override
-    public String parse(String input) {
+    public Object parse(String input) {
         return parser.parse(input);
     }
 }

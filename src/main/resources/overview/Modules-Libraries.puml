@@ -1,0 +1,12 @@
+@startuml
+skinparam componentStyle uml2
+
+[MazarineBlue-Libraries-*]-left->[MazarineBlue-Engine-*]: optional
+[MazarineBlue-Libraries-*]-right->[MazarineBlue-Toolkit]: optional
+[MazarineBlue-Libraries-*]-->[MazarineBlue-Plugins-Libraries]
+[MazarineBlue-Libraries-*]-(0-[MazarineBlue-Engine-KeywordDriven]
+
+[MazarineBlue-Plugins-Libraries]-right->[MazarineBlue-Engine-KeywordDriven]
+[MazarineBlue-Engine-KeywordDriven]-->[MazarineBlue-Engine-EventDriven]
+[MazarineBlue-Engine-EventDriven]-left->[MazarineBlue-EventNotifier]
+@enduml

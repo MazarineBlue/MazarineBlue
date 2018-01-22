@@ -1,0 +1,48 @@
+@startuml
+MazarineBlue.FitnesseRunner.MazarineBlueFitNessePlugin ..> MazarineBlue.ThreadRunner.ThreadRunnerFactory
+MazarineBlue.FitnesseRunner.MazarineBlueFitNessePlugin ..> MazarineBlue.Engine.ProcessorFactory
+MazarineBlue.FitnesseRunner.MazarineBlueFitNessePlugin ..> MazarineBlue.FitnesseRunner.MazarineBlueSlimClient
+MazarineBlue.FitnesseRunner.MazarineBlueFitNessePlugin ..> MazarineBlue.FitnesseRunner.EnginePlungin.FitnesseSubscriber
+MazarineBlue.FitnesseRunner.MazarineBlueFitNessePlugin ..> MazarineBlue.FitnesseRunner.MazarineBlueTestSystemFactory
+MazarineBlue.FitnesseRunner.MazarineBlueFitNessePlugin ..> MazarineBlue.FitnesseRunner.EnginePlungin.FixtureLoaderLink
+MazarineBlue.Utilities.BlockingTwoWayPipeFactory <. MazarineBlue.FitnesseRunner.MazarineBlueFitNessePlugin
+
+MazarineBlue.FitnesseRunner.MazarineBlueTestSystemFactory --> MazarineBlue.FitnesseRunner.MazarineBlueSlimClient 
+
+MazarineBlue.FitnesseRunner.MazarineBlueSlimClient *--> MazarineBlue.ThreadRunner.RunnerFactory
+MazarineBlue.FitnesseRunner.MazarineBlueSlimClient *--> MazarineBlue.Utilities.TwoWayPipe
+MazarineBlue.FitnesseRunner.MazarineBlueSlimClient ..> MazarineBlue.FitnesseRunner.EventCreator
+MazarineBlue.FitnesseRunner.MazarineBlueSlimClient ..> MazarineBlue.Utilities.TwoWayPipeFactory
+
+MazarineBlue.FitnesseRunner.EventCreator *--> MazarineBlue.Utilities.TwoWayPipe
+
+MazarineBlue.Utilities.BlockingTwoWayPipeFactory .> MazarineBlue.Utilities.BlockingTwoWayPipe
+MazarineBlue.Utilities.TwoWayPipeFactory <|.. MazarineBlue.Utilities.BlockingTwoWayPipeFactory
+MazarineBlue.Utilities.TwoWayPipe <|.. MazarineBlue.Utilities.BlockingTwoWayPipe
+
+MazarineBlue.ThreadRunner.RunnerFactory <|.  MazarineBlue.ThreadRunner.ThreadRunnerFactory
+MazarineBlue.ThreadRunner.ThreadRunnerFactory --> MazarineBlue.Engine.ProcessorFactory
+MazarineBlue.ThreadRunner.ThreadRunnerFactory ..> MazarineBlue.ThreadRunner.ThreadRunner
+
+MazarineBlue.ThreadRunner.ThreadRunner *--> MazarineBlue.Utilities.TwoWayPipe
+MazarineBlue.ThreadRunner.ThreadRunner --> MazarineBlue.ThreadRunner.TwoWayPipeFeed
+MazarineBlue.ThreadRunner.ThreadRunner --> MazarineBlue.Engine.ProcessorFactory
+
+MazarineBlue.Engine.Feed <|. MazarineBlue.ThreadRunner.TwoWayPipeFeed
+MazarineBlue.Utilities.TwoWayPipe <--* MazarineBlue.ThreadRunner.TwoWayPipeFeed
+
+MazarineBlue.Engine.ProcessorFactory <|. MazarineBlue.Engine.ProcessorFactory
+MazarineBlue.Engine.ProcessorFactory ..> MazarineBlue.Engine.Processor
+
+MazarineBlue.Engine.Feed <. MazarineBlue.Engine.Processor
+MazarineBlue.Engine.Processor o-> MazarineBlue.Engine.Subscriber
+MazarineBlue.Engine.Processor o--> MazarineBlue.Engine.Library
+MazarineBlue.Engine.Processor o--> MazarineBlue.Engine.Link
+
+MazarineBlue.Engine.Subscriber <|-- MazarineBlue.Engine.ReflectionSubscriber
+MazarineBlue.Engine.ReflectionSubscriber <|-- MazarineBlue.FitnesseRunner.EnginePlungin.FitnesseSubscriber
+
+MazarineBlue.Engine.Library <|-- MazarineBlue.FitnesseRunner.EnginePlungin.FixtureLibrary
+MazarineBlue.Engine.Link <|-- MazarineBlue.FitnesseRunner.EnginePlungin.FixtureLoaderLink
+MazarineBlue.FitnesseRunner.EnginePlungin.FixtureLoaderLink .> MazarineBlue.FitnesseRunner.EnginePlungin.FixtureLibrary
+@enduml

@@ -14,7 +14,7 @@
     <artifactId>MazarineBlue-Pictures</artifactId>
     <packaging>jar</packaging>
 
-    <name>MazarineBlue - Pictures module</name>
+    <name>MazarineBlue - Pictures</name>
     <description>
         The Picture module provides Picture manipulation functionality to other
         modules.
@@ -41,6 +41,13 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>MazarineBlue-Utilities</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Utilities</artifactId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

@@ -30,10 +30,7 @@ package org.mazarineblue.parser.tokens;
  *
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public class Tokens {
-
-    private Tokens() {
-    }
+public final class Tokens {
 
     /**
      * Construct a literal {@link LiteralToken}.
@@ -76,5 +73,8 @@ public class Tokens {
      */
     public static <T> Token<T> createSpecialMarkToken(String identifier) {
         return new SpecialMarkToken<>(identifier);
+    }
+
+    private Tokens() {
     }
 }

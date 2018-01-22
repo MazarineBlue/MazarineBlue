@@ -1,0 +1,15 @@
+Test start: suite=Suite A, name=Test 1
+| Event start: org.mazarineblue.keyworddriven.events.AddLibraryEvent message: library=org.mazarineblue.libraries.test [checkEquals, checkNotEquals, fail]
+| Event end: org.mazarineblue.keyworddriven.events.AddLibraryEvent responce: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteSetupEvent message: Setup: name=global
+| Event end: org.mazarineblue.libraries.test.events.ExecuteSetupEvent responce: Setup: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteSetupEvent message: Setup: name=Suite A
+| Event end: org.mazarineblue.libraries.test.events.ExecuteSetupEvent responce: Setup: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteTestEvent message: Test: suite=Suite A, name=Test 1
+| Event end: org.mazarineblue.libraries.test.events.ExecuteTestEvent responce: Test: status=PASS
+| Event start: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent message: Teardown: name=Suite A
+| Event end: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent responce: Teardown: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent message: Teardown: name=global
+| Event end: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent responce: Teardown: 
+Test end: suite=Suite A, name=Test 1, status=PASS
+================================================================================

@@ -1,0 +1,35 @@
+@startuml
+annotation org.mazarineblue.eventnotifier.EventHandler
+interface org.mazarineblue.eventnotifier.Event {
+    +boolean isConsumed()
+}
+interface org.mazarineblue.eventnotifier.EventService {
+    +void publish(E event)
+    +boolean subscribe(Class eventType, Filter<E> filter, Subscriber<E> subscriber)
+    +boolean unsubscribe(Class eventType, Filter<E> filter, Subscriber<E> subscriber)
+}
+interface org.mazarineblue.eventnotifier.Filter {
+    +boolean apply(E event)
+}
+interface org.mazarineblue.eventnotifier.Subscriber {
+    +eventHandler(E event)
+}
+abstract class org.mazarineblue.eventnotifier.AbstractEvent
+abstract org.mazarineblue.eventnotifier.ReflectionSubscriber {
+    -ID id
+}
+class org.mazarineblue.eventnotifier.Entry {
+    -Class eventType
+}
+class org.mazarineblue.eventnotifier.SimpleEventService {
+    -Class eventType
+}
+
+org.mazarineblue.eventnotifier.Event <|-- org.mazarineblue.eventnotifier.AbstractEvent
+org.mazarineblue.eventnotifier.EventService <|-- org.mazarineblue.eventnotifier.SimpleEventService
+org.mazarineblue.eventnotifier.SimpleEventService o-> "*" org.mazarineblue.eventnotifier.Entry
+org.mazarineblue.eventnotifier.Entry o-> "1" org.mazarineblue.eventnotifier.Filter
+org.mazarineblue.eventnotifier.Entry o--> "1" org.mazarineblue.eventnotifier.Subscriber
+org.mazarineblue.eventnotifier.Subscriber <|-- org.mazarineblue.eventnotifier.ReflectionSubscriber
+org.mazarineblue.eventnotifier.ReflectionSubscriber .left.> org.mazarineblue.eventnotifier.EventHandler
+@enduml

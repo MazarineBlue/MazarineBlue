@@ -34,12 +34,12 @@ import org.mazarineblue.pictures.compounders.CompareCompounder;
 import org.mazarineblue.pictures.compounders.CompoundMethod;
 import org.mazarineblue.pictures.compounders.PictureCompounder;
 import org.mazarineblue.pictures.compounders.PixelComperator;
-import org.mazarineblue.pictures.compounders.comperator.FullPixelComperator;
+import org.mazarineblue.pictures.compounders.comperators.FullPixelComperator;
 import org.mazarineblue.pictures.compounders.methods.DiffFilter;
 import org.mazarineblue.pictures.compounders.methods.SameFilter;
 import org.mazarineblue.pictures.exceptions.OutputStreamMissingException;
 import org.mazarineblue.pictures.exceptions.PictureMissingException;
-import org.mazarineblue.utililities.exceptions.NeverThrownException;
+import org.mazarineblue.utilities.exceptions.NeverThrownException;
 
 /**
  * A {@code Picture} is a representation of an image.
@@ -368,7 +368,7 @@ public class Picture {
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
+        return this == obj || obj != null && getClass() == obj.getClass()
                 && Objects.equals(this.raster, ((Picture) obj).raster);
     }
 }

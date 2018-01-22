@@ -1,0 +1,69 @@
+@startuml
+--> LibraryRegistry: eventHandler(event : ExecuteInstructionLineEvent)
+activate LibraryRegistry
+LibraryRegistry --> ExecuteInstructionLineEvent: getInvoker()
+activate ExecuteInstructionLineEvent
+LibraryRegistry <-- ExecuteInstructionLineEvent: invoker : Invoker
+deactivate ExecuteInstructionLineEvent
+
+LibraryRegistry --> LibraryRegistry: fetchLibraries()
+activate LibraryRegistry
+LibraryRegistry --> FetchLibrariesEvent: create
+activate FetchLibrariesEvent
+LibraryRegistry <-- FetchLibrariesEvent: e : FetchLibrariesEvent
+deactivate FetchLibrariesEvent
+LibraryRegistry --> Invoker: publish(e)
+activate Invoker
+LibraryRegistry <-- Invoker
+deactivate Invoker
+LibraryRegistry --> FetchLibrariesEvent: getLibraries()
+activate FetchLibrariesEvent
+LibraryRegistry <-- FetchLibrariesEvent: libraries : Collection<Library>
+deactivate FetchLibrariesEvent
+LibraryRegistry --> LibraryRegistry: libraries : Collection<Library>
+deactivate LibraryRegistry
+
+LibraryRegistry --> LibraryRegistry: getInstruction()
+activate LibraryRegistry
+LibraryRegistry --> ExecuteInstructionLineEvent: getKeyword()
+activate ExecuteInstructionLineEvent
+LibraryRegistry <-- ExecuteInstructionLineEvent: keyword: String
+deactivate ExecuteInstructionLineEvent
+LibraryRegistry --> Library: getInstruction(keyword)
+activate Library
+LibraryRegistry <-- Library: instruction : Instruction
+deactivate Library
+LibraryRegistry --> LibraryRegistry: instruction : Instruction
+deactivate LibraryRegistry
+
+LibraryRegistry --> Library: getCallee()
+activate Library
+LibraryRegistry <-- Library: callee : Object
+deactivate Library
+
+LibraryRegistry --> LibraryRegistry: getArgumentsAndConvert()
+activate LibraryRegistry
+LibraryRegistry --> ExecuteInstructionLineEvent: getArguments(instruction : Instruction)
+activate ExecuteInstructionLineEvent
+LibraryRegistry <-- ExecuteInstructionLineEvent: arguments: Object[]
+deactivate ExecuteInstructionLineEvent
+LibraryRegistry --> LibraryRegistry: convertArguments(arguments)
+activate LibraryRegistry
+LibraryRegistry <-- LibraryRegistry: arguments: Object[]
+deactivate LibraryRegistry
+LibraryRegistry <-- LibraryRegistry: arguments: Object[]
+deactivate LibraryRegistry
+
+LibraryRegistry --> Instruction: invoker(callee, arguments)
+activate Instruction
+LibraryRegistry <-- Instruction
+deactivate Instruction
+
+LibraryRegistry --> ExecuteInstructionLineEvent: setConsumed(true : boolean)
+activate ExecuteInstructionLineEvent
+LibraryRegistry <-- ExecuteInstructionLineEvent
+deactivate ExecuteInstructionLineEvent
+
+<-- LibraryRegistry
+deactivate LibraryRegistry
+@enduml

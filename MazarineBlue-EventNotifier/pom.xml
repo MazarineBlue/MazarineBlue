@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.mazarineblue</groupId>
+        <artifactId>MazarineBlue</artifactId>
+        <version>0.2-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>MazarineBlue-EventNotifier</artifactId>
+    <packaging>jar</packaging>
+
+    <name>MazarineBlue - EventNotifier</name>
+    <description>
+        A message system wherein publishers and subscribers do not know each
+        other, but can communicate with each other using events. This module
+        implements the pattern as defined by Suchitra Gupta, Jeff Hartkopf and
+        Suresh Ramaswamy.
+        http://www.marco.panizza.name/dispenseTM/slides/exerc/eventNotifier/eventNotifier.html
+    </description>
+    <licenses>
+        <license>
+            <name>BSD 2-Clause license</name>
+            <url>http://opensource.org/licenses/BSD-2-Clause</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id></id>
+            <name>Alex de Kruijff</name>
+            <email>akruijff@dds.nl</email>
+            <url>http://www.kruijff.org/</url>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Utilities</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>MazarineBlue-Utilities</artifactId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

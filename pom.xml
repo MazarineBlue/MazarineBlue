@@ -13,7 +13,7 @@
     <name>MazarineBlue</name>
     <url>http://www.MazarineBlue.org/</url>
     <description>
-        MazarineBlue is a automation framework, containing a interpreter that
+        MazarineBlue is a automation framework, containing a processor that
         reads instructions and data from a source and is extendable though
         custom build modules. Several modules are included that allow, among
         other things, data extraction from excel and other sources, web browser
@@ -44,21 +44,35 @@
     </developers>
 
     <modules>
-        <module>MazarineBlue-ConsoleRunner</module>
-        <module>MazarineBlue-Engine</module>
-        <module>MazarineBlue-EngineExtended</module>
-        <module>MazarineBlue-EventBus</module>
-        <module>MazarineBlue-ExcelFeed</module>
+        <module>MazarineBlue-Aggregated</module>
+        <module>MazarineBlue-Engine-EventDriven</module>
+        <module>MazarineBlue-Engine-KeywordDriven</module>
+        <module>MazarineBlue-Engine-Logger</module>
+        <module>MazarineBlue-Engine-Main</module>
+        <module>MazarineBlue-Engine-NestedInstructions</module>
+        <module>MazarineBlue-Engine-UnitTest</module>
+        <module>MazarineBlue-Engine-VariableStore</module>
+        <module>MazarineBlue-EventNotifier</module>
+        <module>MazarineBlue-Feeds-ExcelFeed</module>
+        <module>MazarineBlue-Feeds-PlainTextFeed</module>
         <module>MazarineBlue-FileSystem</module>
-        <module>MazarineBlue-FitnesseRunner</module>
+        <module>MazarineBlue-Libraries-Awaitility</module>
+        <module>MazarineBlue-Libraries-Email</module>
+        <module>MazarineBlue-Libraries-Fixtures</module>
+        <module>MazarineBlue-Libraries-Test</module>
+        <module>MazarineBlue-Main</module>
         <module>MazarineBlue-Parser</module>
         <module>MazarineBlue-Pictures</module>
-        <module>MazarineBlue-PlainTextFeed</module>
-        <module>MazarineBlue-SwingRunner</module>
-        <module>MazarineBlue-ThreadRunner</module>
+        <module>MazarineBlue-Plugins-Feeds</module>
+        <module>MazarineBlue-Plugins-Libraries</module>
+        <module>MazarineBlue-Plugins-Runners</module>
+        <module>MazarineBlue-Plugins-Utilility</module>
+        <module>MazarineBlue-Runners-ConsoleRunner</module>
+        <module>MazarineBlue-Runners-FitnessePlugin</module>
+        <module>MazarineBlue-Runners-SwingRunner</module>
+        <module>MazarineBlue-Runners-ThreadRunner</module>
+        <module>MazarineBlue-Toolkit</module>
         <module>MazarineBlue-Utilities</module>
-        <module>MazarineBlue-VariableStore</module>
-        <module>MazarineBlue-Main</module>
     </modules>
 
     <scm>
@@ -70,6 +84,12 @@
         <system>GitHub Issues!</system>
         <url>http://github.com/Mazarineblue/MazarineBlue/issues</url>
     </issueManagement>
+    <repositories>
+        <repository>
+            <id>Netbeans Repository</id>
+            <url>http://bits.netbeans.org/maven2/</url>
+        </repository>
+    </repositories>
     <distributionManagement>
         <repository>
             <id>ossrh</id>
@@ -98,6 +118,8 @@
         <sonar.tests>src/test</sonar.tests>
         <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
         <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
+
+        <jacoco.percentage.instruction>0.80</jacoco.percentage.instruction>
     </properties>
 
     <dependencyManagement>
@@ -106,6 +128,11 @@
                 <groupId>com.opera</groupId>
                 <artifactId>operadriver</artifactId>
                 <version>1.5</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>1.6.0</version>
             </dependency>
             <dependency>
                 <groupId>de.bechte.junit</groupId>
@@ -120,12 +147,17 @@
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi</artifactId>
-                <version>3.14</version>
+                <version>3.17</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
-                <version>3.14</version>
+                <version>3.17</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+                <version>1.17</version>
             </dependency>
             <dependency>
                 <groupId>org.awaitility</groupId>
@@ -139,9 +171,14 @@
                 <classifier>standalone</classifier>
             </dependency>
             <dependency>
+                <groupId>org.netbeans.api</groupId>
+                <artifactId>org-openide-util-lookup</artifactId>
+                <version>RELEASE82</version>
+            </dependency>
+            <dependency>
                 <groupId>org.seleniumhq.selenium</groupId>
                 <artifactId>selenium-java</artifactId>
-                <version>2.53.1</version>
+                <version>3.8.1</version>
             </dependency>
             <dependency>
                 <groupId>org.swinglabs</groupId>
@@ -169,22 +206,22 @@
                 <plugin>
                     <groupId>com.github.ekryd.sortpom</groupId>
                     <artifactId>sortpom-maven-plugin</artifactId>
-                    <version>2.4.0</version>
+                    <version>2.8.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>2.6.1</version>
+                    <version>3.0.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.3</version>
+                    <version>3.7.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.10</version>
+                    <version>3.0.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -194,7 +231,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.6</version>
+                    <version>3.0.2</version>
                     <executions>
                         <execution>
                             <phase>package</phase>
@@ -207,21 +244,121 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.10.3</version>
+                    <version>3.0.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>3.0.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <!-- There is a problem with 2.19 and up -->
+                    <version>2.18</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.20.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.7.5.201505241946</version>
+                    <version>0.8.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
+            <!-- Compiles Java -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <!-- Code Coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>jacoco-check</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule implementation="org.jacoco.maven.RuleConfiguration">
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit implementation="org.jacoco.report.check.Limit">
+                                            <counter>INSTRUCTION</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>${jacoco.percentage.instruction}</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Unit tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+            <!-- Integration tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>**/*IT.class</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Other -->
             <plugin>
                 <groupId>com.github.ekryd.sortpom</groupId>
                 <artifactId>sortpom-maven-plugin</artifactId>
@@ -244,33 +381,6 @@
                 <executions>
                     <execution>
                         <phase>verify</phase>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>default-report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>

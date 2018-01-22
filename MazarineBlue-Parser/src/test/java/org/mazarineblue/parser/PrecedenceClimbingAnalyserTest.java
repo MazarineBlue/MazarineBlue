@@ -29,7 +29,9 @@ import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
-import org.mazarineblue.parser.analyser.syntax.precedenceclimbing.Associativity;
+import static org.mazarineblue.parser.ParserTestUtil.createTokens;
+import static org.mazarineblue.parser.analyser.syntax.precedenceclimbing.Associativity.LEFT;
+import static org.mazarineblue.parser.analyser.syntax.precedenceclimbing.Associativity.RIGHT;
 import org.mazarineblue.parser.analyser.syntax.precedenceclimbing.PrecedenceClimbingAnalyser;
 import org.mazarineblue.parser.analyser.syntax.precedenceclimbing.storage.BinaryOperator;
 import org.mazarineblue.parser.analyser.syntax.precedenceclimbing.storage.UnaryOperator;
@@ -60,97 +62,97 @@ public class PrecedenceClimbingAnalyserTest {
 
     @Test(expected = SyntacticExpressionException.class)
     public void buildTree_Empty_ThrowsSyntacticExpressionException() {
-        analyser.buildTree(ParserTestUtil.createTokens());
+        analyser.buildTree(createTokens());
     }
 
     @Test
     public void buildTree_SingleToken_ReturnsLeaf() {
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens("a"));
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens("a"));
         assertEquals("a", tree.toString());
     }
 
     @Test(expected = SyntacticExpressionException.class)
     public void buildTree_Unary_ThrowsSyntacticExpressionException() {
-        analyser.addOperator("a", new UnaryOperator(1, Associativity.LEFT));
-        analyser.buildTree(ParserTestUtil.createTokens("a"));
+        analyser.addOperator("a", new UnaryOperator(1, LEFT));
+        analyser.buildTree(createTokens("a"));
     }
 
     @Test
     public void buildTree_UnaryPlusToken_ReturnsNode() {
-        analyser.addOperator("a", new UnaryOperator(1, Associativity.LEFT));
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens("a", "b"));
+        analyser.addOperator("a", new UnaryOperator(1, LEFT));
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens("a", "b"));
         assertEquals("(a b)", tree.toString());
     }
 
     @Test(expected = SyntacticExpressionException.class)
     public void buildTree_Binary_ThrowsSyntacticExpressionException() {
-        analyser.addOperator("b", new BinaryOperator(1, Associativity.LEFT));
-        analyser.buildTree(ParserTestUtil.createTokens("b"));
+        analyser.addOperator("b", new BinaryOperator(1, LEFT));
+        analyser.buildTree(createTokens("b"));
     }
 
     @Test(expected = SyntacticExpressionException.class)
     public void buildTree_TokenPlusBinary_ThrowsSyntacticExpressionException() {
-        analyser.addOperator("b", new BinaryOperator(1, Associativity.LEFT));
-        analyser.buildTree(ParserTestUtil.createTokens("a", "b"));
+        analyser.addOperator("b", new BinaryOperator(1, LEFT));
+        analyser.buildTree(createTokens("a", "b"));
     }
 
     @Test(expected = SyntacticExpressionException.class)
     public void buildTree_BinaryPlusToken_ThrowsSyntacticExpressionException() {
-        analyser.addOperator("b", new BinaryOperator(1, Associativity.LEFT));
-        analyser.buildTree(ParserTestUtil.createTokens("b", "c"));
+        analyser.addOperator("b", new BinaryOperator(1, LEFT));
+        analyser.buildTree(createTokens("b", "c"));
     }
 
     @Test(expected = SyntacticExpressionException.class)
     public void buildTree_Binaries_ReturnsSyntacticExpressionException() {
-        analyser.addOperator("b", new BinaryOperator(1, Associativity.LEFT));
-        analyser.addOperator("d", new BinaryOperator(1, Associativity.LEFT));
-        analyser.buildTree(ParserTestUtil.createTokens("b", "d"));
+        analyser.addOperator("b", new BinaryOperator(1, LEFT));
+        analyser.addOperator("d", new BinaryOperator(1, LEFT));
+        analyser.buildTree(createTokens("b", "d"));
     }
 
     @Test
     public void buildTree_TokensPlusBinariesWithAssociativityLeft_ReturnsTree() {
-        analyser.addOperator("b", new BinaryOperator(1, Associativity.LEFT));
-        analyser.addOperator("d", new BinaryOperator(1, Associativity.LEFT));
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens("a", "b", "c", "d", "e"));
+        analyser.addOperator("b", new BinaryOperator(1, LEFT));
+        analyser.addOperator("d", new BinaryOperator(1, LEFT));
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens("a", "b", "c", "d", "e"));
         assertEquals("((a b c) d e)", tree.toString());
     }
 
     @Test
     public void buildTree_TokensPlusBinariesWithAssociativityRight_ReturnsTree() {
-        analyser.addOperator("b", new BinaryOperator(1, Associativity.RIGHT));
-        analyser.addOperator("d", new BinaryOperator(1, Associativity.RIGHT));
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens("a", "b", "c", "d", "e"));
+        analyser.addOperator("b", new BinaryOperator(1, RIGHT));
+        analyser.addOperator("d", new BinaryOperator(1, RIGHT));
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens("a", "b", "c", "d", "e"));
         assertEquals("(a b (c d e))", tree.toString());
     }
 
     @Test(expected = SyntacticExpressionException.class)
     public void buildTree_TokensPlusBinariesPlusOpenGroup_ThrowsSyntacticExpressionException() {
-        analyser.addOperator("b", new BinaryOperator(1, Associativity.LEFT));
-        analyser.addOperator("d", new BinaryOperator(1, Associativity.LEFT));
+        analyser.addOperator("b", new BinaryOperator(1, LEFT));
+        analyser.addOperator("d", new BinaryOperator(1, LEFT));
         analyser.addGroupCharacters("(", ")");
-        analyser.buildTree(ParserTestUtil.createTokens("a", "b", "(", "c", "d", "e"));
+        analyser.buildTree(createTokens("a", "b", "(", "c", "d", "e"));
     }
 
     @Test(expected = SyntacticExpressionException.class)
     public void buildTree_TokensPlusBinariesPlusCloseGroup_ThrowsSyntacticExpressionException() {
-        analyser.addOperator("b", new BinaryOperator(1, Associativity.LEFT));
-        analyser.addOperator("d", new BinaryOperator(1, Associativity.LEFT));
+        analyser.addOperator("b", new BinaryOperator(1, LEFT));
+        analyser.addOperator("d", new BinaryOperator(1, LEFT));
         analyser.addGroupCharacters("(", ")");
-        analyser.buildTree(ParserTestUtil.createTokens("a", "b", "c", "d", "e", ")"));
+        analyser.buildTree(createTokens("a", "b", "c", "d", "e", ")"));
     }
 
     @Test(expected = SyntacticExpressionException.class)
     public void buildTree_Grouping_ThrowsSyntacticExpressionException() {
         analyser.addGroupCharacters("(", ")");
-        analyser.buildTree(ParserTestUtil.createTokens("(", ")"));
+        analyser.buildTree(createTokens("(", ")"));
     }
 
     @Test
     public void buildTree_TokensPlusBinariesPlusGrouping_ReturnsTree() {
-        analyser.addOperator("b", new BinaryOperator(1, Associativity.LEFT));
-        analyser.addOperator("d", new BinaryOperator(1, Associativity.LEFT));
+        analyser.addOperator("b", new BinaryOperator(1, LEFT));
+        analyser.addOperator("d", new BinaryOperator(1, LEFT));
         analyser.addGroupCharacters("(", ")");
-        SyntaxTreeNode<String> tree = analyser.buildTree(ParserTestUtil.createTokens("a", "b", "(", "c", "d", "e", ")"));
+        SyntaxTreeNode<String> tree = analyser.buildTree(createTokens("a", "b", "(", "c", "d", "e", ")"));
         assertEquals("(a b (c d e))", tree.toString());
     }
 }

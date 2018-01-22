@@ -1,0 +1,25 @@
+@startuml
+skinparam componentStyle uml2
+
+actor User
+User ..> () Standalone
+User ..> Client
+node Client {
+}
+node Server {
+    Standalone -- [Main]
+    [Main] #-right(0-# [Runner]
+    [Main] --> [Engine]
+    [Runner] --> [Engine]
+    [Engine] #-right(0-# [Feed]
+    [Engine] .left.> (Link)
+
+    [Engine] --> [EventNotifier]
+    [Engine] #-(0-# [Library]
+    [EventNotifier] ..> (Subscriber)
+    (LibraryRegistry) .up.> [Library]
+    (Subscriber) <|- (LibraryRegistry)
+}
+Client ..> [Runner]
+ThirdPartyTool ..> [Runner]
+@enduml

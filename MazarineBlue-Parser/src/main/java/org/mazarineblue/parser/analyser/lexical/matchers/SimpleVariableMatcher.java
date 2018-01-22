@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (lastCharacter) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,8 +25,9 @@
  */
 package org.mazarineblue.parser.analyser.lexical.matchers;
 
-import org.mazarineblue.parser.analyser.lexical.Matcher;
-import org.mazarineblue.parser.exceptions.IllegalCloseBacketException;
+import static org.mazarineblue.parser.analyser.lexical.matchers.GenericVariableMatcher.Mode.OPEN_BRACKET_FOUND;
+import static org.mazarineblue.parser.analyser.lexical.matchers.GenericVariableMatcher.Mode.SPACE_FOUND;
+import static org.mazarineblue.parser.analyser.lexical.matchers.GenericVariableMatcher.Mode.VARIABLE_SIGN_FOUND;
 import org.mazarineblue.parser.tokens.Token;
 import org.mazarineblue.parser.tokens.Tokens;
 
@@ -37,10 +38,9 @@ import org.mazarineblue.parser.tokens.Tokens;
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
 public class SimpleVariableMatcher
-        extends Matcher<String> {
+        extends GenericVariableMatcher {
 
-    private int previous = -1;
-    private boolean curly = false;
+    private int storedIndex = -1;
 
     @Override
     public Token<String> createToken(String input, int startIndex, int endIndex) {
@@ -54,62 +54,29 @@ public class SimpleVariableMatcher
     }
 
     @Override
-    public void processChar(char c, int index) {
-        switch (c) {
-            case '$':
-                caseVariableSign(index);
-                break;
-            case '{':
-                caseOpenBracket(index);
-                break;
-            case '}':
-                caseCloseBracket();
-                break;
-            case ' ':
-            case EOL:
-                caseEnd(index);
-                break;
-            default:
-                defaultCase();
+    protected void caseVariableSign() {
+        mode = VARIABLE_SIGN_FOUND;
+        storeIndex(indexOfLastCharacter);
+        if (isProcessing())
+            markEnd(indexOfLastCharacter);
+    }
+
+    private void storeIndex(int index) {
+        storedIndex = index;
+    }
+
+    @Override
+    protected void caseSpace() {
+        if (mode == VARIABLE_SIGN_FOUND) {
+            mode = SPACE_FOUND;
+            caseEOL();
         }
     }
 
-    private void caseVariableSign(int index) {
-        storeOffset(index);
+    @Override
+    protected void caseEOL() {
         if (isProcessing())
-            markEnd(index);
-    }
-
-    private void caseCloseBracket() {
-        if (isOpenBracket())
-            setOpenBracket(false);
-        else
-            throw new IllegalCloseBacketException(getStart());
-    }
-
-    private void caseOpenBracket(int index) {
-        if (isOffsetStored())
-            markStartUsingStoredOffset();
-        if (isOpenBracket(index))
-            setOpenBracket(true);
-    }
-
-    private void caseEnd(int index) {
-        if (isProcessing())
-            markEnd(index);
-    }
-
-    private void defaultCase() {
-        if (isOffsetStored())
-            markStartUsingStoredOffset();
-    }
-
-    private void storeOffset(int index) {
-        previous = index;
-    }
-
-    private boolean isProcessing() {
-        return getStart() >= 0 && getEnd() == -1;
+            markEnd(indexOfLastCharacter);
     }
 
     private void markEnd(int index) {
@@ -117,31 +84,27 @@ public class SimpleVariableMatcher
         setMatch(true);
     }
 
-    private boolean isOffsetStored() {
-        return previous >= 0;
-    }
-
-    private void markStartUsingStoredOffset() {
-        setStart(previous);
-        setEnd(-1);
-        setMatch(false);
-        previous = -1;
-    }
-
-    private boolean isOpenBracket() {
-        return curly;
-    }
-
-    private void setOpenBracket(boolean flag) {
-        curly = flag;
-    }
-
-    private boolean isOpenBracket(int index) {
-        return getStart() + 1 == index;
+    @Override
+    protected void defaultCase() {
+        if (storedIndex >= 0)
+            setStartUsingStoredOffset();
     }
 
     @Override
-    public boolean willMatch(char c, int index) {
-        return false;
+    protected void caseOpenBracket() {
+        if (storedIndex >= 0)
+            setStartUsingStoredOffset();
+        if (getStart() + 1 == indexOfLastCharacter)
+            mode = OPEN_BRACKET_FOUND;
+    }
+
+    @Override
+    protected void caseClosedBracket() {
+        // This matcher works by looking at the spaces and the EOL.
+    }
+
+    private void setStartUsingStoredOffset() {
+        setStart(storedIndex);
+        storedIndex = -1;
     }
 }

@@ -113,7 +113,7 @@ class Raster {
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass()
+        return this == obj || obj != null && getClass() == obj.getClass()
                 && this.width == ((Raster) obj).width && this.height == ((Raster) obj).height
                 && Arrays.equals(this.rgbArray, ((Raster) obj).rgbArray);
     }

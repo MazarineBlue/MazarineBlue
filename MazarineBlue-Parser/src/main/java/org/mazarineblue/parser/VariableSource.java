@@ -24,6 +24,9 @@
  */
 package org.mazarineblue.parser;
 
+import java.util.Map;
+import org.mazarineblue.parser.exceptions.VariableNotFoundException;
+
 /**
  * A {@code VariableSource} is source that's able to variable
  *
@@ -33,11 +36,37 @@ package org.mazarineblue.parser;
 @FunctionalInterface
 public interface VariableSource<R> {
 
+    public static <R> VariableSource<R> newInstance(Map<String, R> map) {
+        return new VariableSource<R>() {
+            @Override
+            public R getData(String name) {
+                if (map.containsKey(name))
+                    return map.get(name);
+                throw new VariableNotFoundException(name);
+            }
+
+            @Override
+            public void setData(String name, R value) {
+                map.put(name, value);
+            }
+        };
+    }
+
     /**
-     * Return the object at the specified column.
+     * Return the object stored under the specified variable name.
      *
      * @param name the variable name.
      * @return the value or {@code null} if such a variable doesn't exist.
      */
     public R getData(String name);
+
+    /**
+     * Stores the spacified object under the specified variable name.
+     *
+     * @param name the variable name.
+     * @param value the object to store.
+     */
+    default void setData(String name, R value) {
+        throw new UnsupportedOperationException("Operation not supported jet.");
+    }
 }

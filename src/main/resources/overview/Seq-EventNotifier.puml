@@ -1,0 +1,17 @@
+@startuml
+--> EventService: publish(event : Event)
+activate EventService
+loop foreach entry while consumed == false
+EventService --> Subscriber: eventHandler(event : Event)
+activate Subscriber
+EventService <-- Subscriber
+deactivate Subscriber
+
+EventService --> Event: isConsumed()
+activate Event
+EventService <-- Event: consumed : boolean
+deactivate Event
+end
+<-- EventService
+deactivate EventService
+@enduml

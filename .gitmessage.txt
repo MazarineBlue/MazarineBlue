@@ -14,3 +14,5 @@
 # http://chris.beams.io/posts/git-commit/
 # https://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message
 # https://wiki.openstack.org/wiki/GitCommitMessages
+
+# Set this template: git config commit.template .gitmessage.txt

@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.mazarineblue.pictures.compounders.PixelComperator;
-import org.mazarineblue.pictures.compounders.comperator.FullPixelComperator;
+import org.mazarineblue.pictures.compounders.comperators.FullPixelComperator;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -57,7 +57,7 @@ public class FullPixelComperatorTest {
     }
 
     @Test
-    public void isPixelEqual_DifferentGreenValues_ReturnsTFalse() {
+    public void isPixelEqual_DifferentGreenValues_ReturnsFalse() {
         int left = PixelUtil.pixel(1, 2, 3, 4);
         int right = PixelUtil.pixel(1, 2, 4, 4);
         assertFalse(comperator.isPixelEqual(left, right));

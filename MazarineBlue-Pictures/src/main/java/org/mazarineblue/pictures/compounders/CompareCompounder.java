@@ -19,7 +19,7 @@
 package org.mazarineblue.pictures.compounders;
 
 import org.mazarineblue.pictures.Picture;
-import org.mazarineblue.utililities.exceptions.NeverThrownException;
+import org.mazarineblue.utilities.exceptions.NeverThrownException;
 
 /**
  * An {@code CompareCompounder} is a {@code Compounder} that compares two

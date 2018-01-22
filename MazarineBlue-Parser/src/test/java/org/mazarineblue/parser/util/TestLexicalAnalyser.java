@@ -25,7 +25,7 @@
  */
 package org.mazarineblue.parser.util;
 
-import java.util.Collections;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableList;
 import java.util.List;
 import org.mazarineblue.parser.analyser.lexical.LexicalAnalyser;
@@ -41,7 +41,7 @@ public class TestLexicalAnalyser
     private List<Token<String>> tokens;
 
     public TestLexicalAnalyser() {
-        tokens = Collections.emptyList();
+        tokens = emptyList();
     }
 
     public String getInput() {

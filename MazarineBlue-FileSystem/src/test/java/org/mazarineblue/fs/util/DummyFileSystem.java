@@ -25,6 +25,9 @@ import java.util.Collection;
 import java.util.List;
 import org.mazarineblue.fs.FileSystem;
 
+/**
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 public class DummyFileSystem
         implements FileSystem {
 
@@ -53,6 +56,16 @@ public class DummyFileSystem
 
     @Override
     public void mkfile(File file, Collection<?> col)
+            throws IOException {
+    }
+
+    @Override
+    public void delete(File file)
+            throws IOException {
+    }
+
+    @Override
+    public void deleteAll()
             throws IOException {
     }
 

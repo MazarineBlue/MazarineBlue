@@ -1,0 +1,72 @@
+Test start: suite=Suite A, name=Test A1
+| Event start: org.mazarineblue.keyworddriven.events.AddLibraryEvent message: library=org.mazarineblue.libraries.test [checkEquals, checkNotEquals, fail]
+| Event end: org.mazarineblue.keyworddriven.events.AddLibraryEvent responce: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteSetupEvent message: Setup: name=global
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.checkEquals, Lorem Ipsum, Lorem Ipsum}
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteSetupEvent responce: Setup: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteSetupEvent message: Setup: name=Suite A
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.checkEquals, Lorem Ipsum, Lorem Ipsum}
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteSetupEvent responce: Setup: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteTestEvent message: Test: suite=Suite A, name=Test A1
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.fail, Teardown: Global}
+| | | Error: Teardown: Global
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteTestEvent responce: Test: status=FAIL
+| Event start: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent message: Teardown: name=Suite A
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.checkEquals, Lorem Ipsum, Lorem Ipsum}
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent responce: Teardown: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent message: Teardown: name=global
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.checkEquals, Lorem Ipsum, Lorem Ipsum}
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent responce: Teardown: 
+Test end: suite=Suite A, name=Test A1, status=FAIL
+================================================================================
+Test start: suite=Suite A, name=Test A2
+| Event start: org.mazarineblue.keyworddriven.events.AddLibraryEvent message: library=org.mazarineblue.libraries.test [checkEquals, checkNotEquals, fail]
+| Event end: org.mazarineblue.keyworddriven.events.AddLibraryEvent responce: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteSetupEvent message: Setup: name=global
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.checkEquals, Lorem Ipsum, Lorem Ipsum}
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteSetupEvent responce: Setup: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteSetupEvent message: Setup: name=Suite A
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.checkEquals, Lorem Ipsum, Lorem Ipsum}
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteSetupEvent responce: Setup: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteTestEvent message: Test: suite=Suite A, name=Test A2
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.checkEquals, Lorem Ipsum, Lorem Ipsum}
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteTestEvent responce: Test: status=PASS
+| Event start: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent message: Teardown: name=Suite A
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.checkEquals, Lorem Ipsum, Lorem Ipsum}
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent responce: Teardown: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent message: Teardown: name=global
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.checkEquals, Lorem Ipsum, Lorem Ipsum}
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent responce: Teardown: 
+Test end: suite=Suite A, name=Test A2, status=PASS
+================================================================================
+Test start: suite=Suite B, name=Test B1
+| Event start: org.mazarineblue.keyworddriven.events.AddLibraryEvent message: library=org.mazarineblue.libraries.test [checkEquals, checkNotEquals, fail]
+| Event end: org.mazarineblue.keyworddriven.events.AddLibraryEvent responce: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteSetupEvent message: Setup: name=global
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.checkEquals, Lorem Ipsum, Lorem Ipsum}
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteSetupEvent responce: Setup: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteSetupEvent message: Setup: name=Suite B
+| Event end: org.mazarineblue.libraries.test.events.ExecuteSetupEvent responce: Setup: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteTestEvent message: Test: suite=Suite B, name=Test B1
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.checkEquals, Lorem Ipsum, Lorem Ipsum}
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteTestEvent responce: Test: status=PASS
+| Event start: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent message: Teardown: name=Suite B
+| Event end: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent responce: Teardown: 
+| Event start: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent message: Teardown: name=global
+| | Event start: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent message: line={.checkEquals, Lorem Ipsum, Lorem Ipsum}
+| | Event end: org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent responce: 
+| Event end: org.mazarineblue.libraries.test.events.ExecuteTeardownEvent responce: Teardown: 
+Test end: suite=Suite B, name=Test B1, status=PASS
+================================================================================

@@ -80,6 +80,18 @@ public class AdapterFileSystem
     }
 
     @Override
+    public void delete(File file)
+            throws IOException {
+        adaptee.delete(file);
+    }
+
+    @Override
+    public void deleteAll()
+            throws IOException {
+        adaptee.deleteAll();
+    }
+
+    @Override
     public File getParent(File file) {
         return adaptee.getParent(file);
     }

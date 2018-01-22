@@ -39,13 +39,14 @@ import org.mazarineblue.parser.exceptions.LexicalExpressionException;
 @RunWith(HierarchicalContextRunner.class)
 public class StringConcatenatingParserTest {
 
+    @SuppressWarnings("PublicInnerClass")
     public class UsingVariableSource {
 
-        Parser<String, String> parser;
+        private Parser<String, Object> parser;
 
         @Before
         public void setup() {
-            parser = new StringVariableParser(name -> "oof");
+            parser = new StringVariableParser(name -> 1);
         }
 
         @After
@@ -60,22 +61,22 @@ public class StringConcatenatingParserTest {
 
         @Test(expected = LexicalExpressionException.class)
         public void parse_WrongPositionForOpenBracker() {
-            assertEquals("oof", parser.parse("$f{oo"));
+            parser.parse("$f{oo");
         }
 
         @Test(expected = LexicalExpressionException.class)
         public void parse_ForgetToClose() {
-            assertEquals("oof", parser.parse("${foo"));
+            parser.parse("${foo");
         }
 
         @Test(expected = LexicalExpressionException.class)
         public void parse_CloseWithoutOpening() {
-            assertEquals("oof", parser.parse("$foo}"));
+            parser.parse("$foo}");
         }
 
         @Test
         public void parse_CurrectVariable() {
-            assertEquals("oof", parser.parse("${foo}"));
+            assertEquals(1, parser.parse("${foo}"));
         }
     }
 }

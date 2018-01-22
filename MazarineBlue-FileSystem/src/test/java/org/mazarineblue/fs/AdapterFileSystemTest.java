@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import org.junit.After;
 import static org.junit.Assert.assertArrayEquals;
@@ -32,7 +31,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
-import org.mazarineblue.fs.util.TestFileSystem;
+import org.mazarineblue.fs.util.AdapterFileSystemSpy;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
@@ -41,15 +40,15 @@ public class AdapterFileSystemTest {
 
     private File file;
     private List<File> files;
-    private TestFileSystem spy;
-    private FileSystem fs;
+    private AdapterFileSystemSpy spy;
+    private AdapterFileSystem fs;
 
     @Before
     public void setup() {
         file = new File("foo");
         files = new ArrayList<>(1);
         files.add(file);
-        spy = new TestFileSystem();
+        spy = new AdapterFileSystemSpy();
         fs = createFileSystem(spy);
     }
 
@@ -57,15 +56,15 @@ public class AdapterFileSystemTest {
     public void teardown() {
     }
 
-    protected FileSystem createFileSystem(TestFileSystem spy) {
+    protected AdapterFileSystem createFileSystem(AdapterFileSystemSpy spy) {
         return new AdapterFileSystem(spy);
     }
 
-    public TestFileSystem getSpy() {
+    public AdapterFileSystemSpy getSpy() {
         return spy;
     }
 
-    public FileSystem getFs() {
+    public AdapterFileSystem getFs() {
         return fs;
     }
 
@@ -73,94 +72,114 @@ public class AdapterFileSystemTest {
     public void mkdir()
             throws IOException {
         fs.mkdir(file);
-        assertEquals(files, spy.getFiles());
+        assertEquals("mkdir", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
-    public void mkfileContent()
+    public void mkfile_Content()
             throws IOException {
-        String content = "oof";
-        fs.mkfile(file, content);
-        assertEquals(content, spy.getContent());
-        assertEquals(files, spy.getFiles());
+        fs.mkfile(file, "content");
+        assertEquals("mkfile", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
+        assertEquals("content", spy.getArgument2());
     }
 
     @Test
-    public void mkdirInputStream()
+    public void mkdir_InputStream()
             throws IOException {
         InputStream input = new BufferedInputStream(null);
         fs.mkfile(file, input);
-        assertEquals(input, spy.getInput());
-        assertEquals(files, spy.getFiles());
+        assertEquals("mkfile", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
+        assertEquals(input, spy.getArgument2());
     }
 
     @Test
-    public void mkfileArray()
+    public void mkfile_Array()
             throws IOException {
         Object[] arr = new Object[]{"abc", "def"};
         fs.mkfile(file, arr);
-        assertArrayEquals(arr, spy.getArray());
-        assertEquals(files, spy.getFiles());
+        assertEquals("mkfile", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
+        assertEquals(arr, spy.getArgument2());
     }
 
     @Test
-    public void mkfileIterator()
+    public void mkfile_Collection()
             throws IOException {
-        Collection<?> collection = new ArrayList<>(4);
+        Collection<String> collection = new ArrayList<>(4);
+        collection.add("foo");
         fs.mkfile(file, collection);
-        Collection<?> spyCollection = spy.getCollection();
-        assertEquals(collection.size(), spyCollection.size());
-        Iterator<?> iterator = collection.iterator();
-        Iterator<?> spyIterator = spyCollection.iterator();
-        while (iterator.hasNext())
-            assertEquals(iterator.next(), spyIterator.next());
-        assertEquals(files, spy.getFiles());
+        assertEquals("mkfile", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
+        assertEquals(collection, spy.getArgument2());
+    }
+
+    @Test
+    public void delete()
+            throws IOException {
+        fs.delete(file);
+        assertEquals("delete", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
+    }
+
+    @Test
+    public void deleteAll()
+            throws IOException {
+        fs.deleteAll();
+        assertEquals("deleteAll", spy.getCalledMethod());
     }
 
     @Test
     public void getParent() {
-        File parent = new File("foo");
-        spy.setParentFile(parent);
-        assertEquals(parent, fs.getParent(file));
-        assertEquals(files, spy.getFiles());
+        File expected = new File("foo");
+        spy.setParent(expected);
+        assertEquals(expected, fs.getParent(file));
+        assertEquals("getParent", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void getInputStream()
             throws IOException {
-        InputStream input = new BufferedInputStream(null);
-        spy.setInput(input);
-        assertEquals(input, fs.getInputStream(file));
-        assertEquals(files, spy.getFiles());
+        InputStream expected = new BufferedInputStream(null);
+        spy.setInput(expected);
+        assertEquals(expected, fs.getInputStream(file));
+        assertEquals("getInputStream", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void getContent()
             throws IOException {
-        String content = "abc";
-        spy.setContent(content);
-        assertEquals(content, fs.getContent(file));
-        assertEquals(files, spy.getFiles());
+        String expected = "abc";
+        spy.setContent(expected);
+        assertEquals(expected, fs.getContent(file));
+        assertEquals("getContent", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void getList()
             throws IOException {
-        List<String> list = new ArrayList<>(2);
-        list.add("abc");
-        list.add("def");
-        spy.setList(list);
-        assertEquals(list, fs.getList(file));
-        assertEquals(files, spy.getFiles());
+        List<String> expected = new ArrayList<>(2);
+        expected.add("abc");
+        expected.add("def");
+        spy.setList(expected);
+        assertEquals(expected, fs.getList(file));
+        assertEquals("getList", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void getObjectArray()
             throws IOException {
-        Object[] arr = new Object[]{"abc", "def"};
-        spy.setArray(arr);
-        assertArrayEquals(arr, fs.getArray(file));
-        assertEquals(files, spy.getFiles());
+        Object[] expected = new Object[]{"abc", "def"};
+        spy.setArray(expected);
+        assertArrayEquals(expected, fs.getArray(file));
+        assertEquals("getArray", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
@@ -170,83 +189,96 @@ public class AdapterFileSystemTest {
         spy.setArray(expected);
         String[] actual = fs.getArray(file, String[].class);
         assertArrayEquals(expected, actual);
-        assertEquals(files, spy.getFiles());
+        assertEquals("getArray", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void listChilderen() {
-        spy.setChilderen(file);
-        assertArrayEquals(new File[]{file}, fs.listChilderen(file));
-        assertEquals(files, spy.getFiles());
+        File[] expected = new File[]{file, file};
+        spy.setFiles(expected);
+        assertArrayEquals(expected, fs.listChilderen(file));
+        assertEquals("listChilderen", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void exists_False() {
-        spy.setExists(false);
+        spy.setFiles(new File[]{});
         assertFalse(fs.exists(file));
-        assertEquals(files, spy.getFiles());
+        assertEquals("exists", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void exists_True() {
-        spy.setExists(true);
+        spy.setFiles(new File[]{file});
         assertTrue(fs.exists(file));
-        assertEquals(files, spy.getFiles());
+        assertEquals("exists", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void isDirectory_False() {
-        spy.setDirectory(false);
+        spy.setIsDirectory(false);
         assertFalse(fs.isDirectory(file));
-        assertEquals(files, spy.getFiles());
+        assertEquals("isDirectory", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void isDirectory_True() {
-        spy.setDirectory(true);
+        spy.setIsDirectory(true);
         assertTrue(fs.isDirectory(file));
-        assertEquals(files, spy.getFiles());
+        assertEquals("isDirectory", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void isFile_False() {
-        spy.setFile(false);
+        spy.setIsFile(false);
         assertFalse(fs.isFile(file));
-        assertEquals(files, spy.getFiles());
+        assertEquals("isFile", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void isFile_True() {
-        spy.setFile(true);
+        spy.setIsFile(true);
         assertTrue(fs.isFile(file));
-        assertEquals(files, spy.getFiles());
+        assertEquals("isFile", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void isHidden_False() {
-        spy.setHidden(false);
+        spy.setIsHidden(false);
         assertFalse(fs.isHidden(file));
-        assertEquals(files, spy.getFiles());
+        assertEquals("isHidden", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void isHidden_True() {
-        spy.setHidden(true);
+        spy.setIsHidden(true);
         assertTrue(fs.isHidden(file));
-        assertEquals(files, spy.getFiles());
+        assertEquals("isHidden", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void isReadable_False() {
-        spy.setReadable(false);
+        spy.setIsReadable(false);
         assertFalse(fs.isReadable(file));
-        assertEquals(files, spy.getFiles());
+        assertEquals("isReadable", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 
     @Test
     public void isReadable_True() {
-        spy.setReadable(true);
+        spy.setIsReadable(true);
         assertTrue(fs.isReadable(file));
-        assertEquals(files, spy.getFiles());
+        assertEquals("isReadable", spy.getCalledMethod());
+        assertEquals(file, spy.getArgument1());
     }
 }

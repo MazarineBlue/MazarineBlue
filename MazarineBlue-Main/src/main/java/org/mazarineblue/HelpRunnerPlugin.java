@@ -19,7 +19,9 @@ package org.mazarineblue;
 
 import org.mazarineblue.plugins.Runner;
 import org.mazarineblue.plugins.RunnerPlugin;
+import org.openide.util.lookup.ServiceProvider;
 
+@ServiceProvider(service = RunnerPlugin.class)
 public class HelpRunnerPlugin
         implements RunnerPlugin {
 
