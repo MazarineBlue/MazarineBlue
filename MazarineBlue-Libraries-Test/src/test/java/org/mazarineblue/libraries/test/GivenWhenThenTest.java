@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) 2018 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -18,7 +18,6 @@
 package org.mazarineblue.libraries.test;
 
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.mazarineblue.eventdriven.feeds.MemoryFeed;
@@ -27,7 +26,7 @@ import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
 import org.mazarineblue.libraries.test.events.SetTestListenerEvent;
 import org.mazarineblue.libraries.test.util.ResultCollectorTestListener;
 
-public class RuntimeLibraryInstructionsTest
+public class GivenWhenThenTest
         extends AbstractExecutorTestHelper {
 
     private ResultCollectorTestListener results;
@@ -45,62 +44,49 @@ public class RuntimeLibraryInstructionsTest
     }
 
     @Test
-    public void checkEqual_FooAndFoo() {
+    public void test1() {
         execute(new MemoryFeed(new ExecuteInstructionLineEvent("Test set"),
-                               new ExecuteInstructionLineEvent("Test", "Test 1"),
-                               new ExecuteInstructionLineEvent("Check equals", "Foo", "Foo"),
+                               new ExecuteInstructionLineEvent( "Test", "Test 1"),
+                               new ExecuteInstructionLineEvent("Given", "put the system in a known state"),
+                               new ExecuteInstructionLineEvent( "When", "a key action is performed"),
+                               new ExecuteInstructionLineEvent( "Then", "some outcome is observed"),
                                new ExecuteInstructionLineEvent("End test set"),
                                new ExecuteInstructionLineEvent("Run tests")));
-        assertSuccess();
-        assertEquals(1, results.getTestCount());
-        assertEquals(0, results.getFailedTestCount());
     }
 
     @Test
-    public void checkEqual_FooAndOof() {
+    public void test2() {
         execute(new MemoryFeed(new ExecuteInstructionLineEvent("Test set"),
                                new ExecuteInstructionLineEvent("Test", "Test 1"),
-                               new ExecuteInstructionLineEvent("Check equals", "Foo", "Oof"),
+                               new ExecuteInstructionLineEvent("Given", "put the system in a known state"),
+                               new ExecuteInstructionLineEvent(  "And", "put the system in a known state"),
+                               new ExecuteInstructionLineEvent( "When", "a key action is performed"),
+                               new ExecuteInstructionLineEvent(  "And", "a key action is performed"),
+                               new ExecuteInstructionLineEvent( "Then", "some outcome is observed"),
+                               new ExecuteInstructionLineEvent(  "And", "some outcome is observed"),
                                new ExecuteInstructionLineEvent("End test set"),
                                new ExecuteInstructionLineEvent("Run tests")));
-        assertSuccess();
-        assertEquals(1, results.getTestCount());
-        assertEquals(1, results.getFailedTestCount());
     }
 
     @Test
-    public void checkNotEqual_FooAndFoo() {
+    public void test3() {
         execute(new MemoryFeed(new ExecuteInstructionLineEvent("Test set"),
-                               new ExecuteInstructionLineEvent("Test", "Test 1"),
-                               new ExecuteInstructionLineEvent("Check not equals", "Foo", "Foo"),
+                               new ExecuteInstructionLineEvent( "Test", "Test 1"),
+                               new ExecuteInstructionLineEvent("Given", "the \"first\" state"),
+                               new ExecuteInstructionLineEvent( "When", "a click is performed on the \"second\" button"),
+                               new ExecuteInstructionLineEvent( "Then", "the system is in the \"second\" state"),
                                new ExecuteInstructionLineEvent("End test set"),
                                new ExecuteInstructionLineEvent("Run tests")));
-        assertSuccess();
-        assertEquals(1, results.getTestCount());
-        assertEquals(1, results.getFailedTestCount());
     }
 
     @Test
-    public void checkNotEqual_FooAndOof() {
+    public void test3() {
         execute(new MemoryFeed(new ExecuteInstructionLineEvent("Test set"),
-                               new ExecuteInstructionLineEvent("Test", "Test 1"),
-                               new ExecuteInstructionLineEvent("Check not equals", "Foo", "Oof"),
+                               new ExecuteInstructionLineEvent( "Test", "Test 1"),
+                               new ExecuteInstructionLineEvent("Given", "put the system in a known state"),
+                               new ExecuteInstructionLineEvent( "When", "a key action is performed"),
+                               new ExecuteInstructionLineEvent( "Then", "some outcome is observed"),
                                new ExecuteInstructionLineEvent("End test set"),
                                new ExecuteInstructionLineEvent("Run tests")));
-        assertSuccess();
-        assertEquals(1, results.getTestCount());
-        assertEquals(0, results.getFailedTestCount());
-    }
-
-    @Test
-    public void fail() {
-        execute(new MemoryFeed(new ExecuteInstructionLineEvent("Test set"),
-                               new ExecuteInstructionLineEvent("Test", "Test 1"),
-                               new ExecuteInstructionLineEvent("Fail", "This is the error message"),
-                               new ExecuteInstructionLineEvent("End test set"),
-                               new ExecuteInstructionLineEvent("Run tests")));
-        assertSuccess();
-        assertEquals(1, results.getTestCount());
-        assertEquals(1, results.getFailedTestCount());
     }
 }
