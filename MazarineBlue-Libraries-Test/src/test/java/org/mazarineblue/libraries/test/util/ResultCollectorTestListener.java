@@ -32,7 +32,7 @@ public class ResultCollectorTestListener
 
     private RuntimeException ex;
     private final Set<Test> runningTests = new TreeSet<>(Test.naturalOrder());
-    private final List<Test> completedTests = new ArrayList<>();
+    private final List<Test> completedTests = new ArrayList<>(4);
 
     public long getTestCount() {
         return completedTests.stream().count();
@@ -45,6 +45,11 @@ public class ResultCollectorTestListener
     private Predicate<Test> matching(org.mazarineblue.libraries.test.model.Status status) {
         return t -> t.result().getEvenStatuses().stream()
                 .anyMatch(s -> s.isStatus(status));
+    }
+
+    public void throwFirstException() {
+        if (this.ex != null)
+            throw ex;
     }
 
     @Override
@@ -77,10 +82,5 @@ public class ResultCollectorTestListener
     @Override
     public void endPublishedEvent(Test test, Event event) {
         // This class only collects the tests.
-    }
-
-    public void throwFirstException() {
-        if (this.ex != null)
-            throw ex;
     }
 }
