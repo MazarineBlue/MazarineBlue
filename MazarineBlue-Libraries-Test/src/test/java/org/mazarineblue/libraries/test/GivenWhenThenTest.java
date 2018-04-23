@@ -46,11 +46,20 @@ public class GivenWhenThenTest
     @Test
     public void test1() {
         execute(new MemoryFeed(new ExecuteInstructionLineEvent("Test set"),
-                               new ExecuteInstructionLineEvent( "Test", "Test 1"),
+                               new ExecuteInstructionLineEvent("Test", "Test 1"),
                                new ExecuteInstructionLineEvent("Given", "put the system in a known state"),
-                               new ExecuteInstructionLineEvent( "When", "a key action is performed"),
+                               new ExecuteInstructionLineEvent("When", "a key action is performed"),
                                new ExecuteInstructionLineEvent( "Then", "some outcome is observed"),
                                new ExecuteInstructionLineEvent("End test set"),
+                               new ExecuteInstructionLineEvent("Function", "Given put the system in a known state"),
+                               new ExecuteInstructionLineEvent("Set global", "var", "=Evaluate expression", "1+$var"),
+                               new ExecuteInstructionLineEvent("End function"),
+                               new ExecuteInstructionLineEvent("Function", "When a key action is performed"),
+                               new ExecuteInstructionLineEvent("Set global", "var", "=Evaluate expression", "1+$var"),
+                               new ExecuteInstructionLineEvent("End function"),
+                               new ExecuteInstructionLineEvent("Function", "Then some outcome is observed"),
+                               new ExecuteInstructionLineEvent("Set global", "var", "=Evaluate expression", "1+$var"),
+                               new ExecuteInstructionLineEvent("End function"),
                                new ExecuteInstructionLineEvent("Run tests")));
     }
 
@@ -65,28 +74,35 @@ public class GivenWhenThenTest
                                new ExecuteInstructionLineEvent( "Then", "some outcome is observed"),
                                new ExecuteInstructionLineEvent(  "And", "some outcome is observed"),
                                new ExecuteInstructionLineEvent("End test set"),
+                               new ExecuteInstructionLineEvent("Function", "Given put the system in a known state"),
+                               new ExecuteInstructionLineEvent("Set global", "var", "=Evaluate expression", "1+$var"),
+                               new ExecuteInstructionLineEvent("End function"),
+                               new ExecuteInstructionLineEvent("Function", "When a key action is performed"),
+                               new ExecuteInstructionLineEvent("Set global", "var", "=Evaluate expression", "1+$var"),
+                               new ExecuteInstructionLineEvent("End function"),
+                               new ExecuteInstructionLineEvent("Function", "Then some outcome is observed"),
+                               new ExecuteInstructionLineEvent("Set global", "var", "=Evaluate expression", "1+$var"),
+                               new ExecuteInstructionLineEvent("End function"),
                                new ExecuteInstructionLineEvent("Run tests")));
     }
 
     @Test
     public void test3() {
         execute(new MemoryFeed(new ExecuteInstructionLineEvent("Test set"),
-                               new ExecuteInstructionLineEvent( "Test", "Test 1"),
+                               new ExecuteInstructionLineEvent("Test", "Test 1"),
                                new ExecuteInstructionLineEvent("Given", "the \"first\" state"),
-                               new ExecuteInstructionLineEvent( "When", "a click is performed on the \"second\" button"),
-                               new ExecuteInstructionLineEvent( "Then", "the system is in the \"second\" state"),
+                               new ExecuteInstructionLineEvent( "When", "action \"button clicked\" performed"),
+                               new ExecuteInstructionLineEvent( "Then", "outcome \"second\" observed"),
                                new ExecuteInstructionLineEvent("End test set"),
-                               new ExecuteInstructionLineEvent("Run tests")));
-    }
-
-    @Test
-    public void test3() {
-        execute(new MemoryFeed(new ExecuteInstructionLineEvent("Test set"),
-                               new ExecuteInstructionLineEvent( "Test", "Test 1"),
-                               new ExecuteInstructionLineEvent("Given", "put the system in a known state"),
-                               new ExecuteInstructionLineEvent( "When", "a key action is performed"),
-                               new ExecuteInstructionLineEvent( "Then", "some outcome is observed"),
-                               new ExecuteInstructionLineEvent("End test set"),
+                               new ExecuteInstructionLineEvent("Function", "Given state", "argument"),
+                               new ExecuteInstructionLineEvent("Set global", "var", "=Evaluate expression", "1+$var"),
+                               new ExecuteInstructionLineEvent("End function"),
+                               new ExecuteInstructionLineEvent("Function", "When action performed", "argument"),
+                               new ExecuteInstructionLineEvent("Set global", "var", "=Evaluate expression", "1+$var"),
+                               new ExecuteInstructionLineEvent("End function"),
+                               new ExecuteInstructionLineEvent("Function", "Then outcome observed", "argument"),
+                               new ExecuteInstructionLineEvent("Set global", "var", "=Evaluate expression", "1+$var"),
+                               new ExecuteInstructionLineEvent("End function"),
                                new ExecuteInstructionLineEvent("Run tests")));
     }
 }
