@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) 2018 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -17,22 +17,6 @@
  */
 package org.mazarineblue.libraries.test;
 
-import org.mazarineblue.eventnotifier.Event;
-import org.mazarineblue.keyworddriven.Library;
-import static org.mazarineblue.libraries.test.TestLibraryPlugin.NAMESPACE;
-
-public abstract class AbstractTestLibrary
-        extends Library {
-
-    public static Library getInitialLibrary() {
-        return new MainTestLibrary(null);
-    }
-
-    protected AbstractTestLibrary() {
-        super(NAMESPACE);
-    }
-    
-    Event convertTestPhrase(String phrase) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+public class XLibrary
+        extends AbstractTestLibrary {
 }

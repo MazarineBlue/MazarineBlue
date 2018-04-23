@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) 2018 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -17,22 +17,16 @@
  */
 package org.mazarineblue.libraries.test;
 
-import org.mazarineblue.eventnotifier.Event;
-import org.mazarineblue.keyworddriven.Library;
-import static org.mazarineblue.libraries.test.TestLibraryPlugin.NAMESPACE;
+import org.mazarineblue.eventdriven.Invoker;
+import org.mazarineblue.keyworddriven.Keyword;
+import org.mazarineblue.keyworddriven.PassInvoker;
 
-public abstract class AbstractTestLibrary
-        extends Library {
+public class ThenLibrary
+        extends AbstractTestLibrary {
 
-    public static Library getInitialLibrary() {
-        return new MainTestLibrary(null);
-    }
-
-    protected AbstractTestLibrary() {
-        super(NAMESPACE);
-    }
-    
-    Event convertTestPhrase(String phrase) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Keyword("And")
+    @PassInvoker
+    public void and(Invoker invoker, String phrase) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
