@@ -25,6 +25,7 @@ import java.util.concurrent.Semaphore;
 import org.mazarineblue.eventdriven.feeds.MemoryFeed;
 import org.mazarineblue.executors.Executor;
 import org.mazarineblue.keyworddriven.events.AddLibraryEvent;
+import org.mazarineblue.libraries.test.BDDLibrary;
 import org.mazarineblue.libraries.test.RuntimeTestLibrary;
 import org.mazarineblue.libraries.test.events.ExecuteSetupEvent;
 import org.mazarineblue.libraries.test.events.ExecuteTeardownEvent;
@@ -76,7 +77,8 @@ class TestThread
     }
 
     private MemoryFeed createFeed(Test test) {
-        MemoryFeed feed = new MemoryFeed(new AddLibraryEvent(new RuntimeTestLibrary(listener, test)));
+        MemoryFeed feed = new MemoryFeed(new AddLibraryEvent(new RuntimeTestLibrary(listener, test)),
+                                         new AddLibraryEvent(new BDDLibrary()));
         test.getSuites().stream().forEach(s -> feed.add(new ExecuteSetupEvent(s)));
         feed.add(new ExecuteTestEvent(test));
         reverse(test.getSuites()).stream().forEach(s -> feed.add(new ExecuteTeardownEvent(s)));

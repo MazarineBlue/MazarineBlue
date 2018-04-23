@@ -17,7 +17,6 @@
  */
 package org.mazarineblue.libraries.test;
 
-import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.keyworddriven.Library;
 import static org.mazarineblue.libraries.test.TestLibraryPlugin.NAMESPACE;
 
@@ -30,9 +29,5 @@ public abstract class AbstractTestLibrary
 
     protected AbstractTestLibrary() {
         super(NAMESPACE);
-    }
-    
-    Event convertTestPhrase(String phrase) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -28,7 +28,7 @@ import org.mazarineblue.libraries.test.events.SetTestListenerEvent;
 import org.mazarineblue.libraries.test.util.ResultCollectorTestListener;
 import org.mazarineblue.variablestore.events.GetVariableEvent;
 
-public class GivenWhenThenTest
+public class BDDTest
         extends AbstractExecutorTestHelper {
 
     private ResultCollectorTestListener results;
@@ -67,6 +67,8 @@ public class GivenWhenThenTest
                                new ExecuteInstructionLineEvent("Run tests"),
                                e));
         assertSuccess();
+        assertEquals(1, results.getTestCount());
+        assertEquals(0, results.getFailedTestCount());
         assertEquals(3, e.getValue());
     }
 
@@ -95,6 +97,8 @@ public class GivenWhenThenTest
                                new ExecuteInstructionLineEvent("Run tests"),
                                e));
         assertSuccess();
+        assertEquals(1, results.getTestCount());
+        assertEquals(0, results.getFailedTestCount());
         assertEquals(6, e.getValue());
     }
 
@@ -120,6 +124,8 @@ public class GivenWhenThenTest
                                new ExecuteInstructionLineEvent("Run tests"),
                                e));
         assertSuccess();
+        assertEquals(1, results.getTestCount());
+        assertEquals(0, results.getFailedTestCount());
         assertEquals(3, e.getValue());
     }
 }
