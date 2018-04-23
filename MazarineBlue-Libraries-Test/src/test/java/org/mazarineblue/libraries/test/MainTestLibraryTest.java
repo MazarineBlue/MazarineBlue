@@ -17,6 +17,7 @@
  */
 package org.mazarineblue.libraries.test;
 
+import org.awaitility.core.ConditionTimeoutException;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -30,18 +31,18 @@ import org.mazarineblue.libraries.test.util.ResultCollectorTestListener;
 public class MainTestLibraryTest
         extends AbstractExecutorTestHelper {
 
-    private ResultCollectorTestListener unitTest;
+    private ResultCollectorTestListener results;
 
     @Before
     public void setup() {
-        unitTest = new ResultCollectorTestListener();
+        results = new ResultCollectorTestListener();
         execute(new MemoryFeed(new ExecuteInstructionLineEvent("Import library", "org.mazarineblue.libraries.test"),
-                               new SetTestListenerEvent(unitTest)));
+                               new SetTestListenerEvent(results)));
     }
 
     @After
     public void teardown() {
-        unitTest = null;
+        results = null;
     }
 
     @Test
@@ -50,24 +51,27 @@ public class MainTestLibraryTest
                                new ExecuteInstructionLineEvent("End test set"),
                                new ExecuteInstructionLineEvent("Run tests")));
         assertSuccess();
-        assertEquals(0, unitTest.getTestCount());
-        assertEquals(0, unitTest.getFailedTestCount());
+        results.throwFirstException();
+        assertEquals(0, results.getTestCount());
+        assertEquals(0, results.getFailedTestCount());
     }
 
-    @Test(timeout = 2000)
+    @Test(timeout = 2000, expected = ConditionTimeoutException.class)
     public void jobs_TwoJobsWaitingOnEachOther_OneThread() {
         runJobs(1);
         assertSuccess();
-        assertEquals(2, unitTest.getTestCount());
-        assertEquals(1, unitTest.getFailedTestCount());
+        results.throwFirstException();
+        assertEquals(2, results.getTestCount());
+        assertEquals(1, results.getFailedTestCount());
     }
 
     @Test(timeout = 1000)
     public void jobs() {
         runJobs(2);
         assertSuccess();
-        assertEquals(2, unitTest.getTestCount());
-        assertEquals(0, unitTest.getFailedTestCount());
+        results.throwFirstException();
+        assertEquals(2, results.getTestCount());
+        assertEquals(0, results.getFailedTestCount());
     }
 
     private void runJobs(int maximumJobs) {

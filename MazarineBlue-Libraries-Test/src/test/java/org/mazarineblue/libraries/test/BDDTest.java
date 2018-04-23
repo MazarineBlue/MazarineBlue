@@ -67,6 +67,7 @@ public class BDDTest
                                new ExecuteInstructionLineEvent("Run tests"),
                                e));
         assertSuccess();
+        results.throwFirstException();
         assertEquals(1, results.getTestCount());
         assertEquals(0, results.getFailedTestCount());
         assertEquals(3, e.getValue());
@@ -97,6 +98,7 @@ public class BDDTest
                                new ExecuteInstructionLineEvent("Run tests"),
                                e));
         assertSuccess();
+        results.throwFirstException();
         assertEquals(1, results.getTestCount());
         assertEquals(0, results.getFailedTestCount());
         assertEquals(6, e.getValue());
@@ -124,6 +126,7 @@ public class BDDTest
                                new ExecuteInstructionLineEvent("Run tests"),
                                e));
         assertSuccess();
+        results.throwFirstException();
         assertEquals(1, results.getTestCount());
         assertEquals(0, results.getFailedTestCount());
         assertEquals(3, e.getValue());

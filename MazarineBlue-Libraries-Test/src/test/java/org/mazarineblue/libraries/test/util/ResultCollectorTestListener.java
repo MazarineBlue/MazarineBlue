@@ -30,6 +30,7 @@ import org.mazarineblue.libraries.test.model.tests.Test;
 public class ResultCollectorTestListener
         implements TestListener {
 
+    private RuntimeException ex;
     private final Set<Test> runningTests = new TreeSet<>(Test.naturalOrder());
     private final List<Test> completedTests = new ArrayList<>();
 
@@ -69,11 +70,17 @@ public class ResultCollectorTestListener
 
     @Override
     public void exceptionThrown(Test test, RuntimeException ex) {
-        // This class only collects the tests.
+        if (this.ex == null)
+            this.ex = ex;
     }
 
     @Override
     public void endPublishedEvent(Test test, Event event) {
         // This class only collects the tests.
+    }
+
+    public void throwFirstException() {
+        if (this.ex != null)
+            throw ex;
     }
 }
