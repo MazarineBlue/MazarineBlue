@@ -18,6 +18,7 @@
 package org.mazarineblue.libraries.test;
 
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.mazarineblue.eventdriven.feeds.MemoryFeed;
@@ -25,6 +26,7 @@ import org.mazarineblue.executors.util.AbstractExecutorTestHelper;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
 import org.mazarineblue.libraries.test.events.SetTestListenerEvent;
 import org.mazarineblue.libraries.test.util.ResultCollectorTestListener;
+import org.mazarineblue.variablestore.events.GetVariableEvent;
 
 public class GivenWhenThenTest
         extends AbstractExecutorTestHelper {
@@ -45,7 +47,9 @@ public class GivenWhenThenTest
 
     @Test
     public void test1() {
-        execute(new MemoryFeed(new ExecuteInstructionLineEvent("Test set"),
+        GetVariableEvent e = new GetVariableEvent("var");
+        execute(new MemoryFeed(new ExecuteInstructionLineEvent("Set", "var", 0),
+                               new ExecuteInstructionLineEvent("Test set"),
                                new ExecuteInstructionLineEvent("Test", "Test 1"),
                                new ExecuteInstructionLineEvent("Given", "put the system in a known state"),
                                new ExecuteInstructionLineEvent("When", "a key action is performed"),
@@ -60,12 +64,17 @@ public class GivenWhenThenTest
                                new ExecuteInstructionLineEvent("Function", "Then some outcome is observed"),
                                new ExecuteInstructionLineEvent("Set global", "var", "=Evaluate expression", "1+$var"),
                                new ExecuteInstructionLineEvent("End function"),
-                               new ExecuteInstructionLineEvent("Run tests")));
+                               new ExecuteInstructionLineEvent("Run tests"),
+                               e));
+        assertSuccess();
+        assertEquals(3, e.getValue());
     }
 
     @Test
     public void test2() {
-        execute(new MemoryFeed(new ExecuteInstructionLineEvent("Test set"),
+        GetVariableEvent e = new GetVariableEvent("var");
+        execute(new MemoryFeed(new ExecuteInstructionLineEvent("Set", "var", 0),
+                               new ExecuteInstructionLineEvent("Test set"),
                                new ExecuteInstructionLineEvent("Test", "Test 1"),
                                new ExecuteInstructionLineEvent("Given", "put the system in a known state"),
                                new ExecuteInstructionLineEvent(  "And", "put the system in a known state"),
@@ -83,12 +92,17 @@ public class GivenWhenThenTest
                                new ExecuteInstructionLineEvent("Function", "Then some outcome is observed"),
                                new ExecuteInstructionLineEvent("Set global", "var", "=Evaluate expression", "1+$var"),
                                new ExecuteInstructionLineEvent("End function"),
-                               new ExecuteInstructionLineEvent("Run tests")));
+                               new ExecuteInstructionLineEvent("Run tests"),
+                               e));
+        assertSuccess();
+        assertEquals(6, e.getValue());
     }
 
     @Test
     public void test3() {
-        execute(new MemoryFeed(new ExecuteInstructionLineEvent("Test set"),
+        GetVariableEvent e = new GetVariableEvent("var");
+        execute(new MemoryFeed(new ExecuteInstructionLineEvent("Set", "var", 0),
+                               new ExecuteInstructionLineEvent("Test set"),
                                new ExecuteInstructionLineEvent("Test", "Test 1"),
                                new ExecuteInstructionLineEvent("Given", "the \"first\" state"),
                                new ExecuteInstructionLineEvent( "When", "action \"button clicked\" performed"),
@@ -103,6 +117,9 @@ public class GivenWhenThenTest
                                new ExecuteInstructionLineEvent("Function", "Then outcome observed", "argument"),
                                new ExecuteInstructionLineEvent("Set global", "var", "=Evaluate expression", "1+$var"),
                                new ExecuteInstructionLineEvent("End function"),
-                               new ExecuteInstructionLineEvent("Run tests")));
+                               new ExecuteInstructionLineEvent("Run tests"),
+                               e));
+        assertSuccess();
+        assertEquals(3, e.getValue());
     }
 }
