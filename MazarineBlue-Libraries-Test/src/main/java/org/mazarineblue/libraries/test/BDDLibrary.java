@@ -35,7 +35,6 @@ public class BDDLibrary
         invoker.publish(new RemoveLibraryEvent(this));
         invoker.publish(convertTestPhrase("given", phrase));
         invoker.publish(new AddLibraryEvent(new GivenLibrary()));
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     private static Event convertTestPhrase(String prefix, String phrase) {
@@ -58,7 +57,6 @@ public class BDDLibrary
             invoker.publish(new RemoveLibraryEvent(this));
             invoker.publish(convertTestPhrase("given", phrase));
             invoker.publish(new AddLibraryEvent(new GivenLibrary()));
-            throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Keyword("When")
@@ -67,7 +65,6 @@ public class BDDLibrary
             invoker.publish(new RemoveLibraryEvent(this));
             invoker.publish(convertTestPhrase("when", phrase));
             invoker.publish(new AddLibraryEvent(new WhenLibrary()));
-            throw new UnsupportedOperationException("Not supported yet.");
         }
     }
 
@@ -85,7 +82,6 @@ public class BDDLibrary
             invoker.publish(new RemoveLibraryEvent(this));
             invoker.publish(convertTestPhrase("when", phrase));
             invoker.publish(new AddLibraryEvent(new WhenLibrary()));
-            throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Keyword("Then")
@@ -94,7 +90,6 @@ public class BDDLibrary
             invoker.publish(new RemoveLibraryEvent(this));
             invoker.publish(convertTestPhrase("then", phrase));
             invoker.publish(new AddLibraryEvent(new ThenLibrary()));
-            throw new UnsupportedOperationException("Not supported yet.");
         }
     }
 
@@ -112,7 +107,6 @@ public class BDDLibrary
             invoker.publish(new RemoveLibraryEvent(this));
             invoker.publish(convertTestPhrase("then", phrase));
             invoker.publish(new AddLibraryEvent(new ThenLibrary()));
-            throw new UnsupportedOperationException("Not supported yet.");
         }
     }
 }
