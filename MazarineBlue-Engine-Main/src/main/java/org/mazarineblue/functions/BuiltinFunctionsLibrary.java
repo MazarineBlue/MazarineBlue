@@ -19,9 +19,9 @@ package org.mazarineblue.functions;
 
 import org.mazarineblue.eventdriven.Invoker;
 import org.mazarineblue.executors.AbstractMainLibrary;
-import org.mazarineblue.executors.exceptions.EndFunctionMissingException;
-import org.mazarineblue.executors.exceptions.FunctionMissingException;
-import org.mazarineblue.executors.exceptions.NestedFunctionDedefintionNotAllowedException;
+import org.mazarineblue.functions.exceptions.EndFunctionMissingException;
+import org.mazarineblue.functions.exceptions.FunctionMissingException;
+import org.mazarineblue.functions.exceptions.NestedFunctionDedefintionNotAllowedException;
 import org.mazarineblue.keyworddriven.Keyword;
 import org.mazarineblue.keyworddriven.Parameters;
 import org.mazarineblue.keyworddriven.PassInvoker;

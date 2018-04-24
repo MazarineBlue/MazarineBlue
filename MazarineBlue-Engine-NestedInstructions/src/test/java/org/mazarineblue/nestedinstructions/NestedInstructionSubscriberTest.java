@@ -17,7 +17,6 @@
  */
 package org.mazarineblue.nestedinstructions;
 
-import org.mazarineblue.nestedinstructions.NestedInstructionExecutor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

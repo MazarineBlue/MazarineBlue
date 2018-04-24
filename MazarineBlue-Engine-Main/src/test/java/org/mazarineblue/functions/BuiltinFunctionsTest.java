@@ -15,21 +15,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.executors;
+package org.mazarineblue.functions;
 
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.mazarineblue.eventdriven.feeds.MemoryFeed;
+import org.mazarineblue.executors.Executor;
 import org.mazarineblue.executors.events.CreateFeedExecutorEvent;
 import org.mazarineblue.executors.events.SetFileSystemEvent;
-import org.mazarineblue.executors.exceptions.EndFunctionMissingException;
-import org.mazarineblue.executors.exceptions.FunctionMissingException;
-import org.mazarineblue.executors.exceptions.NestedFunctionDedefintionNotAllowedException;
 import org.mazarineblue.executors.util.FeedExecutorOutputSpy;
 import org.mazarineblue.executors.util.TestFeedExecutorFactory;
 import org.mazarineblue.fs.MemoryFileSystem;
+import org.mazarineblue.functions.exceptions.EndFunctionMissingException;
+import org.mazarineblue.functions.exceptions.FunctionMissingException;
+import org.mazarineblue.functions.exceptions.NestedFunctionDedefintionNotAllowedException;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
 import org.mazarineblue.keyworddriven.exceptions.ToFewArgumentsException;
 import org.mazarineblue.plugins.PluginLoader;

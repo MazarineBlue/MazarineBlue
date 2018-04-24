@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.functions;
+package org.mazarineblue.executors;
 
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import java.io.File;
@@ -30,7 +30,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mazarineblue.eventdriven.feeds.MemoryFeed;
-import org.mazarineblue.executors.Executor;
 import org.mazarineblue.executors.events.CallFileSystemMethodEvent;
 import org.mazarineblue.executors.events.EvaluateExpressionEvent;
 import org.mazarineblue.executors.events.SetFileSystemEvent;

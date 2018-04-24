@@ -21,8 +21,8 @@ import org.mazarineblue.eventdriven.Processor;
 import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.eventnotifier.EventHandler;
 import org.mazarineblue.eventnotifier.ReflectionSubscriber;
-import org.mazarineblue.executors.events.GetFunctionRegistryEvent;
-import org.mazarineblue.executors.events.SetFunctionRegistryEvent;
+import org.mazarineblue.functions.events.GetFunctionRegistryEvent;
+import org.mazarineblue.functions.events.SetFunctionRegistryEvent;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
 import org.mazarineblue.keyworddriven.events.IsAbleToProcessInstructionLineEvent;
 

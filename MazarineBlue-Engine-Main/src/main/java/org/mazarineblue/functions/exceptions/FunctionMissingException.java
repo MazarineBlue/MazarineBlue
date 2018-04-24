@@ -15,9 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.executors.exceptions;
+package org.mazarineblue.functions.exceptions;
 
-public class EndFunctionMissingException
+public class FunctionMissingException
         extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
