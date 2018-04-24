@@ -19,6 +19,7 @@ package org.mazarineblue.functions;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
 
 public class FunctionRegistry {
 
@@ -41,7 +42,11 @@ public class FunctionRegistry {
         return getFunction(keyword) != null;
     }
 
-    Function getFunction(String keyword) {
+    void execute(ExecuteInstructionLineEvent event) {
+        getFunction(event.getKeyword()).execute(event);
+    }
+
+    private Function getFunction(String keyword) {
         Function func = map.get(keyword);
         if (func != null)
             return func;

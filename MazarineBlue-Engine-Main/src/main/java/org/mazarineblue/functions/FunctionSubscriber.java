@@ -46,7 +46,7 @@ public class FunctionSubscriber
     @EventHandler
     public void eventHandler(ExecuteInstructionLineEvent event) {
         if (registry.containsFunction(event.getKeyword()))
-            registry.getFunction(event.getKeyword()).execute(event);
+            registry.execute(event);
     }
 
     /**
