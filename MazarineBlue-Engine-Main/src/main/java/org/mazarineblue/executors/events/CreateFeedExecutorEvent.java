@@ -37,12 +37,12 @@ public class CreateFeedExecutorEvent<T>
 
     @Override
     public String toString() {
-        return "result=" + obj.toString();
+        return "result=" + (obj == null ? null : obj.toString());
     }
 
     @Override
     public String responce() {
-        return "result=" + obj.toString();
+        return "result=" + (obj == null ? null : obj.toString());
     }
 
     /**
