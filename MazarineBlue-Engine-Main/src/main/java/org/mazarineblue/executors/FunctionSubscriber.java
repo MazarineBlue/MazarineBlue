@@ -17,17 +17,19 @@
  */
 package org.mazarineblue.executors;
 
+import org.mazarineblue.eventdriven.Processor;
 import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.eventnotifier.EventHandler;
 import org.mazarineblue.eventnotifier.ReflectionSubscriber;
+import org.mazarineblue.executors.events.GetFunctionRegistryEvent;
+import org.mazarineblue.executors.events.SetFunctionRegistryEvent;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
 import org.mazarineblue.keyworddriven.events.IsAbleToProcessInstructionLineEvent;
-import org.mazarineblue.keyworddriven.events.ValidateInstructionLineEvent;
 
 public class FunctionSubscriber
         extends ReflectionSubscriber<Event> {
 
-    private final FunctionRegistry registry;
+    private FunctionRegistry registry;
 
     FunctionSubscriber(FunctionRegistry registry) {
         this.registry = registry;
@@ -42,13 +44,36 @@ public class FunctionSubscriber
     }
 
     @EventHandler
-    public void eventHandler(ValidateInstructionLineEvent event) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @EventHandler
     public void eventHandler(ExecuteInstructionLineEvent event) {
         if (registry.containsFunction(event.getKeyword()))
             registry.getFunction(event.getKeyword()).execute(event);
+    }
+
+    /**
+     * Event handlers are not meant to be called directly, instead publish an
+     * event to an {@link Processor}; please see the specified event for more
+     * information about this event handler.
+     *
+     * @param event the event this {@code EventHandler} processes.
+     * @see GetFunctionRegistryEvent
+     */
+    @EventHandler
+    public void eventHandler(GetFunctionRegistryEvent event) {
+        event.setFunctionRegistry(registry);
+        event.setConsumed(true);
+    }
+
+    /**
+     * Event handlers are not meant to be called directly, instead publish an
+     * event to an {@link Processor}; please see the specified event for more
+     * information about this event handler.
+     *
+     * @param event the event this {@code EventHandler} processes.
+     * @see SetFunctionRegistryEvent
+     */
+    @EventHandler
+    public void eventHandler(SetFunctionRegistryEvent event) {
+        registry = new FunctionRegistry(event.getFunctionRegistry());
+        event.setConsumed(true);
     }
 }

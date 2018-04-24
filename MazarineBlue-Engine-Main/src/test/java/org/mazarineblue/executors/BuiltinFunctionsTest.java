@@ -197,5 +197,6 @@ public class BuiltinFunctionsTest {
                                         new ExecuteInstructionLineEvent("End function"),
                                         e));
         e.getResult().execute(new MemoryFeed(new ExecuteInstructionLineEvent("foo", "value")));
+        output.throwFirstException();
     }
 }

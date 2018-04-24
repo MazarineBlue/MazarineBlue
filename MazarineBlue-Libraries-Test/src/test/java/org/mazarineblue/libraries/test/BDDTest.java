@@ -20,7 +20,6 @@ package org.mazarineblue.libraries.test;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mazarineblue.eventdriven.feeds.MemoryFeed;
 import org.mazarineblue.executors.util.AbstractExecutorTestHelper;
@@ -29,7 +28,6 @@ import org.mazarineblue.libraries.test.events.SetTestListenerEvent;
 import org.mazarineblue.libraries.test.util.ResultCollectorTestListener;
 import org.mazarineblue.variablestore.events.GetVariableEvent;
 
-@Ignore
 public class BDDTest
         extends AbstractExecutorTestHelper {
 

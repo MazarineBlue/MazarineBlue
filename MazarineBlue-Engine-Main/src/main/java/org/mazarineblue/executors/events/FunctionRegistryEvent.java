@@ -37,11 +37,11 @@ public class FunctionRegistryEvent
         this.wrapper = new ObjectWrapper<>(registry);
     }
 
-    public void setVariableStore(FunctionRegistry registry) {
+    public void setFunctionRegistry(FunctionRegistry registry) {
         wrapper.set(registry);
     }
 
-    public FunctionRegistry getRegistry() {
+    public FunctionRegistry getFunctionRegistry() {
         return wrapper.get();
     }
 

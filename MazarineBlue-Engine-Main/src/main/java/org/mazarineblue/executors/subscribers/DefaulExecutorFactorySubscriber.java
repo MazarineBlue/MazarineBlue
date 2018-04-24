@@ -68,10 +68,9 @@ public class DefaulExecutorFactorySubscriber
 
     private void init(Executor executor, Invoker invoker) {
         VariableStore store = getGlobalVariableStore(invoker);
-        executor.execute(new MemoryFeed(new SetGlobalVariableStoreEvent(store)));
-//        FunctionRegistry registry = getFunctionRegistry(invoker);
-//        executor.execute(new MemoryFeed(new SetGlobalVariableStoreEvent(store),
-//                                        new SetFunctionRegistryEvent(registry)));
+        FunctionRegistry registry = getFunctionRegistry(invoker);
+        executor.execute(new MemoryFeed(new SetGlobalVariableStoreEvent(store),
+                                        new SetFunctionRegistryEvent(registry)));
     }
 
     private VariableStore getGlobalVariableStore(Invoker invoker) {
@@ -83,7 +82,7 @@ public class DefaulExecutorFactorySubscriber
     private FunctionRegistry getFunctionRegistry(Invoker invoker) {
         GetFunctionRegistryEvent e = new GetFunctionRegistryEvent();
         invoker.publish(e);
-        return e.getRegistry();
+        return e.getFunctionRegistry();
     }
 
     @Override
