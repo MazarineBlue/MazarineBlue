@@ -22,7 +22,6 @@ import java.util.function.Predicate;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.mazarineblue.eventnotifier.Event;
-import org.mazarineblue.utilities.TestPredicate;
 import org.mazarineblue.keyworddriven.events.AddLibraryEvent;
 import org.mazarineblue.keyworddriven.events.CommentInstructionLineEvent;
 import org.mazarineblue.keyworddriven.events.ContainsConversionRuleEvent;
@@ -38,6 +37,7 @@ import org.mazarineblue.keyworddriven.util.Converted;
 import org.mazarineblue.keyworddriven.util.Input;
 import org.mazarineblue.keyworddriven.util.libraries.TestLibrary1;
 import org.mazarineblue.utilities.ObjectsUtil;
+import org.mazarineblue.utilities.TestPredicate;
 
 public class CloneTest {
 

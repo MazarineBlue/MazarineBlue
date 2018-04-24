@@ -24,7 +24,6 @@ import java.util.Objects;
 import org.mazarineblue.keyworddriven.Library;
 import static org.mazarineblue.utilities.Primatives.convertPrimative;
 import org.mazarineblue.utilities.SerializableClonable;
-import static java.lang.String.format;
 
 /**
  * An {@code ExecuteInstructionLineEvent} is used to call an instruction within

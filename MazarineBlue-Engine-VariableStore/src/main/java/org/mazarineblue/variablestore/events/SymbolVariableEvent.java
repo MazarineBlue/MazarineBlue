@@ -17,12 +17,12 @@
  */
 package org.mazarineblue.variablestore.events;
 
-import org.mazarineblue.utilities.ObjectWrapper;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Objects;
+import org.mazarineblue.utilities.ObjectWrapper;
 import org.mazarineblue.utilities.SerializableClonable;
 import org.mazarineblue.variablestore.VariableStore;
 

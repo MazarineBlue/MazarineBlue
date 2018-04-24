@@ -24,12 +24,12 @@ import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.keyworddriven.Library;
 import org.mazarineblue.keyworddriven.events.AddLibraryEvent;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
+import org.mazarineblue.keyworddriven.events.InstructionLineResultEvent;
 import org.mazarineblue.keyworddriven.events.RemoveLibraryEvent;
 import static org.mazarineblue.keyworddriven.util.GracefullConvertor.degraceMethod;
 import org.mazarineblue.variablestore.events.EndVariableScopeEvent;
 import org.mazarineblue.variablestore.events.SetVariableEvent;
 import org.mazarineblue.variablestore.events.StartVariableScopeEvent;
-import org.mazarineblue.keyworddriven.events.InstructionLineResultEvent;
 
 class Function {
 

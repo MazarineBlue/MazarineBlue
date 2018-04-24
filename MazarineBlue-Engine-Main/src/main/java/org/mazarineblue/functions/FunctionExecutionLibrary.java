@@ -24,8 +24,8 @@ import org.mazarineblue.executors.AbstractMainLibrary;
 import org.mazarineblue.keyworddriven.Keyword;
 import org.mazarineblue.keyworddriven.PassInvoker;
 import static org.mazarineblue.keyworddriven.events.InstructionLineEvent.matchesAnyKeywords;
-import org.mazarineblue.subscribers.SkipEventsSubscriber;
 import org.mazarineblue.keyworddriven.events.InstructionLineResultEvent;
+import org.mazarineblue.subscribers.SkipEventsSubscriber;
 
 public class FunctionExecutionLibrary
         extends AbstractMainLibrary {
