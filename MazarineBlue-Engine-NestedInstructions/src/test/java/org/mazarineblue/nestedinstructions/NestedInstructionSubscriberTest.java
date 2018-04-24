@@ -15,8 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.engine.nestedinstructions;
+package org.mazarineblue.nestedinstructions;
 
+import org.mazarineblue.nestedinstructions.NestedInstructionExecutor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
