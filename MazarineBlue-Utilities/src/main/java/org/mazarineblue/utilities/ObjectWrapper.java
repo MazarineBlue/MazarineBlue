@@ -17,6 +17,8 @@
  */
 package org.mazarineblue.utilities;
 
+import java.util.Objects;
+
 public class ObjectWrapper<T> {
 
     private T value;
@@ -31,5 +33,17 @@ public class ObjectWrapper<T> {
 
     public T get() {
         return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return 67 * 7
+                + Objects.hashCode(this.value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj || obj != null && getClass() == obj.getClass()
+                && Objects.equals(this.value, ((ObjectWrapper) obj).value);
     }
 }

@@ -20,19 +20,33 @@ package org.mazarineblue.executors;
 import java.util.HashMap;
 import java.util.Map;
 
-class FunctionRegistry {
+public class FunctionRegistry {
 
     private final Map<String, Function> map = new HashMap<>();
+    private final FunctionRegistry adaptee;
+
+    public FunctionRegistry() {
+        this.adaptee = null;
+    }
+
+    public FunctionRegistry(FunctionRegistry adaptee) {
+        this.adaptee = adaptee;
+    }
 
     void add(Function function) {
         map.put(function.getName(), function);
     }
 
     boolean containsFunction(String keyword) {
-        return map.containsKey(keyword);
+        return getFunction(keyword) != null;
     }
 
     Function getFunction(String keyword) {
-        return map.get(keyword);
+        Function func = map.get(keyword);
+        if (func != null)
+            return func;
+        if (adaptee != null)
+            return adaptee.getFunction(keyword);
+        return null;
     }
 }

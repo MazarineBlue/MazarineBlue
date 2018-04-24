@@ -15,10 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.variablestore.events;
+package org.mazarineblue.executors.events;
 
-public class GetGlobalVariableStoreEvent
-        extends VariableStoreEvent {
+public class GetFunctionRegistryEvent
+        extends FunctionRegistryEvent {
 
     private static final long serialVersionUID = 1L;
 }

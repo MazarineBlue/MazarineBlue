@@ -23,16 +23,12 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 import static java.util.stream.Collectors.toList;
 import org.mazarineblue.eventdriven.Invoker;
-import org.mazarineblue.eventdriven.feeds.MemoryFeed;
 import org.mazarineblue.executors.Executor;
 import org.mazarineblue.executors.events.CreateFeedExecutorEvent;
 import org.mazarineblue.libraries.test.exceptions.RuntimeInterruptedException;
 import org.mazarineblue.libraries.test.model.listeners.TestListener;
 import org.mazarineblue.libraries.test.model.suites.Suite;
 import org.mazarineblue.libraries.test.model.tests.Test;
-import org.mazarineblue.variablestore.VariableStore;
-import org.mazarineblue.variablestore.events.GetGlobalVariableStoreEvent;
-import org.mazarineblue.variablestore.events.SetGlobalVariableStoreEvent;
 
 class DefaultTestSytem
         implements TestSystem {
@@ -108,25 +104,8 @@ class DefaultTestSytem
     }
 
     private Executor createFeedExecutor(Invoker invoker) {
-        Executor executor = newFeedExecutor(invoker);
-        init(executor, invoker);
-        return executor;
-    }
-
-    private Executor newFeedExecutor(Invoker invoker) {
         CreateFeedExecutorEvent<Executor> e = new CreateFeedExecutorEvent<>();
         invoker.publish(e);
         return e.getResult();
-    }
-
-    private void init(Executor executor, Invoker invoker) {
-        VariableStore store = getGlobalVariableStore(invoker);
-        executor.execute(new MemoryFeed(new SetGlobalVariableStoreEvent(store)));
-    }
-
-    private VariableStore getGlobalVariableStore(Invoker invoker) {
-        GetGlobalVariableStoreEvent e = new GetGlobalVariableStoreEvent();
-        invoker.publish(e);
-        return e.getStore();
     }
 }

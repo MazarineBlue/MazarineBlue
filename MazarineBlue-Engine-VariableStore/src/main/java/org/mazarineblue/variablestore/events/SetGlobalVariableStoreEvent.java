@@ -17,8 +17,6 @@
  */
 package org.mazarineblue.variablestore.events;
 
-import java.util.Objects;
-import org.mazarineblue.utilities.SerializableClonable;
 import org.mazarineblue.variablestore.VariableStore;
 
 public class SetGlobalVariableStoreEvent
@@ -26,30 +24,7 @@ public class SetGlobalVariableStoreEvent
 
     private static final long serialVersionUID = 1L;
 
-    private transient VariableStore store;
-
     public SetGlobalVariableStoreEvent(VariableStore store) {
-        this.store = store;
-    }
-
-    public VariableStore getStore() {
-        return store;
-    }
-
-    @Override
-    public <T extends SerializableClonable> void copyTransient(T src) {
-        store = ((SetGlobalVariableStoreEvent) src).store;
-    }
-
-    @Override
-    public int hashCode() {
-        return 97 * 5
-                + Objects.hashCode(this.store);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return this == obj || obj != null && getClass() == obj.getClass()
-                && Objects.equals(this.store, ((SetGlobalVariableStoreEvent) obj).store);
+        super(store);
     }
 }

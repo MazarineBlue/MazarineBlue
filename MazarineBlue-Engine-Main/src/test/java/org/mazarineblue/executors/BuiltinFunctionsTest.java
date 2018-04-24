@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.mazarineblue.eventdriven.feeds.MemoryFeed;
+import org.mazarineblue.executors.events.CreateFeedExecutorEvent;
 import org.mazarineblue.executors.events.SetFileSystemEvent;
 import org.mazarineblue.executors.exceptions.EndFunctionMissingException;
 import org.mazarineblue.executors.exceptions.FunctionMissingException;
@@ -83,8 +84,8 @@ public class BuiltinFunctionsTest {
 
     @Test
     public void function_NoReturnValue() {
-        ExecuteInstructionLineEvent e = new ExecuteInstructionLineEvent("foo");
-        executor.execute(new MemoryFeed(new ExecuteInstructionLineEvent("Function", "foo"),
+        ExecuteInstructionLineEvent e = new ExecuteInstructionLineEvent("foo bar");
+        executor.execute(new MemoryFeed(new ExecuteInstructionLineEvent("Function", "foo bar"),
                                         new ExecuteInstructionLineEvent("Return"),
                                         new ExecuteInstructionLineEvent("End function"),
                                         e));
@@ -187,5 +188,14 @@ public class BuiltinFunctionsTest {
                                         new ExecuteInstructionLineEvent("foo", "value")));
         output.throwFirstException();
         assertEquals("value", e.getValue());
+    }
+
+    @Test
+    public void function_Adaptee() {
+        CreateFeedExecutorEvent<Executor> e = new CreateFeedExecutorEvent<>();
+        executor.execute(new MemoryFeed(new ExecuteInstructionLineEvent("Function", "foo"),
+                                        new ExecuteInstructionLineEvent("End function"),
+                                        e));
+        e.getResult().execute(new MemoryFeed(new ExecuteInstructionLineEvent("foo", "value")));
     }
 }

@@ -26,6 +26,8 @@ import org.mazarineblue.keyworddriven.events.AddLibraryEvent;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
 import org.mazarineblue.keyworddriven.events.InstructionLineResultContainerEvent;
 import org.mazarineblue.keyworddriven.events.RemoveLibraryEvent;
+import org.mazarineblue.keyworddriven.events.ValidateInstructionLineEvent;
+import static org.mazarineblue.keyworddriven.util.GracefullConvertor.degraceMethod;
 import org.mazarineblue.variablestore.events.EndVariableScopeEvent;
 import org.mazarineblue.variablestore.events.SetVariableEvent;
 import org.mazarineblue.variablestore.events.StartVariableScopeEvent;
@@ -37,7 +39,7 @@ class Function {
     private Collection<Event> recording;
 
     Function(String name, String... parameters) {
-        this.name = name;
+        this.name = degraceMethod(name);
         this.parameters = parameters;
     }
 

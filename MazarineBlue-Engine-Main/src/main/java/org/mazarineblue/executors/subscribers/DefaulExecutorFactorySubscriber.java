@@ -18,13 +18,21 @@
 package org.mazarineblue.executors.subscribers;
 
 import java.util.Objects;
+import org.mazarineblue.eventdriven.Invoker;
 import org.mazarineblue.eventdriven.Processor;
+import org.mazarineblue.eventdriven.feeds.MemoryFeed;
 import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.eventnotifier.EventHandler;
 import org.mazarineblue.eventnotifier.ReflectionSubscriber;
 import org.mazarineblue.executors.Executor;
 import org.mazarineblue.executors.ExecutorFactory;
+import org.mazarineblue.executors.FunctionRegistry;
 import org.mazarineblue.executors.events.CreateFeedExecutorEvent;
+import org.mazarineblue.executors.events.GetFunctionRegistryEvent;
+import org.mazarineblue.executors.events.SetFunctionRegistryEvent;
+import org.mazarineblue.variablestore.VariableStore;
+import org.mazarineblue.variablestore.events.GetGlobalVariableStoreEvent;
+import org.mazarineblue.variablestore.events.SetGlobalVariableStoreEvent;
 
 /**
  * A {@code DefaulExecutorFactoryLink} is a link that contains default
@@ -51,8 +59,31 @@ public class DefaulExecutorFactorySubscriber
      */
     @EventHandler
     public void eventHandler(CreateFeedExecutorEvent<Executor> event) {
-        event.setResult(factory.create());
+        Invoker invoker = event.invoker();
+        Executor executor = factory.create();
+        init(executor, invoker);        
+        event.setResult(executor);
         event.setConsumed(true);
+    }
+
+    private void init(Executor executor, Invoker invoker) {
+        VariableStore store = getGlobalVariableStore(invoker);
+        executor.execute(new MemoryFeed(new SetGlobalVariableStoreEvent(store)));
+//        FunctionRegistry registry = getFunctionRegistry(invoker);
+//        executor.execute(new MemoryFeed(new SetGlobalVariableStoreEvent(store),
+//                                        new SetFunctionRegistryEvent(registry)));
+    }
+
+    private VariableStore getGlobalVariableStore(Invoker invoker) {
+        GetGlobalVariableStoreEvent e = new GetGlobalVariableStoreEvent();
+        invoker.publish(e);
+        return e.getStore();
+    }
+
+    private FunctionRegistry getFunctionRegistry(Invoker invoker) {
+        GetFunctionRegistryEvent e = new GetFunctionRegistryEvent();
+        invoker.publish(e);
+        return e.getRegistry();
     }
 
     @Override
