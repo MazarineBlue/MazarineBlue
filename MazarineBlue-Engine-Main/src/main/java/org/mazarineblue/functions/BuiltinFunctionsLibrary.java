@@ -15,9 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.executors;
+package org.mazarineblue.functions;
 
 import org.mazarineblue.eventdriven.Invoker;
+import org.mazarineblue.executors.AbstractMainLibrary;
 import org.mazarineblue.executors.exceptions.EndFunctionMissingException;
 import org.mazarineblue.executors.exceptions.FunctionMissingException;
 import org.mazarineblue.executors.exceptions.NestedFunctionDedefintionNotAllowedException;
@@ -34,7 +35,7 @@ public class BuiltinFunctionsLibrary
     private Function function;
     private RecorderSubscriber functionRecorder;
 
-    BuiltinFunctionsLibrary(FunctionRegistry functionRegistry) {
+    public BuiltinFunctionsLibrary(FunctionRegistry functionRegistry) {
         this.functionRegistry = functionRegistry;
     }
 

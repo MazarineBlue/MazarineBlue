@@ -15,24 +15,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.executors;
+package org.mazarineblue.functions;
 
 import java.util.function.Predicate;
 import org.mazarineblue.eventdriven.Invoker;
 import org.mazarineblue.eventnotifier.Event;
+import org.mazarineblue.executors.AbstractMainLibrary;
 import org.mazarineblue.keyworddriven.Keyword;
 import org.mazarineblue.keyworddriven.PassInvoker;
 import static org.mazarineblue.keyworddriven.events.InstructionLineEvent.matchesAnyKeywords;
-import org.mazarineblue.keyworddriven.events.InstructionLineResultContainerEvent;
 import org.mazarineblue.subscribers.SkipEventsSubscriber;
+import org.mazarineblue.keyworddriven.events.InstructionLineResultEvent;
 
 public class FunctionExecutionLibrary
         extends AbstractMainLibrary {
 
-    private final InstructionLineResultContainerEvent store;
+    private final InstructionLineResultEvent store;
     private final Predicate<Event> skipUntilEndFunction = matchesAnyKeywords("End function");
 
-    FunctionExecutionLibrary(InstructionLineResultContainerEvent store) {
+    FunctionExecutionLibrary(InstructionLineResultEvent store) {
         this.store = store;
     }
 

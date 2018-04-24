@@ -17,7 +17,7 @@
  */
 package org.mazarineblue.executors.events;
 
-import org.mazarineblue.executors.FunctionRegistry;
+import org.mazarineblue.functions.FunctionRegistry;
 
 public class SetFunctionRegistryEvent
         extends FunctionRegistryEvent {

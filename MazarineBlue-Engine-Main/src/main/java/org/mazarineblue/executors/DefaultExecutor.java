@@ -17,6 +17,7 @@
  */
 package org.mazarineblue.executors;
 
+import org.mazarineblue.functions.BuiltinFunctionsLibrary;
 import java.io.File;
 import java.time.Duration;
 import java.util.Date;
@@ -31,6 +32,8 @@ import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.eventnotifier.Subscriber;
 import org.mazarineblue.executors.util.FileTransformer;
 import org.mazarineblue.fs.FileSystem;
+import org.mazarineblue.functions.FunctionRegistry;
+import org.mazarineblue.functions.FunctionSubscriber;
 import org.mazarineblue.keyworddriven.LibraryRegistry;
 import org.mazarineblue.keyworddriven.events.RegisterConversionRuleEvent;
 import org.mazarineblue.logger.EngineLogger;

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.executors;
+package org.mazarineblue.functions;
 
 import org.mazarineblue.eventdriven.Processor;
 import org.mazarineblue.eventnotifier.Event;
@@ -31,7 +31,7 @@ public class FunctionSubscriber
 
     private FunctionRegistry registry;
 
-    FunctionSubscriber(FunctionRegistry registry) {
+    public FunctionSubscriber(FunctionRegistry registry) {
         this.registry = registry;
     }
 

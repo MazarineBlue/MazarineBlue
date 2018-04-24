@@ -19,10 +19,10 @@ package org.mazarineblue.executors;
 
 import org.mazarineblue.keyworddriven.Library;
 
-abstract class AbstractMainLibrary
+public abstract class AbstractMainLibrary
         extends Library {
 
-    AbstractMainLibrary() {
+    protected AbstractMainLibrary() {
         super("org.mazarineblue");
     }
 }

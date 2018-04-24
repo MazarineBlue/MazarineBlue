@@ -24,6 +24,7 @@ import java.util.Objects;
 import org.mazarineblue.keyworddriven.Library;
 import static org.mazarineblue.utilities.Primatives.convertPrimative;
 import org.mazarineblue.utilities.SerializableClonable;
+import static java.lang.String.format;
 
 /**
  * An {@code ExecuteInstructionLineEvent} is used to call an instruction within
@@ -34,7 +35,7 @@ import org.mazarineblue.utilities.SerializableClonable;
  */
 public class ExecuteInstructionLineEvent
         extends InstructionLineEvent
-        implements InstructionLineResultContainerEvent {
+        implements InstructionLineResultEvent {
 
     private static final long serialVersionUID = 1L;
 

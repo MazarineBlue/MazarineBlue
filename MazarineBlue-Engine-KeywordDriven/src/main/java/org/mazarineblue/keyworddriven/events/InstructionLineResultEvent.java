@@ -19,8 +19,8 @@ package org.mazarineblue.keyworddriven.events;
 
 import org.mazarineblue.eventnotifier.Event;
 
-public interface InstructionLineResultContainerEvent
+public interface InstructionLineResultEvent
         extends Event {
 
-    public InstructionLineResultContainerEvent setResult(Object result);
+    public InstructionLineResultEvent setResult(Object result);
 }

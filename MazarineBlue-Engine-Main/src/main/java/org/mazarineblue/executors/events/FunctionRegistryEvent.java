@@ -18,7 +18,7 @@
 package org.mazarineblue.executors.events;
 
 import org.mazarineblue.eventdriven.InvokerEvent;
-import org.mazarineblue.executors.FunctionRegistry;
+import org.mazarineblue.functions.FunctionRegistry;
 import org.mazarineblue.utilities.ObjectWrapper;
 import org.mazarineblue.utilities.SerializableClonable;
 

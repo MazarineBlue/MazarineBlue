@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.executors;
+package org.mazarineblue.functions;
 
 import java.util.Collection;
 import org.mazarineblue.eventdriven.Invoker;
@@ -24,13 +24,12 @@ import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.keyworddriven.Library;
 import org.mazarineblue.keyworddriven.events.AddLibraryEvent;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
-import org.mazarineblue.keyworddriven.events.InstructionLineResultContainerEvent;
 import org.mazarineblue.keyworddriven.events.RemoveLibraryEvent;
-import org.mazarineblue.keyworddriven.events.ValidateInstructionLineEvent;
 import static org.mazarineblue.keyworddriven.util.GracefullConvertor.degraceMethod;
 import org.mazarineblue.variablestore.events.EndVariableScopeEvent;
 import org.mazarineblue.variablestore.events.SetVariableEvent;
 import org.mazarineblue.variablestore.events.StartVariableScopeEvent;
+import org.mazarineblue.keyworddriven.events.InstructionLineResultEvent;
 
 class Function {
 
@@ -68,7 +67,7 @@ class Function {
         }
     }
 
-    private MemoryFeed getScopedFeed(InstructionLineResultContainerEvent store) {
+    private MemoryFeed getScopedFeed(InstructionLineResultEvent store) {
         Library library = new FunctionExecutionLibrary(store);
         MemoryFeed feed = new MemoryFeed(new AddLibraryEvent(library));
         feed.addAll(recording);
