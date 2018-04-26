@@ -26,7 +26,7 @@ import org.mazarineblue.keyworddriven.Keyword;
 import org.mazarineblue.keyworddriven.Parameters;
 import org.mazarineblue.keyworddriven.PassInvoker;
 import static org.mazarineblue.keyworddriven.events.InstructionLineEvent.matchesAnyKeywords;
-import org.mazarineblue.subscribers.RecorderSubscriber;
+import org.mazarineblue.subscribers.recorder.RecorderSubscriber;
 
 public class BuiltinFunctionsLibrary
         extends AbstractMainLibrary {

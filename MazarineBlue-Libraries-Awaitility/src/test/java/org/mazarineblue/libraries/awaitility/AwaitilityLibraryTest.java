@@ -31,7 +31,6 @@ import org.mazarineblue.keyworddriven.Parameters;
 import org.mazarineblue.keyworddriven.events.AddLibraryEvent;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
 import org.mazarineblue.libraries.awaitility.exceptions.AwaitInstructionAlreadyCalledException;
-import static java.lang.Thread.sleep;
 
 public class AwaitilityLibraryTest
         extends AbstractExecutorTestHelper {

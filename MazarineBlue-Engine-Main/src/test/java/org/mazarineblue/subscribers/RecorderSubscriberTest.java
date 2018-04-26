@@ -27,6 +27,7 @@ import org.mazarineblue.eventdriven.Processor;
 import org.mazarineblue.eventdriven.util.TestInvoker;
 import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.eventnotifier.events.TestEvent;
+import org.mazarineblue.subscribers.recorder.RecorderSubscriber;
 import org.mazarineblue.utilities.TestPredicate;
 
 /**
@@ -38,8 +39,7 @@ public class RecorderSubscriberTest {
     public void getRecording_Intially() {
         RecorderSubscriber recorder = new RecorderSubscriber(new TestInvoker(Processor.newInstance()),
                                                              new TestPredicate<>(false));
-        Collection<Event> actual = recorder.getRecording();
-        assertEquals(0, actual.size());
+        assertEquals(0, recorder.getRecording().getEvents().size());
     }
 
     @Test

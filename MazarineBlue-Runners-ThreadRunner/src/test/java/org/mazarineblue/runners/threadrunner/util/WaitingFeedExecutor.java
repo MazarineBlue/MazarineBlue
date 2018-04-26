@@ -22,7 +22,6 @@ import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import org.mazarineblue.eventdriven.Feed;
 import org.mazarineblue.executors.util.DummyFeedExecutor;
-import static java.lang.Thread.sleep;
 
 /**
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>

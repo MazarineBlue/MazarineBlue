@@ -29,7 +29,7 @@ import org.mazarineblue.keyworddriven.events.RemoveLibraryEvent;
 import org.mazarineblue.libraries.test.model.TestSystem;
 import org.mazarineblue.libraries.test.model.suites.Suite;
 import org.mazarineblue.libraries.test.model.tests.Test;
-import org.mazarineblue.subscribers.RecorderSubscriber;
+import org.mazarineblue.subscribers.recorder.RecorderSubscriber;
 
 public class RecorderTestLibrary
         extends AbstractTestLibrary {

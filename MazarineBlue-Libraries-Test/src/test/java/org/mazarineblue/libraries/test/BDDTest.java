@@ -70,7 +70,7 @@ public class BDDTest
         results.throwFirstException();
         assertEquals(1, results.getTestCount());
         assertEquals(0, results.getFailedTestCount());
-        assertEquals(3, e.getValue());
+        assertEquals(3L, e.getValue());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class BDDTest
         results.throwFirstException();
         assertEquals(1, results.getTestCount());
         assertEquals(0, results.getFailedTestCount());
-        assertEquals(6, e.getValue());
+        assertEquals(6L, e.getValue());
     }
 
     @Test
@@ -129,6 +129,6 @@ public class BDDTest
         results.throwFirstException();
         assertEquals(1, results.getTestCount());
         assertEquals(0, results.getFailedTestCount());
-        assertEquals(3, e.getValue());
+        assertEquals(3L, e.getValue());
     }
 }

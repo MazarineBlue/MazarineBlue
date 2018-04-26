@@ -15,40 +15,53 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.utilities;
+package org.mazarineblue.subscribers.recorder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+import org.mazarineblue.eventnotifier.Event;
 
-public class ObjectWrapper<T> {
+public class Recording {
 
-    private T value;
+    private final List<Event> list;
 
-    public ObjectWrapper(T value) {
-        this.value = value;
+    Recording(int initialCapacity) {
+        list = new ArrayList<>(initialCapacity);
     }
 
     @Override
     public String toString() {
-        return "value=" + value;
+        return "size = " + list.size();
     }
 
-    public void set(T value) {
-        this.value = value;
+    int size() {
+        return list.size();
     }
 
-    public T get() {
-        return value;
+    void add(Event event) {
+        list.add(event);
+    }
+
+    public Collection<Event> getEvents() {
+        return list.isEmpty()
+                ? Collections.emptyList()
+                : Event.clone(list);
     }
 
     @Override
     public int hashCode() {
-        return 67 * 7
-                + Objects.hashCode(this.value);
+        return 17 * 61 * 61
+                + 61 * Objects.hashCode(this.list)
+                + super.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return this == obj || obj != null && getClass() == obj.getClass()
-                && Objects.equals(this.value, ((ObjectWrapper) obj).value);
+        return obj != null && getClass() == obj.getClass()
+                && Objects.equals(this.list, ((Recording) obj).list)
+                && super.equals(obj);
     }
 }
