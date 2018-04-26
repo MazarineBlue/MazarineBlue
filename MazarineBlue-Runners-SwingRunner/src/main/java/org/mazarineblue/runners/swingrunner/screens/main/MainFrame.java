@@ -39,6 +39,7 @@ import org.mazarineblue.runners.swingrunner.screens.about.ImageFetcher;
 import org.mazarineblue.runners.swingrunner.screens.about.URLImageFetcher;
 import org.mazarineblue.runners.swingrunner.util.ExceptionReporter;
 import org.mazarineblue.runners.swingrunner.util.LoggerExceptionReporter;
+import static java.util.Arrays.stream;
 
 public class MainFrame
         extends javax.swing.JFrame {

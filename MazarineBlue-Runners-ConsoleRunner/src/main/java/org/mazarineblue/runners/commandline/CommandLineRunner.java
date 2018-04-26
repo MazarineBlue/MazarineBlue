@@ -25,6 +25,7 @@ import org.mazarineblue.executors.ExecutorFactory;
 import org.mazarineblue.executors.ExecutorListener;
 import org.mazarineblue.fs.FileSystem;
 import org.mazarineblue.plugins.Runner;
+import static java.util.Arrays.copyOf;
 
 /**
  * A {@code ConsoleRunner} is {@code Runner} that can read feeds from a

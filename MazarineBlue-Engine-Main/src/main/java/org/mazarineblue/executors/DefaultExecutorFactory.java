@@ -81,7 +81,7 @@ class DefaultExecutorFactory
     private void init(DefaultExecutor feedExecutor) {
         links.stream().forEach(supplier -> feedExecutor.addLink(supplier.get()));
         linkAfterVariableParser.stream().forEach(supplier -> feedExecutor.addLinkAfterVariableParser(supplier.get()));
-        linksAfterLibraryRegistry.stream().forEach(supplier -> feedExecutor.addLinkAfterLibraryRegistry(supplier.get()));
+        linksAfterLibraryRegistry.stream().forEach(supplier -> feedExecutor.addLinkAtEnd(supplier.get()));
         if (chainModifierListener != null)
             feedExecutor.setChainModifierListener(chainModifierListener.get());
         if (feedExecutorListener != null)

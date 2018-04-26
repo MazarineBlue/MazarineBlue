@@ -74,7 +74,7 @@ public class TestFeedExecutorFactory
 
     @Override
     public void addLinkAfterEventNotifier(Supplier<Subscriber<Event>> link) {
-        feedExecutor.addLinkAfterLibraryRegistry(link.get());
+        feedExecutor.addLinkAtEnd(link.get());
     }
 
     @Override

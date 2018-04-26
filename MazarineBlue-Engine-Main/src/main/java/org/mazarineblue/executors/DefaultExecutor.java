@@ -63,7 +63,7 @@ public final class DefaultExecutor
 
     private final EngineLogger logger;
     private final VariableParserSubscriber variableParser;
-    private final LibraryRegistry libraryRegistry;
+    private final FunctionSubscriber functionSubscriber;
 
     private final BuiltinFeedLibrary feedLibrary;
 
@@ -75,10 +75,10 @@ public final class DefaultExecutor
         FunctionRegistry functionRegistry = new FunctionRegistry();
 
         feedLibrary = new BuiltinFeedLibrary();
-        libraryRegistry = new LibraryRegistry(feedLibrary,
-                                              new BuiltinLibrary(),
-                                              new BuiltinVariableStoreLibrary(GLOBAL),
-                                              new BuiltinFunctionsLibrary(functionRegistry));
+        LibraryRegistry libraryRegistry = new LibraryRegistry(feedLibrary,
+                                                              new BuiltinLibrary(),
+                                                              new BuiltinVariableStoreLibrary(GLOBAL),
+                                                              new BuiltinFunctionsLibrary(functionRegistry));
         Parser<String, Expression> parser = new ExpressionBuilderParser();
         libraryRegistry.eventHandler(new RegisterConversionRuleEvent<>(Date.class, String.class, Convertors::toString));
         libraryRegistry.eventHandler(new RegisterConversionRuleEvent<>(String.class, Date.class, Convertors::toDate));
@@ -95,7 +95,8 @@ public final class DefaultExecutor
         processor.setFeedExecutorListener(logger);
         processor.setPublisherListener(logger);
 
-        processor.addLink(new FunctionSubscriber(functionRegistry)); // This must stay at the top
+        functionSubscriber = new FunctionSubscriber(functionRegistry);
+        processor.addLink(functionSubscriber); // This must stay at the top
         processor.addLink(libraryRegistry); // This must stay at the top
         processor.addLink(logger);
         processor.addLink(variableStore);
@@ -114,8 +115,8 @@ public final class DefaultExecutor
     }
 
     @Override
-    public void addLinkAfterLibraryRegistry(Subscriber<Event> link) {
-        processor.addLink(link, libraryRegistry);
+    public void addLinkAtEnd(Subscriber<Event> link) {
+        processor.addLink(link, functionSubscriber);
     }
 
     @Override
