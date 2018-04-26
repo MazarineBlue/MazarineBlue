@@ -79,39 +79,6 @@ public class HashCodeAndEqualsTest {
     }
 
     @SuppressWarnings("PublicInnerClass")
-    public class SheetOptionsHCAE
-            extends TestHashCodeAndEquals<SheetOptions> {
-
-        @Override
-        protected SheetOptions getObject() {
-            return new SheetOptions(new File("foo"), "foo");
-        }
-
-        @Override
-        protected SheetOptions getDifferentObject() {
-            return new SheetOptions(new File("oof"), "foo");
-        }
-
-        @Test
-        public void hashCode_DifferentSheets() {
-            int a = getObject().hashCode();
-            int b = getDifferentSheets().hashCode();
-                assertNotEquals(a, b);
-        }
-
-        @Test
-        public void equals_DifferentSheets() {
-            Object a = getObject();
-            Object b = getDifferentSheets();
-            assertFalse(a.equals(b));
-        }
-
-        private SheetOptions getDifferentSheets() {
-            return new SheetOptions(new File("foo"), "foo", "foo");
-        }
-    }
-
-    @SuppressWarnings("PublicInnerClass")
     public class DefaultFileTransformerHCAE
             extends TestHashCodeAndEquals<FileTransformer> {
 

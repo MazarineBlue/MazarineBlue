@@ -15,13 +15,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.executors;
+package org.mazarineblue.variablestore;
 
 import org.mazarineblue.eventdriven.Invoker;
+import org.mazarineblue.executors.AbstractMainLibrary;
 import org.mazarineblue.keyworddriven.Keyword;
 import org.mazarineblue.keyworddriven.Parameters;
 import org.mazarineblue.keyworddriven.PassInvoker;
-import org.mazarineblue.variablestore.VariableStoreSubscriber;
 import org.mazarineblue.variablestore.events.SetVariableEvent;
 
 /**
@@ -37,7 +37,7 @@ public class BuiltinVariableStoreLibrary
 
     private final String topVariableScopeName;
 
-    BuiltinVariableStoreLibrary(String topVariableScopeName) {
+    public BuiltinVariableStoreLibrary(String topVariableScopeName) {
         this.topVariableScopeName = topVariableScopeName;
     }
 

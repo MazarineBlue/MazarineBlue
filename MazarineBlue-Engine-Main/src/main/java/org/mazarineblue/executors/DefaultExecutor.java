@@ -29,6 +29,7 @@ import org.mazarineblue.eventdriven.listeners.PublisherListener;
 import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.eventnotifier.Subscriber;
 import org.mazarineblue.executors.util.FileTransformer;
+import org.mazarineblue.feeds.BuiltinFeedLibrary;
 import org.mazarineblue.fs.FileSystem;
 import org.mazarineblue.functions.BuiltinFunctionsLibrary;
 import org.mazarineblue.functions.FunctionRegistry;
@@ -44,6 +45,7 @@ import org.mazarineblue.plugins.FeedService;
 import org.mazarineblue.plugins.exceptions.FileNotSupportedException;
 import org.mazarineblue.plugins.exceptions.FileUnreadableException;
 import org.mazarineblue.util.DateFactory;
+import org.mazarineblue.variablestore.BuiltinVariableStoreLibrary;
 import org.mazarineblue.variablestore.VariableStoreSubscriber;
 import org.mazarineblue.variablestore.subscribers.VariableParserSubscriber;
 
