@@ -26,7 +26,7 @@ import org.mazarineblue.eventdriven.listeners.PublisherListener;
 import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.eventnotifier.Subscriber;
 
-class DefaultExecutorFactory
+public class DefaultExecutorFactory
         implements ExecutorFactory {
 
     private final ExecutorBuilder builder;
@@ -37,7 +37,7 @@ class DefaultExecutorFactory
     private Supplier<ChainModifierListener> chainModifierListener;
     private Supplier<PublisherListener> publisherListener;
 
-    DefaultExecutorFactory(ExecutorBuilder builder) {
+    public DefaultExecutorFactory(ExecutorBuilder builder) {
         this.builder = new ExecutorBuilder(builder);
     }
 
