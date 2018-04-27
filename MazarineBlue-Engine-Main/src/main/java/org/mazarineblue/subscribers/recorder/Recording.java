@@ -54,14 +54,12 @@ public class Recording {
     @Override
     public int hashCode() {
         return 17 * 61 * 61
-                + 61 * Objects.hashCode(this.list)
-                + super.hashCode();
+                + 61 * Objects.hashCode(this.list);
     }
 
     @Override
     public boolean equals(Object obj) {
         return obj != null && getClass() == obj.getClass()
-                && Objects.equals(this.list, ((Recording) obj).list)
-                && super.equals(obj);
+                && Objects.equals(this.list, ((Recording) obj).list);
     }
 }

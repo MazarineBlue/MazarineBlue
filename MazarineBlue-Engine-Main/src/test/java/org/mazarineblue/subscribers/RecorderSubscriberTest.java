@@ -59,7 +59,7 @@ public class RecorderSubscriberTest {
         recorder.eventHandler(e3);
 
         Collection<Event> expected = asList(e1, e2);
-        assertEquals(expected, recorder.getRecording());
+        assertEquals(expected, recorder.getRecording().getEvents());
         assertTrue(e1.isConsumed());
         assertTrue(e2.isConsumed());
         assertFalse(e3.isConsumed());
