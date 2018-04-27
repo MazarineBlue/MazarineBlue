@@ -28,7 +28,7 @@ public class Recording {
 
     private final List<Event> list;
 
-    Recording(int initialCapacity) {
+    public Recording(int initialCapacity) {
         list = new ArrayList<>(initialCapacity);
     }
 

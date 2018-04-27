@@ -51,7 +51,7 @@ class DefaultSuite
 
     @Override
     public Recording getSetup() {
-        return setup;
+        return setup != null ? setup : new Recording(0);
     }
 
     @Override
@@ -66,7 +66,7 @@ class DefaultSuite
 
     @Override
     public Recording getTeardown() {
-        return teardown;
+        return teardown != null ? teardown : new Recording(0);
     }
 
     @Override
