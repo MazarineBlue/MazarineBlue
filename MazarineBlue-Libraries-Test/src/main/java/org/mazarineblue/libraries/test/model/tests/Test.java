@@ -19,10 +19,10 @@ package org.mazarineblue.libraries.test.model.tests;
 
 import java.util.Collection;
 import java.util.Comparator;
-import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.libraries.test.model.Key;
 import org.mazarineblue.libraries.test.model.listeners.TestListener;
 import org.mazarineblue.libraries.test.model.suites.Suite;
+import org.mazarineblue.subscribers.recorder.Recording;
 
 /**
  * A {@code Test} is a collection of instructions, which start at a given
@@ -75,14 +75,14 @@ public interface Test {
      *
      * @param testEvents the test instructions.
      */
-    public void setEvents(Collection<Event> testEvents);
+    public void setEvents(Recording testEvents);
 
     /**
      * Returns the test steps for this test.
      *
      * @return the test instructions.
      */
-    public Collection<Event> getEvents();
+    public Recording getTestcase();
 
     public void setTestListener(TestListener listener);
 

@@ -46,7 +46,7 @@ public class BDDTest
     }
 
     @Test
-    public void test1() {
+    public void test_GivenWhenThen() {
         GetVariableEvent e = new GetVariableEvent("var");
         execute(new MemoryFeed(new ExecuteInstructionLineEvent("Set", "var", 0),
                                new ExecuteInstructionLineEvent("Test set"),
@@ -74,7 +74,7 @@ public class BDDTest
     }
 
     @Test
-    public void test2() {
+    public void test_GivenAndWhenAndThenAnd() {
         GetVariableEvent e = new GetVariableEvent("var");
         execute(new MemoryFeed(new ExecuteInstructionLineEvent("Set", "var", 0),
                                new ExecuteInstructionLineEvent("Test set"),

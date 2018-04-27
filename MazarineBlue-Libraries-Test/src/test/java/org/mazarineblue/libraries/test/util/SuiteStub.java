@@ -17,9 +17,8 @@
  */
 package org.mazarineblue.libraries.test.util;
 
-import java.util.Collection;
-import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.libraries.test.model.suites.Suite;
+import org.mazarineblue.subscribers.recorder.Recording;
 
 public class SuiteStub
         implements Suite {
@@ -46,7 +45,7 @@ public class SuiteStub
     }
 
     @Override
-    public void setSetup(Collection<Event> list) {
+    public void setSetup(Recording recording) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -56,17 +55,17 @@ public class SuiteStub
     }
 
     @Override
-    public void setTeardown(Collection<Event> list) {
+    public void setTeardown(Recording recording) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Collection<Event> getSetup() {
+    public Recording getSetup() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Collection<Event> getTeardown() {
+    public Recording getTeardown() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

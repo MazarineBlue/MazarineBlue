@@ -49,7 +49,7 @@ public class RuntimeTestLibrary
     @EventHandler
     public void eventHandler(ExecuteSetupEvent event) {
         try {
-            Feed feed = new MemoryFeed(event.getEvents());
+            Feed feed = new MemoryFeed(event.getSetup().getEvents());
             event.invoker().processor().execute(feed);
             executedSuiteSetups.add(event.getSuiteKey());
         } catch (RuntimeException ex) {
@@ -64,7 +64,7 @@ public class RuntimeTestLibrary
         try {
             if (!test.result().status().equals(PASS))
                 return;
-            Feed feed = new MemoryFeed(event.getEvents());
+            Feed feed = new MemoryFeed(event.getTestcase().getEvents());
             event.invoker().processor().execute(feed);
         } catch (RuntimeException ex) {
             // This exception is already registred with the TestListener and should not be thrown.
@@ -78,7 +78,7 @@ public class RuntimeTestLibrary
         try {
             if (!executedSuiteSetups.contains(event.getSuiteKey()))
                 return;
-            Feed feed = new MemoryFeed(event.getEvents());
+            Feed feed = new MemoryFeed(event.getTeardown().getEvents());
             event.invoker().processor().execute(feed);
         } catch (RuntimeException ex) {
             // This exception is already registred with the TestListener and should not be thrown.

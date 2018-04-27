@@ -17,9 +17,8 @@
  */
 package org.mazarineblue.libraries.test.model.suites;
 
-import java.util.Collection;
-import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.libraries.test.model.Key;
+import org.mazarineblue.subscribers.recorder.Recording;
 
 /**
  * A {@code Suite} is group of tests and contains two collections of
@@ -66,17 +65,17 @@ public interface Suite {
      * Set a collection of instructions as setup instructions for this suite,
      * so that they are run before a {@link Test} is run.
      *
-     * @param c the setup instruction to set
+     * @param instruction the setup instructions
      */
-    public void setSetup(Collection<Event> c);
+    public void setSetup(Recording instruction);
 
     /**
      * Fetches the setup instructions, which need to rune before a {@link Test}
      * is run.
      *
-     * @return a collection of setup instructions.
+     * @return the setup instructions.
      */
-    public Collection<Event> getSetup();
+    public Recording getSetup();
 
     /**
      * Indicates if this suite contains a collection of instructions, which
@@ -90,15 +89,15 @@ public interface Suite {
      * Set a collection of instructions as teardown instructions for this
      * suite, so that they are run after a {@link Test} have run.
      *
-     * @param c the setup instruction to set
+     * @param instruction the teardown instructions
      */
-    public void setTeardown(Collection<Event> c);
+    public void setTeardown(Recording instruction);
 
     /**
      * Fetches the teardown instructions, which need to rune before a
      * {@link Test} is run.
      *
-     * @return a collection of teardown instructions.
+     * @return the teardown instructions.
      */
-    public Collection<Event> getTeardown();
+    public Recording getTeardown();
 }

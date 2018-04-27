@@ -17,11 +17,7 @@
  */
 package org.mazarineblue.libraries.test.model.suites;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import static java.util.Collections.emptyList;
-import java.util.List;
-import org.mazarineblue.eventnotifier.Event;
+import org.mazarineblue.subscribers.recorder.Recording;
 
 class DefaultSuite
         extends SuiteKey
@@ -30,8 +26,8 @@ class DefaultSuite
     private static final long serialVersionUID = 1L;
 
     private final Suite parent;
-    private List<Event> setup;
-    private List<Event> teardown;
+    private Recording setup;
+    private Recording teardown;
 
     DefaultSuite(Suite parent, String name) {
         super(name);
@@ -49,13 +45,13 @@ class DefaultSuite
     }
 
     @Override
-    public void setSetup(Collection<Event> list) {
-        setup = new ArrayList<>(list);
+    public void setSetup(Recording recording) {
+        setup = recording;
     }
 
     @Override
-    public Collection<Event> getSetup() {
-        return setup == null || setup.isEmpty() ? emptyList() : Event.clone(setup);
+    public Recording getSetup() {
+        return setup;
     }
 
     @Override
@@ -64,13 +60,13 @@ class DefaultSuite
     }
 
     @Override
-    public void setTeardown(Collection<Event> list) {
-        teardown = new ArrayList<>(list);
+    public void setTeardown(Recording recording) {
+        teardown = recording;
     }
 
     @Override
-    public Collection<Event> getTeardown() {
-        return teardown == null || teardown.isEmpty() ? emptyList() : Event.clone(teardown);
+    public Recording getTeardown() {
+        return teardown;
     }
 
     @Override
