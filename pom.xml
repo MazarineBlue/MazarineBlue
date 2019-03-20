@@ -73,6 +73,7 @@
         <module>MazarineBlue-Runners-ThreadRunner</module>
         <module>MazarineBlue-Toolkit</module>
         <module>MazarineBlue-Utilities</module>
+        <module>MazarineBlue-Libraries-Web</module>
     </modules>
 
     <scm>
