@@ -38,8 +38,19 @@ public class BDDLibrary
     }
 
     private static Event functionCall(String prefix, String phrase) {
+        phrase = phrase.trim();
+        phrase = filterKeywords(phrase);
+        Object[] arguments = filterArguments(phrase);
         String keyword = prefix.trim() + " " + phrase.trim();
         return new ExecuteInstructionLineEvent(keyword);
+    }
+
+    private static String filterKeywords(String phrase) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static Object[] filterArguments(String phrase) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @SuppressWarnings("PublicInnerClass")
