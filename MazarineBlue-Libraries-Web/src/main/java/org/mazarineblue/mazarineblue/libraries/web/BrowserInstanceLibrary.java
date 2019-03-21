@@ -22,6 +22,8 @@ import static org.awaitility.Awaitility.await;
 import org.awaitility.Duration;
 import org.mazarineblue.mazarineblue.libraries.web.exceptions.OnCurrentTabException;
 import org.mazarineblue.mazarineblue.libraries.web.exceptions.WindowHandleNotFoundException;
+import org.mazarineblue.mazarineblue.libraries.web.tabs.Tab;
+import org.mazarineblue.mazarineblue.libraries.web.tabs.TabRegistry;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;

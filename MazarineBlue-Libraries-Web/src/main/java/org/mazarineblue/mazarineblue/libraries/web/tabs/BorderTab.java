@@ -15,58 +15,51 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.mazarineblue.libraries.web;
+package org.mazarineblue.mazarineblue.libraries.web.tabs;
 
-class MiddleTab
+public class BorderTab
         extends Tab {
 
-    private final String name;
-    private final String handle;
-    private Tab previous;
-    private Tab next;
+    private Tab previous = null;
+    private Tab next = null;
 
-    @SuppressWarnings("LeakingThisInConstructor")
-    MiddleTab(String name, String handle) {
-        this.name = name;
-        this.handle = handle;
-        previous = new BorderTab().setNextTab(this);
-        next = new BorderTab().setPreviousTab(this);
+    BorderTab() {
     }
 
     @Override
     String getName() {
-        return name;
+        return "";
     }
 
     @Override
-    String getHandle() {
-        return handle;
+    public String getHandle() {
+        return "";
     }
 
     @Override
     boolean hasPrevious() {
-        return !BorderTab.class.isAssignableFrom(previous.getClass());
+        return previous != null;
     }
 
     @Override
     Tab previousTab() {
-        return previous;
+        return previous != null ? previous : this;
     }
 
     @Override
-    Tab setPreviousTab(Tab tab) {
-        this.previous = tab;
+    Tab setPreviousTab(Tab previous) {
+        this.previous = previous;
         return this;
     }
 
     @Override
     boolean hasNext() {
-        return !BorderTab.class.isAssignableFrom(next.getClass());
+        return next != null;
     }
 
     @Override
     Tab nextTab() {
-        return next;
+        return next != null ? next : this;
     }
 
     @Override

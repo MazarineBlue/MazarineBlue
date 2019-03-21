@@ -3,29 +3,40 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.mazarineblue.mazarineblue.libraries.web;
+package org.mazarineblue.mazarineblue.libraries.web.tabs;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.mazarineblue.mazarineblue.libraries.web.exceptions.TabNameTakeException;
 import org.openqa.selenium.WebDriver;
 
-class TabRegistry {
+/**
+ * A TabRegistry contains a registry of all browser tab created.
+ *
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
+public class TabRegistry {
 
     private static final String INITIAL_TAB_NAME = "Main tab";
 
     private Tab currentTab, insertTab;
     private final Map<String, MiddleTab> tabs = new HashMap<>();
 
-    TabRegistry(WebDriver driver) {
-        currentTab = new MiddleTab(INITIAL_TAB_NAME, driver.getWindowHandle());
+    public TabRegistry(WebDriver driver) {
+        currentTab = insertTab = new MiddleTab(INITIAL_TAB_NAME, driver.getWindowHandle());
     }
 
-    Tab getTab(String tabName) {
-        return tabs.get(tabName);
+    /**
+     * Returns the tab with the specified name.
+     *
+     * @param name to look for
+     * @return the tab with the specified name
+     */
+    public Tab getTab(String name) {
+        return tabs.get(name);
     }
 
-    void insertTab(String name, String handle) {
+    public void insertTab(String name, String handle) {
         registerTab(name, new MiddleTab(name, handle));
 
         if (insertTab == null)
@@ -40,8 +51,8 @@ class TabRegistry {
         tabs.put(tabName, tab);
     }
 
-    void removeCurrentTab() {
-        unregisterTab(currentTab.getName());
+    public void removeCurrentTab() {
+        tabs.remove(currentTab.getName());
         currentTab.nextTab().setPreviousTab(currentTab.previousTab());
         currentTab.previousTab().setNextTab(currentTab.nextTab());
 
@@ -49,10 +60,6 @@ class TabRegistry {
             currentTab = currentTab.nextTab();
         else
             currentTab = currentTab.previousTab();
-    }
-
-    private void unregisterTab(String tabName) {
-        tabs.remove(tabName);
     }
 
     //<editor-fold defaultstate="collapsed" desc="Tab finder methods">
@@ -71,14 +78,13 @@ class TabRegistry {
     }
     //</editor-fold>
 
-    boolean isCurrentTab(String tabName) {
-        return currentTab.getName().equals(tabName);
+    public boolean isCurrentTab(String name) {
+        return currentTab.getName().equals(name);
     }
 
-    void removeTab(String name) {
-        Tab tab = tabs.get(name);
+    public void removeTab(String name) {
+        Tab tab = tabs.remove(name);
         tab.nextTab().setPreviousTab(tab.previousTab());
         tab.previousTab().setNextTab(tab.nextTab());
-        unregisterTab(name);
     }
 }

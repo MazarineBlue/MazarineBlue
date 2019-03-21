@@ -15,14 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.mazarineblue.libraries.web;
+package org.mazarineblue.mazarineblue.libraries.web.tabs;
 
 /**
  * A tab references a tab in the browser.
  *
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-abstract class Tab {
+public abstract class Tab {
 
     /**
      * Returns the name of this tab.
@@ -36,7 +36,7 @@ abstract class Tab {
      *
      * @return the WebDriver window handle of this tab.
      */
-    abstract String getHandle();
+    public abstract String getHandle();
 
     /**
      * Determins if this tab has a previous tab.

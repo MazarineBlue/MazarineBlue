@@ -15,30 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.mazarineblue.libraries.web;
+package org.mazarineblue.mazarineblue.libraries.web.tabs;
 
-public class BorderTab
+class MiddleTab
         extends Tab {
 
-    private Tab previous = null;
-    private Tab next = null;
+    private final String name;
+    private final String handle;
+    private Tab previous;
+    private Tab next;
 
-    BorderTab() {
+    @SuppressWarnings("LeakingThisInConstructor")
+    MiddleTab(String name, String handle) {
+        this.name = name;
+        this.handle = handle;
+        previous = new BorderTab().setNextTab(this);
+        next = new BorderTab().setPreviousTab(this);
     }
 
     @Override
     String getName() {
-        return "";
+        return name;
     }
 
     @Override
-    String getHandle() {
-        return null;
+    public String getHandle() {
+        return handle;
     }
 
     @Override
     boolean hasPrevious() {
-        return previous != null;
+        return !BorderTab.class.isAssignableFrom(previous.getClass());
     }
 
     @Override
@@ -47,14 +54,14 @@ public class BorderTab
     }
 
     @Override
-    Tab setPreviousTab(Tab previous) {
-        this.previous = previous;
+    Tab setPreviousTab(Tab tab) {
+        this.previous = tab;
         return this;
     }
 
     @Override
     boolean hasNext() {
-        return next != null;
+        return !BorderTab.class.isAssignableFrom(next.getClass());
     }
 
     @Override
