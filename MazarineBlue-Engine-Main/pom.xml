@@ -39,11 +39,6 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>MazarineBlue-Engine-Functions</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>MazarineBlue-Engine-Logger</artifactId>
             <version>${project.version}</version>
         </dependency>

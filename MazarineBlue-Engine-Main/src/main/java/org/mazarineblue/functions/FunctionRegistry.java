@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
 
-class FunctionRegistry {
+public class FunctionRegistry {
 
     private final Map<String, Function> map = new HashMap<>();
     private final FunctionRegistry adaptee;
