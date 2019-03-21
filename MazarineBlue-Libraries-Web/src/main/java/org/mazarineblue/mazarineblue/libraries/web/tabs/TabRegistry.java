@@ -51,6 +51,10 @@ public class TabRegistry {
         tabs.put(tabName, tab);
     }
 
+    public void setCurrentTab(Tab tab) {
+        currentTab = insertTab = tab;
+    }
+
     public void removeCurrentTab() {
         removeTab(currentTab);
     }

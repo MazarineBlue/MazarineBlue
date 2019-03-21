@@ -17,6 +17,7 @@
  */
 package org.mazarineblue.mazarineblue.libraries.web.tabs;
 
+import java.lang.ref.WeakReference;
 import java.util.Objects;
 
 class MiddleTab
@@ -24,15 +25,15 @@ class MiddleTab
 
     private final String name;
     private final String handle;
-    private Tab previous;
-    private Tab next;
+    private WeakReference<Tab> previous;
+    private WeakReference<Tab> next;
 
     @SuppressWarnings("LeakingThisInConstructor")
     MiddleTab(String name, String handle) {
         this.name = name;
         this.handle = handle;
-        previous = new BorderTab().setNextTab(this);
-        next = new BorderTab().setPreviousTab(this);
+        previous = new WeakReference<>(new BorderTab().setNextTab(this));
+        next = new WeakReference<>(new BorderTab().setPreviousTab(this));
     }
 
     @Override
@@ -66,12 +67,12 @@ class MiddleTab
 
     @Override
     Tab previousTab() {
-        return previous;
+        return previous.get();
     }
 
     @Override
     Tab setPreviousTab(Tab tab) {
-        this.previous = tab;
+        this.previous = new WeakReference<>(tab);
         return this;
     }
 
@@ -82,12 +83,12 @@ class MiddleTab
 
     @Override
     Tab nextTab() {
-        return next;
+        return next.get();
     }
 
     @Override
     Tab setNextTab(Tab next) {
-        this.next = next;
+        this.next = new WeakReference<>(next);
         return this;
     }
 }
