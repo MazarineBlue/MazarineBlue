@@ -17,6 +17,7 @@
  */
 package org.mazarineblue.mazarineblue.libraries.web;
 
+import java.util.Collection;
 import java.util.Set;
 import static org.awaitility.Awaitility.await;
 import org.awaitility.Duration;
@@ -33,18 +34,22 @@ public class TabLibrary {
     private static final CharSequence PAGE_RELOADED = "Detected a page unload event; script execution does not work across page loads.";
 
     private final WebDriver driver;
-    private final TabRegistry tabRegistry;
+    private final TabRegistry registry;
 
     public TabLibrary(WebDriver driver) {
         this.driver = driver;
-        tabRegistry = new TabRegistry(driver);
+        registry = new TabRegistry(driver);
+    }
+
+    public int tabCount() {
+        return registry.size();
     }
 
     public void openInNewTab(String url, String tabName) {
         Set<String> handles = driver.getWindowHandles();
         executeJavascript("window.open('" + url + "', '_blank');");
         await().atMost(NEW_TAB_TIMEOUT).until(() -> driver.getWindowHandles().size() > handles.size());
-        tabRegistry.insertTab(tabName, newWindowHandle(handles));
+        registry.insertTab(tabName, newWindowHandle(handles));
     }
 
     //<editor-fold defaultstate="collapsed" desc="Helper methods for openInNewTab(url, tabName)">
@@ -70,19 +75,34 @@ public class TabLibrary {
     //</editor-fold>
 
     public void switchToTab(String tabName) {
-        Tab tab = tabRegistry.getTab(tabName);
+        Tab tab = registry.getTab(tabName);
         driver.switchTo().window(tab.getHandle());
-        tabRegistry.setCurrentTab(tab);
+        registry.setCurrentTab(tab);
     }
 
     public void closeTab() {
         driver.close();
-        tabRegistry.removeCurrentTab();
+        registry.removeCurrentTab();
+    }
+
+    public void closeTabsToTheRight() {
+        boolean closeTab = false;
+        for (Tab tab : registry.getAllTabs())
+            if (registry.isCurrentTab(tab))
+                closeTab = true;
+            else if (closeTab)
+                closeTab(tab);
+    }
+
+    public void closeOtherTabs() {
+        for (Tab tab : registry.getAllTabs())
+            if (!registry.isCurrentTab(tab))
+                closeTab(tab);
     }
 
     public void closeTab(String tabName) {
-        closeTab(tabRegistry.getTab(tabName));
-        tabRegistry.removeTab(tabName);
+        closeTab(registry.getTab(tabName));
+        registry.removeTab(tabName);
     }
 
     //<editor-fold defaultstate="collapsed" desc="Helper methods for closeTab()">

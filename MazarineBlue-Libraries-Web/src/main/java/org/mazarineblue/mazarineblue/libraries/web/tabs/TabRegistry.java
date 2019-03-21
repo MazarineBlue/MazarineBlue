@@ -5,6 +5,8 @@
  */
 package org.mazarineblue.mazarineblue.libraries.web.tabs;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import org.mazarineblue.mazarineblue.libraries.web.exceptions.TabNameTakenException;
@@ -36,6 +38,34 @@ public class TabRegistry {
         return tabs.get(name);
     }
 
+    /**
+     * Returns all tabs.
+     *
+     * @return a collection of all tabs
+     */
+    public Collection<Tab> getAllTabs() {
+        return new ArrayList<>(tabs.values());
+    }
+
+    /**
+     * Determines if the specificied tab is the current tab.
+     *
+     * @param tab the specified tab
+     * @return {@literal true} if the specified tab is the current tab
+     */
+    public boolean isCurrentTab(Tab tab) {
+        return tab.equals(currentTab);
+    }
+
+    /**
+     * Returns the amount of tabs in this registry.
+     *
+     * @return the amount of tabs in this registry.
+     */
+    public int size() {
+        return tabs.size();
+    }
+
     public void insertTab(String name, String handle) {
         RealTab tab = new RealTab(name, handle);
         tab.setPreviousTab(insertTab).setNextTab(insertTab.nextTab());
@@ -62,7 +92,7 @@ public class TabRegistry {
     public void removeTab(String name) {
         removeTab(tabs.remove(name));
     }
-    
+
     private void removeTab(Tab tab) {
         if (currentTab.equals(tab))
             currentTab = currentTab.hasNext() ? currentTab.nextTab() : currentTab.previousTab();
