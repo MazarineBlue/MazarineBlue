@@ -7,7 +7,7 @@ package org.mazarineblue.mazarineblue.libraries.web.tabs;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.mazarineblue.mazarineblue.libraries.web.exceptions.TabNameTakeException;
+import org.mazarineblue.mazarineblue.libraries.web.exceptions.TabNameTakenException;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -47,44 +47,23 @@ public class TabRegistry {
 
     private void registerTab(String tabName, MiddleTab tab) {
         if (tabs.containsKey(tabName))
-            throw new TabNameTakeException();
+            throw new TabNameTakenException();
         tabs.put(tabName, tab);
     }
 
     public void removeCurrentTab() {
-        tabs.remove(currentTab.getName());
-        currentTab.nextTab().setPreviousTab(currentTab.previousTab());
-        currentTab.previousTab().setNextTab(currentTab.nextTab());
-
-        if (currentTab.hasNext())
-            currentTab = currentTab.nextTab();
-        else
-            currentTab = currentTab.previousTab();
-    }
-
-    //<editor-fold defaultstate="collapsed" desc="Tab finder methods">
-    private Tab firstTab() {
-        Tab find = currentTab;
-        while (find.hasPrevious())
-            find = find.previousTab();
-        return find;
-    }
-
-    private Tab lastTab() {
-        Tab find = currentTab;
-        while (find.hasNext())
-            find = find.nextTab();
-        return find;
-    }
-    //</editor-fold>
-
-    public boolean isCurrentTab(String name) {
-        return currentTab.getName().equals(name);
+        removeTab(currentTab);
     }
 
     public void removeTab(String name) {
-        Tab tab = tabs.remove(name);
+        removeTab(tabs.remove(name));
+    }
+    
+    private void removeTab(Tab tab) {
+        if (currentTab.equals(tab))
+            currentTab = currentTab.hasNext() ? currentTab.nextTab() : currentTab.previousTab();
         tab.nextTab().setPreviousTab(tab.previousTab());
         tab.previousTab().setNextTab(tab.nextTab());
+        insertTab = currentTab;
     }
 }

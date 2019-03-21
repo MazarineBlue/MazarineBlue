@@ -17,6 +17,8 @@
  */
 package org.mazarineblue.mazarineblue.libraries.web.tabs;
 
+import java.util.Objects;
+
 class MiddleTab
         extends Tab {
 
@@ -41,6 +43,20 @@ class MiddleTab
     @Override
     public String getHandle() {
         return handle;
+    }
+
+    @Override
+    public int hashCode() {
+        return 29 * 29 * 7
+                + 29 * Objects.hashCode(this.name)
+                + Objects.hashCode(this.handle);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj || obj != null && getClass() == obj.getClass()
+                && Objects.equals(this.name, ((MiddleTab) obj).name)
+                && Objects.equals(this.handle, ((MiddleTab) obj).handle);
     }
 
     @Override

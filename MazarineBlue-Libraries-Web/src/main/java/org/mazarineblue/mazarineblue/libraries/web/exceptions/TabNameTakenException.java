@@ -5,7 +5,7 @@
  */
 package org.mazarineblue.mazarineblue.libraries.web.exceptions;
 
-public class TabNameTakeException
+public class TabNameTakenException
         extends RuntimeException {
 
     private static final long serialVersionUID = 1L;

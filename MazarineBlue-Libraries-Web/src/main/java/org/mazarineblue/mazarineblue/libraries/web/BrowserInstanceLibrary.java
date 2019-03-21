@@ -20,7 +20,6 @@ package org.mazarineblue.mazarineblue.libraries.web;
 import java.util.Set;
 import static org.awaitility.Awaitility.await;
 import org.awaitility.Duration;
-import org.mazarineblue.mazarineblue.libraries.web.exceptions.OnCurrentTabException;
 import org.mazarineblue.mazarineblue.libraries.web.exceptions.WindowHandleNotFoundException;
 import org.mazarineblue.mazarineblue.libraries.web.tabs.Tab;
 import org.mazarineblue.mazarineblue.libraries.web.tabs.TabRegistry;
@@ -102,8 +101,6 @@ public class BrowserInstanceLibrary {
     }
 
     public void closeTab(String tabName) {
-        if (tabRegistry.isCurrentTab(tabName))
-            throw new OnCurrentTabException();
         closeTab(tabRegistry.getTab(tabName));
         tabRegistry.removeTab(tabName);
     }
