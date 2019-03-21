@@ -15,16 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.feeds;
+package org.mazarineblue.executors;
 
 import java.io.File;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import org.mazarineblue.eventdriven.Feed;
 import org.mazarineblue.eventdriven.Invoker;
-import org.mazarineblue.eventdriven.Processor;
 import org.mazarineblue.eventnotifier.EventHandler;
-import org.mazarineblue.executors.AbstractMainLibrary;
 import org.mazarineblue.executors.events.SetFileSystemEvent;
 import org.mazarineblue.executors.exceptions.UnbalancedScopeException;
 import org.mazarineblue.fs.DiskFileSystem;
@@ -44,7 +42,7 @@ public class BuiltinFeedLibrary
     private final Deque<SheetOptions> sheetStack = new ArrayDeque<>();
     private FileSystem fs = new DiskFileSystem();
 
-    public BuiltinFeedLibrary() {
+    BuiltinFeedLibrary() {
     }
 
     /**
@@ -107,7 +105,7 @@ public class BuiltinFeedLibrary
             throw new UnbalancedScopeException(sheet);
     }
 
-    public void addAvailableSheets(File file, String[] sheets) {
+    void addAvailableSheets(File file, String[] sheets) {
         sheetStack.push(new SheetOptions(file, sheets));
     }
 
@@ -125,7 +123,7 @@ public class BuiltinFeedLibrary
         invoker.publish(new EndVariableScopeEvent());
     }
 
-    public void removeAvailableSheets(File file, String[] sheets) {
+    void removeAvailableSheets(File file, String[] sheets) {
         SheetOptions expected = new SheetOptions(file, sheets);
         SheetOptions actual = sheetStack.pop();
         if (!expected.equals(actual))

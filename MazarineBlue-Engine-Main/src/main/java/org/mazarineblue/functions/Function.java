@@ -17,15 +17,16 @@
  */
 package org.mazarineblue.functions;
 
+import java.util.Collection;
 import org.mazarineblue.eventdriven.Invoker;
 import org.mazarineblue.eventdriven.feeds.MemoryFeed;
+import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.keyworddriven.Library;
 import org.mazarineblue.keyworddriven.events.AddLibraryEvent;
 import org.mazarineblue.keyworddriven.events.ExecuteInstructionLineEvent;
 import org.mazarineblue.keyworddriven.events.InstructionLineResultEvent;
 import org.mazarineblue.keyworddriven.events.RemoveLibraryEvent;
 import static org.mazarineblue.keyworddriven.util.GracefullConvertor.degraceMethod;
-import org.mazarineblue.subscribers.recorder.Recording;
 import org.mazarineblue.variablestore.events.EndVariableScopeEvent;
 import org.mazarineblue.variablestore.events.SetVariableEvent;
 import org.mazarineblue.variablestore.events.StartVariableScopeEvent;
@@ -34,7 +35,7 @@ class Function {
 
     private final String name;
     private final String[] parameters;
-    private Recording recording;
+    private Collection<Event> recording;
 
     Function(String name, String... parameters) {
         this.name = degraceMethod(name);
@@ -45,7 +46,7 @@ class Function {
         return name;
     }
 
-    void setBody(Recording recording) {
+    void setBody(Collection<Event> recording) {
         this.recording = recording;
     }
 
@@ -69,7 +70,7 @@ class Function {
     private MemoryFeed getScopedFeed(InstructionLineResultEvent store) {
         Library library = new FunctionExecutionLibrary(store);
         MemoryFeed feed = new MemoryFeed(new AddLibraryEvent(library));
-        feed.addAll(recording.getEvents());
+        feed.addAll(recording);
         feed.add(new RemoveLibraryEvent(library));
         return feed;
     }

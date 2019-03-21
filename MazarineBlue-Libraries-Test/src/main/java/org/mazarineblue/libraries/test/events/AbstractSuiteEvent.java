@@ -17,11 +17,12 @@
  */
 package org.mazarineblue.libraries.test.events;
 
+import java.util.Collection;
 import java.util.Objects;
 import org.mazarineblue.eventdriven.InvokerEvent;
+import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.libraries.test.model.Key;
 import org.mazarineblue.libraries.test.model.suites.Suite;
-import org.mazarineblue.subscribers.recorder.Recording;
 import org.mazarineblue.utilities.SerializableClonable;
 
 abstract class AbstractSuiteEvent
@@ -44,11 +45,11 @@ abstract class AbstractSuiteEvent
         return suite.getKey();
     }
 
-    protected Recording getSetup() {
+    protected Collection<Event> getSetup() {
         return suite.getSetup();
     }
 
-    protected Recording getTeardown() {
+    protected Collection<Event> getTeardown() {
         return suite.getTeardown();
     }
 

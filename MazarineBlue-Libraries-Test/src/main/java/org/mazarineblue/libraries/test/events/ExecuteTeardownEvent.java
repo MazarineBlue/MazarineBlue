@@ -17,8 +17,9 @@
  */
 package org.mazarineblue.libraries.test.events;
 
+import java.util.Collection;
+import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.libraries.test.model.suites.Suite;
-import org.mazarineblue.subscribers.recorder.Recording;
 
 public class ExecuteTeardownEvent
         extends AbstractSuiteEvent {
@@ -29,9 +30,8 @@ public class ExecuteTeardownEvent
         super(suite);
     }
 
-    @Override
-    public Recording getTeardown() {
-        return super.getTeardown();
+    public Collection<Event> getEvents() {
+        return getTeardown();
     }
 
     @Override

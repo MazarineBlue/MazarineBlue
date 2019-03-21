@@ -17,6 +17,7 @@
  */
 package org.mazarineblue.executors;
 
+import org.mazarineblue.functions.BuiltinFunctionsLibrary;
 import java.io.File;
 import java.time.Duration;
 import java.util.Date;
@@ -29,9 +30,7 @@ import org.mazarineblue.eventdriven.listeners.PublisherListener;
 import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.eventnotifier.Subscriber;
 import org.mazarineblue.executors.util.FileTransformer;
-import org.mazarineblue.feeds.BuiltinFeedLibrary;
 import org.mazarineblue.fs.FileSystem;
-import org.mazarineblue.functions.BuiltinFunctionsLibrary;
 import org.mazarineblue.functions.FunctionRegistry;
 import org.mazarineblue.functions.FunctionSubscriber;
 import org.mazarineblue.keyworddriven.LibraryRegistry;
@@ -45,7 +44,6 @@ import org.mazarineblue.plugins.FeedService;
 import org.mazarineblue.plugins.exceptions.FileNotSupportedException;
 import org.mazarineblue.plugins.exceptions.FileUnreadableException;
 import org.mazarineblue.util.DateFactory;
-import org.mazarineblue.variablestore.BuiltinVariableStoreLibrary;
 import org.mazarineblue.variablestore.VariableStoreSubscriber;
 import org.mazarineblue.variablestore.subscribers.VariableParserSubscriber;
 
@@ -63,7 +61,7 @@ public final class DefaultExecutor
 
     private final EngineLogger logger;
     private final VariableParserSubscriber variableParser;
-    private final FunctionSubscriber functionSubscriber;
+    private final LibraryRegistry libraryRegistry;
 
     private final BuiltinFeedLibrary feedLibrary;
 
@@ -75,10 +73,10 @@ public final class DefaultExecutor
         FunctionRegistry functionRegistry = new FunctionRegistry();
 
         feedLibrary = new BuiltinFeedLibrary();
-        LibraryRegistry libraryRegistry = new LibraryRegistry(feedLibrary,
-                                                              new BuiltinLibrary(),
-                                                              new BuiltinVariableStoreLibrary(GLOBAL),
-                                                              new BuiltinFunctionsLibrary(functionRegistry));
+        libraryRegistry = new LibraryRegistry(feedLibrary,
+                                              new BuiltinLibrary(),
+                                              new BuiltinVariableStoreLibrary(GLOBAL),
+                                              new BuiltinFunctionsLibrary(functionRegistry));
         Parser<String, Expression> parser = new ExpressionBuilderParser();
         libraryRegistry.eventHandler(new RegisterConversionRuleEvent<>(Date.class, String.class, Convertors::toString));
         libraryRegistry.eventHandler(new RegisterConversionRuleEvent<>(String.class, Date.class, Convertors::toDate));
@@ -95,8 +93,7 @@ public final class DefaultExecutor
         processor.setFeedExecutorListener(logger);
         processor.setPublisherListener(logger);
 
-        functionSubscriber = new FunctionSubscriber(functionRegistry);
-        processor.addLink(functionSubscriber); // This must stay at the top
+        processor.addLink(new FunctionSubscriber(functionRegistry)); // This must stay at the top
         processor.addLink(libraryRegistry); // This must stay at the top
         processor.addLink(logger);
         processor.addLink(variableStore);
@@ -115,8 +112,8 @@ public final class DefaultExecutor
     }
 
     @Override
-    public void addLinkAtEnd(Subscriber<Event> link) {
-        processor.addLink(link, functionSubscriber);
+    public void addLinkAfterLibraryRegistry(Subscriber<Event> link) {
+        processor.addLink(link, libraryRegistry);
     }
 
     @Override

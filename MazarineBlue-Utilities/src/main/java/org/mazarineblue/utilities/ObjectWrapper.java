@@ -27,11 +27,6 @@ public class ObjectWrapper<T> {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return "value=" + value;
-    }
-
     public void set(T value) {
         this.value = value;
     }

@@ -84,7 +84,7 @@ public interface Executor {
      *
      * @param link to add to the chain.
      */
-    public void addLinkAtEnd(Subscriber<Event> link);
+    public void addLinkAfterLibraryRegistry(Subscriber<Event> link);
 
     /**
      * Sets a listener to listen for chain events.

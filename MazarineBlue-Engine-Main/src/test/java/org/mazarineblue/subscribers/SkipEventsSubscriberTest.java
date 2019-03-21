@@ -24,7 +24,6 @@ import org.mazarineblue.eventdriven.Processor;
 import org.mazarineblue.eventdriven.util.TestInvoker;
 import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.eventnotifier.events.TestEvent;
-import org.mazarineblue.subscribers.skipEvents.SkipEventsSubscriber;
 import org.mazarineblue.utilities.TestPredicate;
 
 public class SkipEventsSubscriberTest {

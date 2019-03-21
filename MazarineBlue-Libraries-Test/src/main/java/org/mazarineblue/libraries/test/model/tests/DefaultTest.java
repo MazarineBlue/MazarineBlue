@@ -24,10 +24,10 @@ import static java.util.Collections.unmodifiableCollection;
 import java.util.List;
 import java.util.Objects;
 import static java.util.stream.Collectors.toList;
+import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.libraries.test.model.Key;
 import org.mazarineblue.libraries.test.model.listeners.TestListener;
 import org.mazarineblue.libraries.test.model.suites.Suite;
-import org.mazarineblue.subscribers.recorder.Recording;
 
 class DefaultTest
         extends TestKey
@@ -36,8 +36,8 @@ class DefaultTest
     private static final long serialVersionUID = 1L;
 
     private final Collection<Suite> suites;
+    private final Collection<Event> events = new ArrayList<>();
     private final TestResult result = TestResult.newInstance(this);
-    private Recording recording;
 
     DefaultTest(Suite suite, String name) {
         super(suite, name);
@@ -68,14 +68,15 @@ class DefaultTest
     }
 
     @Override
-    public Recording getTestcase() {
-        return recording;
+    public Collection<Event> getEvents() {
+        return Event.clone(events);
     }
 
     @Override
-    public void setEvents(Recording recording) {
+    public void setEvents(Collection<Event> list) {
         result.clear();
-        this.recording = recording;
+        events.clear();
+        events.addAll(list);
     }
 
     @Override

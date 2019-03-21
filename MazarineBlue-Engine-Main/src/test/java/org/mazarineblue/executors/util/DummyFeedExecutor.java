@@ -53,7 +53,7 @@ public class DummyFeedExecutor
     }
 
     @Override
-    public void addLinkAtEnd(Subscriber<Event> link) {
+    public void addLinkAfterLibraryRegistry(Subscriber<Event> link) {
         // A dummy does nothing
     }
 

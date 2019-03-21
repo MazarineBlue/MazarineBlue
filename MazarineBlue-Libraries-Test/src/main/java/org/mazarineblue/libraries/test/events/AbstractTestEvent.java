@@ -17,10 +17,11 @@
  */
 package org.mazarineblue.libraries.test.events;
 
+import java.util.Collection;
 import java.util.Objects;
 import org.mazarineblue.eventdriven.InvokerEvent;
+import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.libraries.test.model.tests.Test;
-import org.mazarineblue.subscribers.recorder.Recording;
 import org.mazarineblue.utilities.SerializableClonable;
 
 abstract class AbstractTestEvent
@@ -49,8 +50,8 @@ abstract class AbstractTestEvent
         return test.result().toString();
     }
 
-    public Recording getTestcase() {
-        return test.getTestcase();
+    public Collection<Event> getEvents() {
+        return test.getEvents();
     }
 
     @Override

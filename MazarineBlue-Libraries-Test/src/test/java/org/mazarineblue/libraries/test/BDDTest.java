@@ -46,7 +46,7 @@ public class BDDTest
     }
 
     @Test
-    public void test_GivenWhenThen() {
+    public void test1() {
         GetVariableEvent e = new GetVariableEvent("var");
         execute(new MemoryFeed(new ExecuteInstructionLineEvent("Set", "var", 0),
                                new ExecuteInstructionLineEvent("Test set"),
@@ -70,11 +70,11 @@ public class BDDTest
         results.throwFirstException();
         assertEquals(1, results.getTestCount());
         assertEquals(0, results.getFailedTestCount());
-        assertEquals(3L, e.getValue());
+        assertEquals(3, e.getValue());
     }
 
     @Test
-    public void test_GivenAndWhenAndThenAnd() {
+    public void test2() {
         GetVariableEvent e = new GetVariableEvent("var");
         execute(new MemoryFeed(new ExecuteInstructionLineEvent("Set", "var", 0),
                                new ExecuteInstructionLineEvent("Test set"),
@@ -101,7 +101,7 @@ public class BDDTest
         results.throwFirstException();
         assertEquals(1, results.getTestCount());
         assertEquals(0, results.getFailedTestCount());
-        assertEquals(6L, e.getValue());
+        assertEquals(6, e.getValue());
     }
 
     @Test
@@ -129,6 +129,6 @@ public class BDDTest
         results.throwFirstException();
         assertEquals(1, results.getTestCount());
         assertEquals(0, results.getFailedTestCount());
-        assertEquals(3L, e.getValue());
+        assertEquals(3, e.getValue());
     }
 }

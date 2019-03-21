@@ -18,11 +18,11 @@
 package org.mazarineblue.libraries.test.util;
 
 import java.util.Collection;
+import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.libraries.test.model.listeners.TestListener;
 import org.mazarineblue.libraries.test.model.suites.Suite;
 import org.mazarineblue.libraries.test.model.tests.Test;
 import org.mazarineblue.libraries.test.model.tests.TestResult;
-import org.mazarineblue.subscribers.recorder.Recording;
 
 public class TestStub
         implements Test {
@@ -61,12 +61,12 @@ public class TestStub
     }
 
     @Override
-    public void setEvents(Recording recording) {
+    public void setEvents(Collection<Event> recording) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Recording getTestcase() {
+    public Collection<Event> getEvents() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -33,24 +33,13 @@ public class BDDLibrary
     @PassInvoker
     public void given(Invoker invoker, String phrase) {
         invoker.publish(new RemoveLibraryEvent(this));
-        invoker.publish(functionCall("given", phrase));
+        invoker.publish(convertTestPhrase("given", phrase));
         invoker.publish(new AddLibraryEvent(new GivenLibrary()));
     }
 
-    private static Event functionCall(String prefix, String phrase) {
-        phrase = phrase.trim();
-        phrase = filterKeywords(phrase);
-        Object[] arguments = filterArguments(phrase);
+    private static Event convertTestPhrase(String prefix, String phrase) {
         String keyword = prefix.trim() + " " + phrase.trim();
         return new ExecuteInstructionLineEvent(keyword);
-    }
-
-    private static String filterKeywords(String phrase) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private static Object[] filterArguments(String phrase) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @SuppressWarnings("PublicInnerClass")
@@ -66,7 +55,7 @@ public class BDDLibrary
         @PassInvoker
         public void and(Invoker invoker, String phrase) {
             invoker.publish(new RemoveLibraryEvent(this));
-            invoker.publish(functionCall("given", phrase));
+            invoker.publish(convertTestPhrase("given", phrase));
             invoker.publish(new AddLibraryEvent(new GivenLibrary()));
         }
 
@@ -74,7 +63,7 @@ public class BDDLibrary
         @PassInvoker
         public void when(Invoker invoker, String phrase) {
             invoker.publish(new RemoveLibraryEvent(this));
-            invoker.publish(functionCall("when", phrase));
+            invoker.publish(convertTestPhrase("when", phrase));
             invoker.publish(new AddLibraryEvent(new WhenLibrary()));
         }
     }
@@ -91,7 +80,7 @@ public class BDDLibrary
         @PassInvoker
         public void and(Invoker invoker, String phrase) {
             invoker.publish(new RemoveLibraryEvent(this));
-            invoker.publish(functionCall("when", phrase));
+            invoker.publish(convertTestPhrase("when", phrase));
             invoker.publish(new AddLibraryEvent(new WhenLibrary()));
         }
 
@@ -99,7 +88,7 @@ public class BDDLibrary
         @PassInvoker
         public void then(Invoker invoker, String phrase) {
             invoker.publish(new RemoveLibraryEvent(this));
-            invoker.publish(functionCall("then", phrase));
+            invoker.publish(convertTestPhrase("then", phrase));
             invoker.publish(new AddLibraryEvent(new ThenLibrary()));
         }
     }
@@ -116,7 +105,7 @@ public class BDDLibrary
         @PassInvoker
         public void and(Invoker invoker, String phrase) {
             invoker.publish(new RemoveLibraryEvent(this));
-            invoker.publish(functionCall("then", phrase));
+            invoker.publish(convertTestPhrase("then", phrase));
             invoker.publish(new AddLibraryEvent(new ThenLibrary()));
         }
     }

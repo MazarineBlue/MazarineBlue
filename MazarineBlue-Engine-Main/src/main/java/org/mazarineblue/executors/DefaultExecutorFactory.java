@@ -26,7 +26,7 @@ import org.mazarineblue.eventdriven.listeners.PublisherListener;
 import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.eventnotifier.Subscriber;
 
-public class DefaultExecutorFactory
+class DefaultExecutorFactory
         implements ExecutorFactory {
 
     private final ExecutorBuilder builder;
@@ -37,7 +37,7 @@ public class DefaultExecutorFactory
     private Supplier<ChainModifierListener> chainModifierListener;
     private Supplier<PublisherListener> publisherListener;
 
-    public DefaultExecutorFactory(ExecutorBuilder builder) {
+    DefaultExecutorFactory(ExecutorBuilder builder) {
         this.builder = new ExecutorBuilder(builder);
     }
 
@@ -81,7 +81,7 @@ public class DefaultExecutorFactory
     private void init(DefaultExecutor feedExecutor) {
         links.stream().forEach(supplier -> feedExecutor.addLink(supplier.get()));
         linkAfterVariableParser.stream().forEach(supplier -> feedExecutor.addLinkAfterVariableParser(supplier.get()));
-        linksAfterLibraryRegistry.stream().forEach(supplier -> feedExecutor.addLinkAtEnd(supplier.get()));
+        linksAfterLibraryRegistry.stream().forEach(supplier -> feedExecutor.addLinkAfterLibraryRegistry(supplier.get()));
         if (chainModifierListener != null)
             feedExecutor.setChainModifierListener(chainModifierListener.get());
         if (feedExecutorListener != null)

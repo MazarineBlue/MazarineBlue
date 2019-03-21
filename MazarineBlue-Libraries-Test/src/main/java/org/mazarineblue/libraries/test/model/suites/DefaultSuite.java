@@ -17,7 +17,11 @@
  */
 package org.mazarineblue.libraries.test.model.suites;
 
-import org.mazarineblue.subscribers.recorder.Recording;
+import java.util.ArrayList;
+import java.util.Collection;
+import static java.util.Collections.emptyList;
+import java.util.List;
+import org.mazarineblue.eventnotifier.Event;
 
 class DefaultSuite
         extends SuiteKey
@@ -26,8 +30,8 @@ class DefaultSuite
     private static final long serialVersionUID = 1L;
 
     private final Suite parent;
-    private Recording setup;
-    private Recording teardown;
+    private List<Event> setup;
+    private List<Event> teardown;
 
     DefaultSuite(Suite parent, String name) {
         super(name);
@@ -45,13 +49,13 @@ class DefaultSuite
     }
 
     @Override
-    public void setSetup(Recording recording) {
-        setup = recording;
+    public void setSetup(Collection<Event> list) {
+        setup = new ArrayList<>(list);
     }
 
     @Override
-    public Recording getSetup() {
-        return setup != null ? setup : new Recording(0);
+    public Collection<Event> getSetup() {
+        return setup == null || setup.isEmpty() ? emptyList() : Event.clone(setup);
     }
 
     @Override
@@ -60,13 +64,13 @@ class DefaultSuite
     }
 
     @Override
-    public void setTeardown(Recording recording) {
-        teardown = recording;
+    public void setTeardown(Collection<Event> list) {
+        teardown = new ArrayList<>(list);
     }
 
     @Override
-    public Recording getTeardown() {
-        return teardown != null ? teardown : new Recording(0);
+    public Collection<Event> getTeardown() {
+        return teardown == null || teardown.isEmpty() ? emptyList() : Event.clone(teardown);
     }
 
     @Override

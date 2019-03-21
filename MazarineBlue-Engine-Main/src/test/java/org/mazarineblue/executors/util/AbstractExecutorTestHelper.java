@@ -216,8 +216,8 @@ public abstract class AbstractExecutorTestHelper
     }
 
     @Override
-    public void addLinkAtEnd(Subscriber<Event> link) {
-        executor.addLinkAtEnd(link);
+    public void addLinkAfterLibraryRegistry(Subscriber<Event> link) {
+        executor.addLinkAfterLibraryRegistry(link);
     }
 
     @Override
