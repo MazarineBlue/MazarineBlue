@@ -20,6 +20,8 @@ package org.mazarineblue.mazarineblue.libraries.web;
 import java.util.Set;
 import static org.awaitility.Awaitility.await;
 import org.awaitility.Duration;
+import org.mazarineblue.keyworddriven.Library;
+import static org.mazarineblue.mazarineblue.libraries.web.BrowserInstanceLibrary.NAMESPACE;
 import org.mazarineblue.mazarineblue.libraries.web.exceptions.WindowHandleNotFoundException;
 import org.mazarineblue.mazarineblue.libraries.web.tabs.Tab;
 import org.mazarineblue.mazarineblue.libraries.web.tabs.TabRegistry;
@@ -27,7 +29,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 
-public class TabLibrary {
+public class TabLibrary
+        extends Library {
 
     private static final Duration NEW_TAB_TIMEOUT = Duration.FIVE_MINUTES;
     private static final CharSequence PAGE_RELOADED = "Detected a page unload event; script execution does not work across page loads.";
@@ -36,6 +39,7 @@ public class TabLibrary {
     private final TabRegistry registry;
 
     public TabLibrary(WebDriver driver) {
+        super(NAMESPACE);
         this.driver = driver;
         registry = new TabRegistry(driver);
     }
