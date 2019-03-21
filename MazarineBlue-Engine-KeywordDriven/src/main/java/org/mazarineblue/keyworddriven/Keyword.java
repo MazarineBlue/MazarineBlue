@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2014 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  * Copyright (c) 2014-2015 Specialisterren
  *
  * This program is free software; you can redistribute it and/or

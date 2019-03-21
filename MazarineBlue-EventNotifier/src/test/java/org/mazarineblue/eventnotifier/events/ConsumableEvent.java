@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:

@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2012-2014 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  * Copyright (c) 2014-2015 Specialisterren
- * Copyright (c) 2015 Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ * Copyright (c) Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License

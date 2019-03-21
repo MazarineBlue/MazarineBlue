@@ -10,12 +10,14 @@ class MiddleTab
 
     private final String name;
     private final String handle;
-    private Tab previousTab = new LeftBorderTab();
-    private Tab nextTab = new RightBorderTab();
+    private Tab previousTab;
+    private Tab nextTab;
 
     MiddleTab(String name, String handle) {
         this.name = name;
         this.handle = handle;
+        previousTab = new BorderTab(null, this);
+        nextTab = new BorderTab(this, null);
     }
 
     @Override
@@ -28,8 +30,14 @@ class MiddleTab
         return name;
     }
 
+    @Override
     String getHandle() {
         return handle;
+    }
+
+    @Override
+    boolean hasPrevious() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

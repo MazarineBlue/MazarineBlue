@@ -15,41 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.mazarineblue.eventdriven.util.events;
+package org.mazarineblue.mazarineblue.libraries.web;
 
-import org.mazarineblue.eventdriven.InvokerEvent;
+public class BorderTab extends Tab {
 
-/**
- * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
- */
-@SuppressWarnings("serial")
-public class TestInvokerEvent
-        extends InvokerEvent {
-
-    private final String message;
-    private final String responce;
-
-    public TestInvokerEvent() {
-        message = responce = "";
+    public BorderTab(Object object, MiddleTab aThis) {
     }
 
-    public TestInvokerEvent(String message, String responce) {
-        this.message = message;
-        this.responce = responce;
-    }
-
-    @Override
-    public void setException(RuntimeException exception) {
-        super.setException(exception);
-    }
-
-    @Override
-    public String message() {
-        return message;
-    }
-
-    @Override
-    public String responce() {
-        return responce;
-    }
 }

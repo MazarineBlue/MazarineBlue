@@ -7,11 +7,11 @@ package org.mazarineblue.mazarineblue.libraries.web;
 
 abstract class Tab {
 
+    abstract boolean containsName(String tabName);
+
     abstract String getName();
 
     abstract String getHandle();
-
-    abstract boolean containsName(String tabName);
 
     abstract boolean hasPrevious();
 
