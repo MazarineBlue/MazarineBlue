@@ -72,7 +72,7 @@ class TabRegistry {
     //</editor-fold>
 
     boolean isCurrentTab(String tabName) {
-        return currentTab.containsName(tabName);
+        return currentTab.getName().equals(tabName);
     }
 
     void removeTab(String name) {

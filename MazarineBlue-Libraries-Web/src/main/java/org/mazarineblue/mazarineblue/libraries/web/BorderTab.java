@@ -27,11 +27,6 @@ public class BorderTab
     }
 
     @Override
-    boolean containsName(String tabName) {
-        return false;
-    }
-
-    @Override
     String getName() {
         return "";
     }

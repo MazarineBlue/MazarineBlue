@@ -17,23 +17,70 @@
  */
 package org.mazarineblue.mazarineblue.libraries.web;
 
+/**
+ * A tab references a tab in the browser.
+ *
+ * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
+ */
 abstract class Tab {
 
-    abstract boolean containsName(String tabName);
-
+    /**
+     * Returns the name of this tab.
+     *
+     * @return the name of this tab
+     */
     abstract String getName();
 
+    /**
+     * Returns the WebDriver window handle of this tab.
+     *
+     * @return the WebDriver window handle of this tab.
+     */
     abstract String getHandle();
 
+    /**
+     * Determins if this tab has a previous tab.
+     *
+     * @return {@literal true} if this tab has a previous tab
+     */
     abstract boolean hasPrevious();
 
+    /**
+     * Returns the previous tab of a {@link BorderTab} if there is no previous
+     * tab.
+     *
+     * @return the previous tab of a {@link BorderTab} if there is no previous
+     * tab.
+     */
     abstract Tab previousTab();
 
+    /**
+     * Sets the previous tab.
+     *
+     * @param previous the previous tab to set
+     * @return the this tab, so you can call {@link #setNextTab(Tab) }
+     */
     abstract Tab setPreviousTab(Tab previous);
 
+    /**
+     * Determins if this tab has a next tab.
+     *
+     * @return {@literal true} if this tab has a next tab
+     */
     abstract boolean hasNext();
 
+    /**
+     * Returns the previous tab of a {@link BorderTab} if there is no next tab.
+     *
+     * @return the previous tab of a {@link BorderTab} if there is no next tab
+     */
     abstract Tab nextTab();
 
+    /**
+     * Sets the next tab.
+     *
+     * @param next the next tab to set
+     * @return the this tab, so you can call {@link #setPreviousTab(Tab)}
+     */
     abstract Tab setNextTab(Tab next);
 }

@@ -34,11 +34,6 @@ class MiddleTab
     }
 
     @Override
-    boolean containsName(String tabName) {
-        return name.equals(tabName);
-    }
-
-    @Override
     String getName() {
         return name;
     }
