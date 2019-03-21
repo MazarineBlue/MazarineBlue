@@ -20,8 +20,9 @@ package org.mazarineblue.mazarineblue.libraries.web;
 import java.util.Set;
 import static org.awaitility.Awaitility.await;
 import org.awaitility.Duration;
+import org.mazarineblue.keyworddriven.Keyword;
 import org.mazarineblue.keyworddriven.Library;
-import static org.mazarineblue.mazarineblue.libraries.web.BrowserInstanceLibrary.NAMESPACE;
+import static org.mazarineblue.mazarineblue.libraries.web.WebDriverLibraryPlugin.NAMESPACE;
 import org.mazarineblue.mazarineblue.libraries.web.exceptions.WindowHandleNotFoundException;
 import org.mazarineblue.mazarineblue.libraries.web.tabs.Tab;
 import org.mazarineblue.mazarineblue.libraries.web.tabs.TabRegistry;
@@ -44,10 +45,12 @@ public class TabLibrary
         registry = new TabRegistry(driver);
     }
 
+    @Keyword("Tab count")
     public int tabCount() {
         return registry.size();
     }
 
+    @Keyword("Open in new tab")
     public void openInNewTab(String url, String tabName) {
         Set<String> handles = driver.getWindowHandles();
         executeJavascript("window.open('" + url + "', '_blank');");
@@ -77,17 +80,20 @@ public class TabLibrary
     }
     //</editor-fold>
 
+    @Keyword("Switch to tab")
     public void switchToTab(String tabName) {
         Tab tab = registry.getTab(tabName);
         driver.switchTo().window(tab.getHandle());
         registry.setCurrentTab(tab);
     }
 
+    @Keyword("Close tab")
     public void closeTab() {
         driver.close();
         registry.removeCurrentTab();
     }
 
+    @Keyword("Close tab to the right")
     public void closeTabsToTheRight() {
         boolean closeTab = false;
         for (Tab tab : registry.getAllTabs())
@@ -97,6 +103,7 @@ public class TabLibrary
                 closeTab(tab);
     }
 
+    @Keyword("Close tab other right")
     public void closeOtherTabs() {
         for (Tab tab : registry.getAllTabs())
             if (!registry.isCurrentTab(tab))

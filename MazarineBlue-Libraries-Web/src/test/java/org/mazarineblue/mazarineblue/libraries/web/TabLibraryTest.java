@@ -17,42 +17,56 @@
  */
 package org.mazarineblue.mazarineblue.libraries.web;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
+import org.mazarineblue.executors.util.AbstractExecutorTestHelper;
+import org.mazarineblue.keyworddriven.Library;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 /**
  *
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
-public class TabLibraryTest {
-    
-    public TabLibraryTest() {
-    }
-    
+public class TabLibraryTest
+        extends AbstractExecutorTestHelper {
+
+    private WebDriver driver;
+    private Library lib;
+
     @BeforeClass
-    public static void setUpClass() {
+    public static void setupClass() {
+        WebDriverManager.chromedriver().setup();
     }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
+
     @Before
-    public void setUp() {
+    public void setup() {
+        driver = new ChromeDriver();
+        lib = new TabLibrary(driver);
     }
-    
+
     @After
-    public void tearDown() {
+    public void teardown() {
+        if (driver != null)
+            driver.quit();
+        driver = null;
+    }
+
+    @Test
+    public void test() {
+        System.out.print("");
     }
 
     /**
      * Test of tabCount method, of class TabLibrary.
      */
     @Test
+    @Ignore
     public void testTabCount() {
         System.out.println("tabCount");
         TabLibrary instance = null;
@@ -67,6 +81,7 @@ public class TabLibraryTest {
      * Test of openInNewTab method, of class TabLibrary.
      */
     @Test
+    @Ignore
     public void testOpenInNewTab() {
         System.out.println("openInNewTab");
         String url = "";
@@ -81,6 +96,7 @@ public class TabLibraryTest {
      * Test of switchToTab method, of class TabLibrary.
      */
     @Test
+    @Ignore
     public void testSwitchToTab() {
         System.out.println("switchToTab");
         String tabName = "";
@@ -94,6 +110,7 @@ public class TabLibraryTest {
      * Test of closeTab method, of class TabLibrary.
      */
     @Test
+    @Ignore
     public void testCloseTab_0args() {
         System.out.println("closeTab");
         TabLibrary instance = null;
@@ -106,6 +123,7 @@ public class TabLibraryTest {
      * Test of closeTabsToTheRight method, of class TabLibrary.
      */
     @Test
+    @Ignore
     public void testCloseTabsToTheRight() {
         System.out.println("closeTabsToTheRight");
         TabLibrary instance = null;
@@ -118,6 +136,7 @@ public class TabLibraryTest {
      * Test of closeOtherTabs method, of class TabLibrary.
      */
     @Test
+    @Ignore
     public void testCloseOtherTabs() {
         System.out.println("closeOtherTabs");
         TabLibrary instance = null;
@@ -130,6 +149,7 @@ public class TabLibraryTest {
      * Test of closeTab method, of class TabLibrary.
      */
     @Test
+    @Ignore
     public void testCloseTab_String() {
         System.out.println("closeTab");
         String tabName = "";
@@ -138,5 +158,4 @@ public class TabLibraryTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-    
 }

@@ -23,8 +23,6 @@ import org.openqa.selenium.WebElement;
 
 public class BrowserInstanceLibrary {
 
-    static final String NAMESPACE = "org.mazarineblue.libraries.web";
-
     private final WebDriver driver;
     private final Heuristics heuristics;
 
