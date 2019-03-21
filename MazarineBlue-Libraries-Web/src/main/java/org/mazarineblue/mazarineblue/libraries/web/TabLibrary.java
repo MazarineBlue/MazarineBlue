@@ -17,7 +17,6 @@
  */
 package org.mazarineblue.mazarineblue.libraries.web;
 
-import java.util.Collection;
 import java.util.Set;
 import static org.awaitility.Awaitility.await;
 import org.awaitility.Duration;
