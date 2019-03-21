@@ -22,7 +22,7 @@ public class TabRegistry {
     private static final String INITIAL_TAB_NAME = "Main tab";
 
     private Tab currentTab, insertTab;
-    private final Map<String, RealTab> tabs = new HashMap<>();
+    private final Map<String, Tab> tabs = new HashMap<>();
 
     public TabRegistry(WebDriver driver) {
         currentTab = insertTab = new RealTab(INITIAL_TAB_NAME, driver.getWindowHandle());
@@ -58,6 +58,15 @@ public class TabRegistry {
     }
 
     /**
+     * Sets the specified tab as the current tab.
+     *
+     * @param tab the current tab to be
+     */
+    public void setCurrentTab(Tab tab) {
+        currentTab = insertTab = tab;
+    }
+
+    /**
      * Returns the amount of tabs in this registry.
      *
      * @return the amount of tabs in this registry.
@@ -66,23 +75,29 @@ public class TabRegistry {
         return tabs.size();
     }
 
+    /**
+     * Registers a newly created tab right of the current tab.
+     *
+     * @param name the name of the tab
+     * @param handle the handle of the tab
+     */
     public void insertTab(String name, String handle) {
-        RealTab tab = new RealTab(name, handle);
+        Tab tab = new RealTab(name, handle);
+        linkTabsOnInsert(tab);
+        registerTab(name, tab);
+        insertTab = tab;
+    }
+
+    private void linkTabsOnInsert(Tab tab) {
         tab.setPreviousTab(insertTab).setNextTab(insertTab.nextTab());
         tab.nextTab().setPreviousTab(tab);
         tab.previousTab().setNextTab(tab);
-        insertTab = tab;
-        registerTab(name, tab);
     }
 
-    private void registerTab(String tabName, RealTab tab) {
+    private void registerTab(String tabName, Tab tab) {
         if (tabs.containsKey(tabName))
             throw new TabNameTakenException();
         tabs.put(tabName, tab);
-    }
-
-    public void setCurrentTab(Tab tab) {
-        currentTab = insertTab = tab;
     }
 
     public void removeCurrentTab() {
