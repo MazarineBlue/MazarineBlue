@@ -17,9 +17,59 @@
  */
 package org.mazarineblue.mazarineblue.libraries.web;
 
-public class BorderTab extends Tab {
+public class BorderTab
+        extends Tab {
 
-    public BorderTab(Object object, MiddleTab aThis) {
+    private Tab previous = null;
+    private Tab next = null;
+
+    BorderTab() {
     }
 
+    @Override
+    boolean containsName(String tabName) {
+        return false;
+    }
+
+    @Override
+    String getName() {
+        return "";
+    }
+
+    @Override
+    String getHandle() {
+        return null;
+    }
+
+    @Override
+    boolean hasPrevious() {
+        return previous != null;
+    }
+
+    @Override
+    Tab previousTab() {
+        return previous;
+    }
+
+    @Override
+    Tab setPreviousTab(Tab previous) {
+        this.previous = previous;
+        return this;
+    }
+
+    @Override
+    boolean hasNext() {
+        return next != null;
+    }
+
+    @Override
+    Tab nextTab() {
+        return next;
+    }
+
+    @Override
+    Tab setNextTab(Tab next) {
+        this.next = next;
+        return this;
+    }
 }
