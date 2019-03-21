@@ -37,12 +37,12 @@ public class TabRegistry {
     }
 
     public void insertTab(String name, String handle) {
-        registerTab(name, new MiddleTab(name, handle));
-
-        if (insertTab == null)
-            insertTab = currentTab.nextTab();
-        insertTab.nextTab().setPreviousTab(insertTab.previousTab());
-        insertTab.previousTab().setNextTab(insertTab.nextTab());
+        MiddleTab tab = new MiddleTab(name, handle);
+        tab.setPreviousTab(insertTab).setNextTab(insertTab.nextTab());
+        tab.nextTab().setPreviousTab(tab);
+        tab.previousTab().setNextTab(tab);
+        insertTab = tab;
+        registerTab(name, tab);
     }
 
     private void registerTab(String tabName, MiddleTab tab) {
