@@ -20,7 +20,7 @@ package org.mazarineblue.mazarineblue.libraries.web.tabs;
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
-class MiddleTab
+class RealTab
         extends Tab {
 
     private final String name;
@@ -29,7 +29,7 @@ class MiddleTab
     private WeakReference<Tab> next;
 
     @SuppressWarnings("LeakingThisInConstructor")
-    MiddleTab(String name, String handle) {
+    RealTab(String name, String handle) {
         this.name = name;
         this.handle = handle;
         previous = new WeakReference<>(new BorderTab().setNextTab(this));
@@ -56,8 +56,8 @@ class MiddleTab
     @Override
     public boolean equals(Object obj) {
         return this == obj || obj != null && getClass() == obj.getClass()
-                && Objects.equals(this.name, ((MiddleTab) obj).name)
-                && Objects.equals(this.handle, ((MiddleTab) obj).handle);
+                && Objects.equals(this.name, ((RealTab) obj).name)
+                && Objects.equals(this.handle, ((RealTab) obj).handle);
     }
 
     @Override

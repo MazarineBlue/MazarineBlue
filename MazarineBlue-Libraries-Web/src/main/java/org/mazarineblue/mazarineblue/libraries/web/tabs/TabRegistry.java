@@ -20,10 +20,10 @@ public class TabRegistry {
     private static final String INITIAL_TAB_NAME = "Main tab";
 
     private Tab currentTab, insertTab;
-    private final Map<String, MiddleTab> tabs = new HashMap<>();
+    private final Map<String, RealTab> tabs = new HashMap<>();
 
     public TabRegistry(WebDriver driver) {
-        currentTab = insertTab = new MiddleTab(INITIAL_TAB_NAME, driver.getWindowHandle());
+        currentTab = insertTab = new RealTab(INITIAL_TAB_NAME, driver.getWindowHandle());
     }
 
     /**
@@ -37,7 +37,7 @@ public class TabRegistry {
     }
 
     public void insertTab(String name, String handle) {
-        MiddleTab tab = new MiddleTab(name, handle);
+        RealTab tab = new RealTab(name, handle);
         tab.setPreviousTab(insertTab).setNextTab(insertTab.nextTab());
         tab.nextTab().setPreviousTab(tab);
         tab.previousTab().setNextTab(tab);
@@ -45,7 +45,7 @@ public class TabRegistry {
         registerTab(name, tab);
     }
 
-    private void registerTab(String tabName, MiddleTab tab) {
+    private void registerTab(String tabName, RealTab tab) {
         if (tabs.containsKey(tabName))
             throw new TabNameTakenException();
         tabs.put(tabName, tab);
