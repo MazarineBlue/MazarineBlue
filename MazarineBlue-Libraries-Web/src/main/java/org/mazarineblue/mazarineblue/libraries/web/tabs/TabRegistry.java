@@ -100,10 +100,18 @@ public class TabRegistry {
         tabs.put(tabName, tab);
     }
 
+    /**
+     * Removes the current tab from the registry.
+     */
     public void removeCurrentTab() {
         removeTab(currentTab);
     }
 
+    /**
+     * Removes the tab with the specified name from the registry.
+     *
+     * @param name the name of the tab to remove
+     */
     public void removeTab(String name) {
         removeTab(tabs.remove(name));
     }
@@ -111,8 +119,12 @@ public class TabRegistry {
     private void removeTab(Tab tab) {
         if (currentTab.equals(tab))
             currentTab = currentTab.hasNext() ? currentTab.nextTab() : currentTab.previousTab();
+        linkBoundryTabs(tab);
+        insertTab = currentTab;
+    }
+
+    private void linkBoundryTabs(Tab tab) {
         tab.nextTab().setPreviousTab(tab.previousTab());
         tab.previousTab().setNextTab(tab.nextTab());
-        insertTab = currentTab;
     }
 }
