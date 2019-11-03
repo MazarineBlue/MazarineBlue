@@ -52,7 +52,7 @@ public class TestEmailLibraryPlugin
         return asList(createLibrary());
     }
 
-    private EmailLibrary createLibrary() {
+    private Library createLibrary() {
         try {
             Session session = Session.getDefaultInstance(System.getProperties());
             session.setProvider(new Provider(STORE, "pop3", TestStore.class.getName(), null, null));

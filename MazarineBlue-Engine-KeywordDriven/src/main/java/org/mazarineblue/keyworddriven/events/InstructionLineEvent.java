@@ -25,6 +25,7 @@ import static java.util.Arrays.copyOf;
 import static java.util.Arrays.stream;
 import java.util.Objects;
 import java.util.function.Predicate;
+import org.mazarineblue.eventdriven.InvokerEvent;
 import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.keyworddriven.Instruction;
 import org.mazarineblue.keyworddriven.util.GracefullConvertor;
@@ -40,7 +41,7 @@ import org.mazarineblue.utilities.ArgumentList;
  * @see ValidateInstructionLineEvent
  */
 public abstract class InstructionLineEvent
-        extends KeywordDrivenEvent {
+        extends InvokerEvent {
 
     private static final long serialVersionUID = 1L;
 

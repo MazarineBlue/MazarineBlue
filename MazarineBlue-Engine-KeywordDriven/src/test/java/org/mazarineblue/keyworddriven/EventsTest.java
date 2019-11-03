@@ -79,11 +79,11 @@ public class EventsTest {
     @Test
     public void test_FetchLibrariesEvent_LibrariesFound() {
         FetchLibrariesEvent e = new FetchLibrariesEvent();
-        e.addLibrary(new TestLibrary1(), new TestLibrary2(), new TestLibrary3());
+        e.add(new TestLibrary1(), new TestLibrary2(), new TestLibrary3());
         assertEquals("found=3", e.toString());
         assertEquals("", e.message());
         assertEquals("found=3", e.responce());
-        assertEquals(asList(new TestLibrary1(), new TestLibrary2(), new TestLibrary3()), e.getLibraries());
+        assertEquals(asList(new TestLibrary1(), new TestLibrary2(), new TestLibrary3()), e.list());
     }
 
     /* ********************************************************************** *

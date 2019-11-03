@@ -18,6 +18,7 @@
 package org.mazarineblue.keyworddriven.events;
 
 import java.util.Objects;
+import org.mazarineblue.eventdriven.InvokerEvent;
 import org.mazarineblue.eventdriven.Processor;
 import org.mazarineblue.utilities.SerializableClonable;
 
@@ -30,7 +31,7 @@ import org.mazarineblue.utilities.SerializableClonable;
  * @param <R> The output type this rule can produce
  */
 public class ConversionRuleEvent<T, R>
-        extends KeywordDrivenEvent {
+        extends InvokerEvent {
 
     private static final long serialVersionUID = 1L;
 

@@ -100,9 +100,13 @@ public abstract class Library
 
     private List<Method> getAllMethods() {
         List<Method> list = new ArrayList<>(16);
-        for (Method method : getClass().getDeclaredMethods())
-            if (libraryIsTheDeclaringClass(method))
-                list.add(method);
+        Class<?> clazz = getClass();
+        while (clazz != null && Library.class.isAssignableFrom(clazz)) {
+            for (Method method : clazz.getDeclaredMethods())
+                if (libraryIsTheDeclaringClass(method))
+                    list.add(method);
+            clazz = clazz.getSuperclass();
+        }
         return list;
     }
 

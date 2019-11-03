@@ -58,7 +58,7 @@ public abstract class SymbolVariableEvent
 
     @Override
     public String toString() {
-        return "symbol=" + symbol + ", value=" + value;
+        return "symbol=" + symbol + ", value=" + value.get();
     }
 
     public String getScope() {

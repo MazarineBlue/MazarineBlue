@@ -100,6 +100,7 @@ public class BuiltinLibrary
                 .forEach(invoker::publish);
     }
 
+    @Keyword("")
     @Keyword("Comment")
     public void comment(Object... args) {
         /* A comment is implemented as an instruction. so that the framework is

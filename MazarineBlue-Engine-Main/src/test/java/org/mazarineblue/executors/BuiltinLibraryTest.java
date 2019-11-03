@@ -77,6 +77,18 @@ public class BuiltinLibraryTest {
         executor = null;
     }
 
+    @Test
+    public void comment1() {
+        executor.execute(new MemoryFeed(new ExecuteInstructionLineEvent("", "foo", 1, "bar")));
+        output.throwFirstException();
+    }
+
+    @Test
+    public void comment2() {
+        executor.execute(new MemoryFeed(new ExecuteInstructionLineEvent("Comment", "foo", 1, "bar")));
+        output.throwFirstException();
+    }
+
     @SuppressWarnings("PublicInnerClass")
     public class GivenLibraryPluginThatThrowsAnRuntimeException {
 
@@ -114,7 +126,7 @@ public class BuiltinLibraryTest {
             FetchLibrariesEvent e = new FetchLibrariesEvent(lib -> lib.namespace().equals("foo"));
             executor.execute(new MemoryFeed(new ExecuteInstructionLineEvent("Import library", "foo"),
                                             e));
-            assertEquals(asList(library), e.getLibraries());
+            assertEquals(asList(library), e.list());
         }
     }
 

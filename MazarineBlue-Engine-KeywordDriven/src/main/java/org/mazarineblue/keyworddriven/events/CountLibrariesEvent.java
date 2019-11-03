@@ -33,7 +33,7 @@ import org.mazarineblue.keyworddriven.LibraryRegistry;
  * @see LibraryRegistry
  */
 public class CountLibrariesEvent
-        extends FilterLibrariesEvent {
+        extends FilterEvent<Library> {
 
     private static final long serialVersionUID = 1L;
 

@@ -18,6 +18,7 @@
 package org.mazarineblue.keyworddriven.events;
 
 import java.util.Objects;
+import org.mazarineblue.eventdriven.InvokerEvent;
 import org.mazarineblue.eventnotifier.Event;
 import org.mazarineblue.keyworddriven.Library;
 import org.mazarineblue.utilities.SerializableClonable;
@@ -29,7 +30,7 @@ import org.mazarineblue.utilities.SerializableClonable;
  * @author Alex de Kruijff <alex.de.kruijff@MazarineBlue.org>
  */
 abstract class LibraryEvent
-        extends KeywordDrivenEvent {
+        extends InvokerEvent {
 
     private static final long serialVersionUID = 1L;
 

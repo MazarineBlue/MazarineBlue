@@ -76,7 +76,7 @@ public class CloneTest {
     public void clone_FetchLibrariesEvent() {
         Predicate<Library> condition = new TestPredicate<>(true);
         FetchLibrariesEvent e = new FetchLibrariesEvent(condition);
-        e.addLibrary(new TestLibrary1());
+        e.add(new TestLibrary1());
         assertEquals(e, ObjectsUtil.clone(e));
     }
 

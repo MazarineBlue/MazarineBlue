@@ -60,6 +60,7 @@
         <module>MazarineBlue-Libraries-Email</module>
         <module>MazarineBlue-Libraries-Fixtures</module>
         <module>MazarineBlue-Libraries-Test</module>
+        <module>MazarineBlue-Libraries-Web</module>
         <module>MazarineBlue-Main</module>
         <module>MazarineBlue-Parser</module>
         <module>MazarineBlue-Pictures</module>
@@ -73,7 +74,6 @@
         <module>MazarineBlue-Runners-ThreadRunner</module>
         <module>MazarineBlue-Toolkit</module>
         <module>MazarineBlue-Utilities</module>
-        <module>MazarineBlue-Libraries-Web</module>
     </modules>
 
     <scm>
@@ -126,9 +126,9 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.opera</groupId>
-                <artifactId>operadriver</artifactId>
-                <version>1.5</version>
+                <groupId>com.codeborne</groupId>
+                <artifactId>phantomjsdriver</artifactId>
+                <version>1.4.1</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.mail</groupId>
@@ -163,7 +163,7 @@
             <dependency>
                 <groupId>org.apache.tika</groupId>
                 <artifactId>tika-core</artifactId>
-                <version>1.17</version>
+                <version>1.20</version>
             </dependency>
             <dependency>
                 <groupId>org.awaitility</groupId>
@@ -185,6 +185,16 @@
                 <groupId>org.seleniumhq.selenium</groupId>
                 <artifactId>selenium-java</artifactId>
                 <version>3.141.59</version>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>htmlunit-driver</artifactId>
+                <version>2.34.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.simpleframework</groupId>
+                <artifactId>simple-http</artifactId>
+                <version>6.0.1</version>
             </dependency>
             <dependency>
                 <groupId>org.swinglabs</groupId>

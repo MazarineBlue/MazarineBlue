@@ -159,7 +159,7 @@ public class LibraryRegistry
      */
     @EventHandler
     public void eventHandler(FetchLibrariesEvent event) {
-        libraries.stream().forEach(event::addLibrary);
+        libraries.stream().forEach(event::add);
         event.setConsumed(true);
     }
 
@@ -244,7 +244,7 @@ public class LibraryRegistry
         private List<Library> onLibraries(Predicate<Library> condition, Invoker invoker) {
             FetchLibrariesEvent e = new FetchLibrariesEvent(condition);
             invoker.publish(e);
-            return e.getLibraries();
+            return e.list();
         }
 
         private void doInstruction(List<Library> libraries, E event) {
